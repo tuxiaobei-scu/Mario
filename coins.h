@@ -5,6 +5,7 @@ class Coins
 private:
 	bool render();
 	bool isshow = true;
+	bool isrun = true;
 	int animation_time;
 	const int costumes_num = 4;
 	int now_costume;

@@ -2,13 +2,14 @@
 #include "graphics.h"
 #include <cstdio>
 bool World_name::render() {
-	if (!this->isshow) return false;
+	if (!isshow) return false;
 	xyprintf(450, 30, "WORLD");
-	xyprintf(472, 55, "1-1");
+	xyprintf(472, 61, "1-1");
 	return true;
 }
 
 bool World_name::update() {
-	return this->render();
+	if (!isrun) return false;
+	return render();
 }
 World_name world_name;

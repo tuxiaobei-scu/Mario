@@ -5,7 +5,7 @@ class Menu
 private:
 	int start_time;
 	bool isshow = true;
-
+	bool isrun = true;
 	PIMAGE title;
 	MUSIC music;
 
@@ -13,7 +13,7 @@ private:
 	void reset();
 public:
 	bool update();
-	void setshowstate(bool show);
+	void setrunstate(bool show);
 	Menu();
 };
-
+extern Menu menu;

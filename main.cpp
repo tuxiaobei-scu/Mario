@@ -1,5 +1,9 @@
 #include "graphics.h"
 #include "menu.h"
+#include "score.h"
+#include "timer.h"
+#include "coins.h"
+#include "world_name.h"
 #include "global.h"
 #include <cstdio>
 
@@ -13,10 +17,13 @@ int main()
 	setfont(-30, 20, "FixedsysTTF");
 	setcolor(WHITE);				//文字的颜色
 	setbkmode(TRANSPARENT);			//设置文字背景色为透明	
-	Menu menu;
+	
 	for (; is_run(); delay_fps(60)) {
 		cleardevice();
 		menu.update();
-		SCORE += 1;
+		score.update(); //显示分数
+		timer.update(); //显示时间
+		coins.update(); //显示金币
+		world_name.update(); //显示关卡名
 	}
 }

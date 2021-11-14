@@ -19,7 +19,7 @@ private:
 #define CTL_PREINIT(classname, parent) \
 	struct preinit_obj { \
 		preinit_obj(classname* This, int inheritlevel) { \
-			This->pre_init(inheritlevel); \
+			pre_init(inheritlevel); \
 		} \
 	}_preinit_obj; \
 	enum inherit_e { inherit_level_e = parent::inherit_level_e + 1, }; \

@@ -6,6 +6,7 @@ int LIVES = 3;
 int TOP_SCORE = 0;
 int START_TIME = 0;
 int NOW_SCENR = 0;
+int PLAYERS_NUM = 1;
 
 PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight)
 {

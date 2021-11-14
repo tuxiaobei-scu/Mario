@@ -54,6 +54,9 @@
     <ClInclude Include="world_name.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="option_cursor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,6 +78,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="world_name.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="option_cursor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,13 +3,14 @@
 #include "graphics.h"
 #include <cstdio>
 bool Timer::render() {
-	if (!this->isshow) return false;
+	if (!isshow) return false;
 	xyprintf(625, 30, "TIME");
 	return true;
 }
 
 bool Timer::update() {
-	return this->render();
+	if (!isrun) return false;
+	return render();
 }
 
 Timer timer;

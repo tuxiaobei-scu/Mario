@@ -149,6 +149,7 @@
     <ClInclude Include="global.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="option_cursor.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="world_name.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="option_cursor.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="world_name.cpp" />
