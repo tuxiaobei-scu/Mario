@@ -1,9 +1,8 @@
 #pragma once
-#include "graphics.h"	
+#include "graphics.h"
 class Menu
 {
 private:
-	int start_time;
 	bool isshow = true;
 	bool isrun = true;
 	PIMAGE title;
@@ -13,7 +12,21 @@ private:
 	void reset();
 public:
 	bool update();
-	void setrunstate(bool show);
+	void stop();
+	void start();
 	Menu();
 };
 extern Menu menu;
+
+class Option_cursor
+{
+private:
+	bool render();
+	bool isshow = true;
+	bool isrun = true;
+	PIMAGE icon;
+public:
+	bool update();
+	Option_cursor();
+};
+extern Option_cursor option_cursor;

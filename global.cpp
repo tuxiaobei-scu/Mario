@@ -7,6 +7,7 @@ int TOP_SCORE = 0;
 int START_TIME = 0;
 int NOW_SCENR = 0;
 int PLAYERS_NUM = 1;
+char LEVEL_NAME[25] = "1-1";
 
 PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight)
 {
@@ -44,9 +45,10 @@ void zoomImage(PIMAGE& pimg, float scale)
 	zoomImage(pimg, width, height);
 }
 
-void getimage(PIMAGE pDstImg, LPCSTR  pImgFile, int srcX, int srcY, int srcWidth, int srcHeigh)
+void getimage(PIMAGE pDstImg, LPCSTR  pImgFile, int srcX, int srcY, int dstX, int dstY)
 {
 	PIMAGE pimg1 = newimage(), pimg2 = newimage();
+	int srcWidth = dstX - srcX + 1, srcHeigh = dstY - srcY + 1;
 	getimage(pimg1, pImgFile);
 	getimage(pDstImg, pimg1, srcX, srcY, srcWidth, srcHeigh);
 	delimage(pimg1);

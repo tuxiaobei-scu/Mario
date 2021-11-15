@@ -18,9 +18,6 @@
     <ClInclude Include="menu.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="score.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="global.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -45,16 +42,10 @@
     <ClInclude Include="ege\sys_edit.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="timer.h">
+    <ClInclude Include="load_screen.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="coins.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="world_name.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="option_cursor.h">
+    <ClInclude Include="headers.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,22 +56,13 @@
     <ClCompile Include="menu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="score.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="global.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="timer.cpp">
+    <ClCompile Include="load_screen.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="coins.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="world_name.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="option_cursor.cpp">
+    <ClCompile Include="headers.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

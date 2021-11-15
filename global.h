@@ -13,6 +13,7 @@ extern int TOP_SCORE;
 extern int START_TIME;
 extern int NOW_SCENR;
 extern int PLAYERS_NUM;
+extern char LEVEL_NAME[25];
 
 extern PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight);
 extern void zoomImage(PIMAGE& pimg, int zoomWidth, int zoomHeight);

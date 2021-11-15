@@ -1,8 +1,23 @@
-#include "coins.h"
+#include "headers.h"
 #include "global.h"
 #include "graphics.h"
 #include <ctime>
 #include <cstdio>
+
+bool Score::render() {
+	if (!isshow) return false;
+	xyprintf(75, 30, "MARIO");
+	char s[10];
+	sprintf(s, "%06d", SCORE);
+	xyprintf(75, 61, s);
+	return true;
+}
+
+bool Score::update() {
+	if (!isrun) return false;
+	return render();
+}
+Score score;
 
 Coins::Coins()
 {
@@ -39,3 +54,29 @@ bool Coins::update() {
 }
 
 Coins coins;
+
+bool World_name::render() {
+	if (!isshow) return false;
+	xyprintf(450, 30, "WORLD");
+	xyprintf(472, 61, LEVEL_NAME);
+	return true;
+}
+
+bool World_name::update() {
+	if (!isrun) return false;
+	return render();
+}
+World_name world_name;
+
+bool Timer::render() {
+	if (!isshow) return false;
+	xyprintf(625, 30, "TIME");
+	return true;
+}
+
+bool Timer::update() {
+	if (!isrun) return false;
+	return render();
+}
+
+Timer timer;
