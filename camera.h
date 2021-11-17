@@ -4,7 +4,8 @@
 class Camera
 {
 private:
-	double now, target;
+	double nowx, nowy;
+	double targetx, targety;
 	int map_range;
 	bool isshow = false, isrun = false;
 	bool render();

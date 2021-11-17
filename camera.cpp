@@ -34,14 +34,14 @@ Camera::Camera()
 bool Camera::render()
 {
 	if (!isshow) return false;
-	int l = max(0.0, floor(now));
+	int l = max(0.0, floor(nowx));
 	int r = l + 22;
 	for (int i = 0; i < 4; i++) {
 		for (int j = l; j <= r; j++) {
 			for (Collider* c : level.mp[i][j]) {
 				std::pair<double, double>pos = c->getpos();
 				Costume ct = c->getcostume();
-				putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)(pos.first * 40), (int)(pos.second * 40));
+				putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)(pos.first * 40 - nowx), (int)(pos.second * 40 - nowy));
 			}
 		}
 	}
