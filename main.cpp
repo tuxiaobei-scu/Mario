@@ -9,7 +9,7 @@
 int main()
 {
 	// »æÍ¼´°¿Ú³õÊ¼»¯
-	initgraph(800, 600);
+	initgraph(800, 600, INIT_RENDERMANUAL);
 	setbkcolor(EGERGB(107, 140, 255));
 	setfillcolor(EGERGB(0, 0, 0));
 	setcaption("Super mario Bros");

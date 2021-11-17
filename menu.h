@@ -1,5 +1,7 @@
 #pragma once
 #include "graphics.h"
+#include <vector>
+#include <iostream>
 class Menu
 {
 private:
@@ -24,7 +26,9 @@ private:
 	bool render();
 	bool isshow = true;
 	bool isrun = true;
+	int level_id = -1;
 	PIMAGE icon;
+	std::vector<std::string>levels;
 public:
 	bool update();
 	Option_cursor();

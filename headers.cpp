@@ -1,6 +1,7 @@
 #include "headers.h"
 #include "global.h"
 #include "graphics.h"
+#include "level.h"
 #include <ctime>
 #include <cstdio>
 
@@ -36,10 +37,10 @@ Coins::Coins()
 
 bool Coins::render() {
 	if (!isshow) return false;
-	putimage_withalpha(NULL, costumes[now_costume], 280, 66);
+	putimage_withalpha(NULL, costumes[now_costume], 260, 66);
 	char s[20];
 	sprintf(s, "x%02d", COIN_TOTAL);
-	xyprintf(300, 61, s);
+	xyprintf(280, 61, s);
 	return true;
 }
 
@@ -57,8 +58,8 @@ Coins coins;
 
 bool World_name::render() {
 	if (!isshow) return false;
-	xyprintf(450, 30, "WORLD");
-	xyprintf(472, 61, LEVEL_NAME);
+	xyprintf(400, 30, "WORLD");
+	xyprintf(400, 61, LEVEL_NAME.c_str());
 	return true;
 }
 
@@ -71,6 +72,11 @@ World_name world_name;
 bool Timer::render() {
 	if (!isshow) return false;
 	xyprintf(625, 30, "TIME");
+	if (!level.freeze) {
+		char s[10];
+		sprintf(s, "%03d", level.limit_time - ((clock() - level.start_time) / 1000));
+		xyprintf(625, 61, s);
+	}
 	return true;
 }
 

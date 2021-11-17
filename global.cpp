@@ -8,7 +8,7 @@ int TOP_SCORE = 0;
 int START_TIME = 0;
 int NOW_SCENR = 0;
 int PLAYERS_NUM = 1;
-char LEVEL_NAME[25] = "1-1";
+std::string LEVEL_NAME;
 std::vector<std::string>gp_type = {"", "Brick"};
 
 PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight)

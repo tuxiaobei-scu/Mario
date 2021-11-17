@@ -15,6 +15,7 @@ public:
 	void movecam(int target);
 	void start();
 	void stop();
+	bool finish_init = false;
 	Camera();
 };
 

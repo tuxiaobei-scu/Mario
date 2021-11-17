@@ -18,7 +18,7 @@ bool Load_screen::render()
 	bar(0, 0, 800, 600);
 	if (name == "begin") {
 		xyprintf(280, 200, "WORLD");
-		xyprintf(430, 200, LEVEL_NAME);
+		xyprintf(400, 200, LEVEL_NAME.c_str());
 		putimage_withalpha(NULL, mario, 330, 300);
 		xyprintf(390, 300, "x");
 		char s[5];
@@ -40,6 +40,7 @@ bool Load_screen::update()
 
 void Load_screen::start(std::string name)
 {
+	level.stop();
 	isshow = true;
 	isrun = true;
 	start_time = clock();
@@ -53,7 +54,8 @@ void Load_screen::stop()
 {
 	isshow = false;
 	isrun = false;
-	level.start("level1.mio");
+	level.freeze = false;
+	level.start();
 }
 Load_screen load_screen;
 

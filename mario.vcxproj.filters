@@ -60,6 +60,9 @@
     <ClInclude Include="brick.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="dirent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,7 +102,10 @@
     <None Include="readme.md">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="level1.mio">
+    <None Include="1-1.mio">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="1-2.mio">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>

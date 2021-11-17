@@ -4,6 +4,10 @@
 #include "graphics.h"	
 #include "headers.h"
 #include "load_screen.h"
+#include "level.h"
+#include "camera.h"
+#include "dirent.h"
+#include <sys/types.h>
 #include <cstdio>
 #include <iostream>
 
@@ -34,7 +38,7 @@ bool Menu::render()
 	putimage_withalpha(NULL, title, 170, 100); //显示标题
 	char topscore[20];
 	sprintf(topscore, "TOP - %06d" , TOP_SCORE);
-	xyprintf(290, 465, topscore);
+	xyprintf(272, 480, topscore);
 	return true;
 }
 
@@ -69,28 +73,58 @@ Option_cursor::Option_cursor()
 	icon = newimage();
 	getimage1(icon, "resources\\graphics\\title_screen.png", 3, 155, 12, 164);
 	zoomImage(icon, 2.5);
+	DIR* dir;
+	struct dirent* ptr;
+	dir = opendir("."); //打开当前目录
+	while ((ptr = readdir(dir)) != NULL) {
+		std::string s = ptr->d_name;
+		if (s.length() <= 4) continue;
+		if (s.substr(s.length() - 4, s.length()) != ".mio") continue;
+		s = s.erase(s.length() - 4, s.length());
+		levels.push_back(s);
+	}
+	if (levels.size() > 0) {
+		level_id = 0;
+		while (!camera.finish_init) Sleep(10);
+		level.start((levels[0] + ".mio").c_str());
+		LEVEL_NAME = levels[0];
+	}
+	closedir(dir);
 }
 
 bool Option_cursor::render()
 {
 	if (!isshow) return false;
-	putimage_withalpha(NULL, icon, 240, 320 + 45 * PLAYERS_NUM);
-	xyprintf(272, 360, "1 PLAYER GAME");
-	xyprintf(272, 405, "2 PLAYER GAME");
+	putimage_withalpha(NULL, icon, 240, 400);
+	if (level_id - 1 >= 0)  
+		xyprintf(272, 350, levels[level_id - 1].c_str());
+	if (level_id >= 0)
+		xyprintf(272, 395, levels[level_id].c_str());
+	if (level_id + 1 < levels.size()) 
+		xyprintf(272, 440, levels[level_id + 1].c_str());
 	return true;
 }
 
 bool Option_cursor::update()
 {
 	if (!isrun) return false;
-	if (kbmsg()) {
+	if (kbmsg() && level_id != -1) {
 		key_msg keyMsg = getkey();
 		switch (keyMsg.key) {
-		case key_down:	PLAYERS_NUM = 2; break;
-		case key_up: 	PLAYERS_NUM = 1; break;
+		case key_down:
+			if (level_id == levels.size() - 1) break;
+			level_id++;
+			level.start((levels[level_id] + ".mio").c_str());
+			LEVEL_NAME = levels[level_id];
+			break;
+		case key_up:
+			if (level_id == 0) break;
+			level_id--;
+			level.start((levels[level_id] + ".mio").c_str());
+			LEVEL_NAME = levels[level_id];
+			break;
 		case key_enter:
-			if (PLAYERS_NUM == 1) //双人暂未开发
-				menu.stop();
+			menu.stop();
 			break;
 		}
 	}

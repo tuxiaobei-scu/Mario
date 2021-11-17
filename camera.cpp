@@ -28,6 +28,7 @@ Camera::Camera()
 		//std::string s2 = s1;
 		//gp_type.push_back(s2);
 	}
+	finish_init = true;
 }
 
 bool Camera::render()

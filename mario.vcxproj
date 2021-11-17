@@ -142,6 +142,7 @@
     <ClInclude Include="brick.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collider.h" />
+    <ClInclude Include="dirent.h" />
     <ClInclude Include="ege.h" />
     <ClInclude Include="ege\button.h" />
     <ClInclude Include="ege\egecontrolbase.h" />
@@ -170,7 +171,8 @@
     <Text Include="graphics.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="level1.mio" />
+    <None Include="1-1.mio" />
+    <None Include="1-2.mio" />
     <None Include="readme.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

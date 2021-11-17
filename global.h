@@ -12,7 +12,7 @@ extern int TOP_SCORE;
 extern int START_TIME;
 extern int NOW_SCENR;
 extern int PLAYERS_NUM;
-extern char LEVEL_NAME[25];
+extern std::string LEVEL_NAME;
 extern std::vector<std::string>gp_type;
 
 struct Costume {
