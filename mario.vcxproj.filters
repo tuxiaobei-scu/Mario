@@ -48,6 +48,18 @@
     <ClInclude Include="headers.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="collider.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="level.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="brick.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,5 +77,30 @@
     <ClCompile Include="headers.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="collider.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="level.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="brick.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="graphics.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="readme.md">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="level1.mio">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

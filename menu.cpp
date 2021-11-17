@@ -18,7 +18,7 @@ Menu::Menu()
 {
 	
 	title = newimage();
-	getimage(title, "resources\\graphics\\title_screen.png", 1, 60, 176, 147);
+	getimage1(title, "resources\\graphics\\title_screen.png", 1, 60, 176, 147);
 	zoomImage(title, 2.5);
 	music.OpenFile("resources\\music\\start.mp3");
 	music.SetVolume(0.5);
@@ -67,7 +67,7 @@ Menu menu;
 Option_cursor::Option_cursor()
 {
 	icon = newimage();
-	getimage(icon, "resources\\graphics\\title_screen.png", 3, 155, 12, 164);
+	getimage1(icon, "resources\\graphics\\title_screen.png", 3, 155, 12, 164);
 	zoomImage(icon, 2.5);
 }
 

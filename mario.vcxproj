@@ -139,6 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="brick.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="collider.h" />
     <ClInclude Include="ege.h" />
     <ClInclude Include="ege\button.h" />
     <ClInclude Include="ege\egecontrolbase.h" />
@@ -148,15 +151,27 @@
     <ClInclude Include="global.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="headers.h" />
+    <ClInclude Include="level.h" />
     <ClInclude Include="load_screen.h" />
     <ClInclude Include="menu.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="brick.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="collider.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="headers.cpp" />
+    <ClCompile Include="level.cpp" />
     <ClCompile Include="load_screen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="graphics.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="level1.mio" />
+    <None Include="readme.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

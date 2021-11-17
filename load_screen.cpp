@@ -1,12 +1,13 @@
 #include "load_screen.h"
 #include "global.h"
 #include "graphics.h"
+#include "level.h"
 #include <ctime>
 
 Load_screen::Load_screen()
 {
 	mario = newimage();
-	getimage(mario, "resources\\graphics\\mario_bros.png", 320, 8, 335, 31);
+	getimage1(mario, "resources\\graphics\\mario_bros.png", 320, 8, 335, 31);
 	zoomImage(mario, 1.5);
 	music.OpenFile("resources\\sound\\begin.wav");
 }
@@ -52,6 +53,7 @@ void Load_screen::stop()
 {
 	isshow = false;
 	isrun = false;
+	level.start("level1.mio");
 }
 Load_screen load_screen;
 

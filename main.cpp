@@ -3,6 +3,7 @@
 #include "headers.h"
 #include "load_screen.h"
 #include "global.h"
+#include "level.h"
 #include <cstdio>
 
 int main()
@@ -19,6 +20,7 @@ int main()
 	
 	for (; is_run(); delay_fps(60)) {
 		cleardevice();
+		level.update();
 		menu.update();
 		load_screen.update();
 		score.update(); //ÏÔÊ¾·ÖÊı

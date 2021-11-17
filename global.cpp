@@ -1,5 +1,6 @@
 #include "global.h"
 #include <cstring>
+#include <vector>
 int SCORE = 0;
 int COIN_TOTAL = 0;
 int LIVES = 3;
@@ -8,6 +9,7 @@ int START_TIME = 0;
 int NOW_SCENR = 0;
 int PLAYERS_NUM = 1;
 char LEVEL_NAME[25] = "1-1";
+std::vector<std::string>gp_type = {"", "Brick"};
 
 PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight)
 {
@@ -45,9 +47,17 @@ void zoomImage(PIMAGE& pimg, float scale)
 	zoomImage(pimg, width, height);
 }
 
-void getimage(PIMAGE pDstImg, LPCSTR  pImgFile, int srcX, int srcY, int dstX, int dstY)
+void getimage(PIMAGE pDstImg, LPCSTR pImgFile, int srcX, int srcY, int srcWidth, int srcHeigh)
 {
-	PIMAGE pimg1 = newimage(), pimg2 = newimage();
+	PIMAGE pimg1 = newimage();
+	getimage(pimg1, pImgFile);
+	getimage(pDstImg, pimg1, srcX, srcY, srcWidth, srcHeigh);
+	delimage(pimg1);
+}
+
+void getimage1(PIMAGE pDstImg, LPCSTR  pImgFile, int srcX, int srcY, int dstX, int dstY)
+{
+	PIMAGE pimg1 = newimage();
 	int srcWidth = dstX - srcX + 1, srcHeigh = dstY - srcY + 1;
 	getimage(pimg1, pImgFile);
 	getimage(pDstImg, pimg1, srcX, srcY, srcWidth, srcHeigh);
