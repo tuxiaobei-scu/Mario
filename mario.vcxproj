@@ -154,6 +154,7 @@
     <ClInclude Include="headers.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="load_screen.h" />
+    <ClInclude Include="mario.h" />
     <ClInclude Include="menu.h" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClCompile Include="level.cpp" />
     <ClCompile Include="load_screen.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mario.cpp" />
     <ClCompile Include="menu.cpp" />
   </ItemGroup>
   <ItemGroup>

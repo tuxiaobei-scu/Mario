@@ -44,6 +44,7 @@ void Level::start(const char* path)
 			mp[0][x].push_back(brick);
 		}
 	}
+	fclose(fp);
 	camera.start();
 }
 
