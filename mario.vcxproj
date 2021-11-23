@@ -152,6 +152,7 @@
     <ClInclude Include="global.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="headers.h" />
+    <ClInclude Include="keymsg.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="load_screen.h" />
     <ClInclude Include="mario.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="headers.cpp" />
+    <ClCompile Include="keymsg.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="load_screen.cpp" />
     <ClCompile Include="main.cpp" />

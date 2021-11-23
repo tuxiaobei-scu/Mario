@@ -1,6 +1,7 @@
 //Ö÷Ò³²Ëµ¥
 #include "global.h"
 #include "menu.h"
+#include "keymsg.h"
 #include "graphics.h"	
 #include "headers.h"
 #include "load_screen.h"
@@ -108,25 +109,23 @@ bool Option_cursor::render()
 bool Option_cursor::update()
 {
 	if (!isrun) return false;
-	if (kbmsg() && level_id != -1) {
-		key_msg keyMsg = getkey();
-		switch (keyMsg.key) {
-		case key_down:
-			if (level_id == levels.size() - 1) break;
+	if (level_id != -1) {
+		key_msg keyMsg;
+		bool flag = keymsg.getmsg(keyMsg, key_down);
+		if (flag && level_id != levels.size() - 1) {
 			level_id++;
 			level.start((levels[level_id] + ".mio").c_str());
 			LEVEL_NAME = levels[level_id];
-			break;
-		case key_up:
-			if (level_id == 0) break;
+		}
+		flag = keymsg.getmsg(keyMsg, key_up);
+		if (flag && level_id != 0) {
 			level_id--;
 			level.start((levels[level_id] + ".mio").c_str());
 			LEVEL_NAME = levels[level_id];
-			break;
-		case key_enter:
-			menu.stop();
-			break;
 		}
+		flag = keymsg.getmsg(keyMsg, key_enter);
+		if (flag) menu.stop();
+
 	}
 	return render();
 }

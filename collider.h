@@ -7,10 +7,10 @@ private:
 	int width, height;
 	bool isrun = false;
 	bool isshow = false;
+	double fx, fy;
 protected:
 	double x, y;
-	double vx, vy;
-	double gx, gy;
+	double m;
 public:
 	virtual Costume getcostume() = 0;
 	virtual std::pair<int, int> getctpos() = 0;

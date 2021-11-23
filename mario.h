@@ -16,7 +16,7 @@ public:
 	std::pair<int, int> getctpos();
 	bool update();
 	std::vector<Costume>costumes;
-	Mario();
+	//Mario();
 	int show_layer = 0;
 };
 

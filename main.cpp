@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include "keymsg.h"
 #include "menu.h"
 #include "headers.h"
 #include "load_screen.h"
@@ -20,6 +21,7 @@ int main()
 	
 	for (; is_run(); delay_fps(60)) {
 		cleardevice();
+		keymsg.update();
 		level.update();
 		menu.update();
 		load_screen.update();

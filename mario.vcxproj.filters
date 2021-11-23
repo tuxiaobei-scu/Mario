@@ -66,6 +66,9 @@
     <ClInclude Include="mario.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="keymsg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -96,6 +99,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mario.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="keymsg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
