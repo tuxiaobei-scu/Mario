@@ -7,6 +7,9 @@ Brick::Brick(FILE* fp)
 	fscanf(fp, "%d%d", &a, &b);
 	costumes.push_back(Costume{ 4, a, b });
 	ct = Costume{ 4, a, b };
+	collider_layer = 1;
+	id = ++COLLIDER_ID;
+	freeze = true;
 }
 
 bool Brick::update()

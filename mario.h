@@ -10,13 +10,13 @@ private:
 	std::string state = "walk";
 	std::vector<Costume>frames[3];
 	int sx = 0, sy = 0;
-	Costume ct;
+	Costume ct = Costume{2, 0, 6};
 public:
 	Costume getcostume();
 	std::pair<int, int> getctpos();
 	bool update();
 	std::vector<Costume>costumes;
-	//Mario();
+	Mario();
 	int show_layer = 0;
 };
 

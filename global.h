@@ -2,16 +2,17 @@
 #include "graphics.h"
 #include <iostream>
 #include <vector>
-#define MAX_RUN_SPEED 800.0
-#define MAX_WALK_SPEED 6.0
+#define EPS 1e-5
 
 extern int SCORE;
+extern int COLLIDER_ID;
 extern int COIN_TOTAL;
 extern int LIVES;
 extern int TOP_SCORE;
 extern int START_TIME;
 extern int NOW_SCENR;
 extern int PLAYERS_NUM;
+extern double GRAVITY;
 extern std::string LEVEL_NAME;
 extern std::vector<std::string>gp_type;
 

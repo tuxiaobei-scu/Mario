@@ -5,9 +5,11 @@ int SCORE = 0;
 int COIN_TOTAL = 0;
 int LIVES = 3;
 int TOP_SCORE = 0;
+int COLLIDER_ID = 0;
 int START_TIME = 0;
 int NOW_SCENR = 0;
 int PLAYERS_NUM = 1;
+double GRAVITY = 10;
 std::string LEVEL_NAME;
 std::vector<std::string>gp_type = {"", "Mario_big", "Mario_small" , "Mario_fire" , "Brick"};
 

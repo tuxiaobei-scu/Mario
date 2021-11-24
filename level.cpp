@@ -55,6 +55,14 @@ bool Level::update()
 	if (main_theme.GetPlayStatus() == MUSIC_MODE_STOP) {
 		main_theme.Play(0);
 	}
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j <= 300; j++) {
+			for (Collider* c : level.mp[i][j]) {
+				c->calc();
+			}
+		}
+	}
+	last_time = clock();
 	return camera.update();
 }
 
@@ -62,6 +70,7 @@ void Level::start()
 {
 	isrun = true;
 	start_time = clock();
+	last_time = clock();
 	main_theme.Play(0);
 }
 
