@@ -11,6 +11,7 @@ private:
 	std::vector<Costume>frames[3];
 	int sx = 0, sy = 0;
 	Costume ct = Costume{2, 0, 6};
+	int input_direction = 0;
 public:
 	Costume getcostume();
 	std::pair<int, int> getctpos();

@@ -10,6 +10,7 @@ Brick::Brick(FILE* fp)
 	collider_layer = 1;
 	id = ++COLLIDER_ID;
 	freeze = true;
+	width = 1, height = 1;
 }
 
 bool Brick::update()

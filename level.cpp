@@ -2,6 +2,7 @@
 #include "collider.h"
 #include "brick.h"
 #include "camera.h"
+#include "mario.h"
 #include <sys/types.h>
 #include "dirent.h"
 #include <iostream>
@@ -40,10 +41,13 @@ void Level::start(const char* path)
 		std::string name = gp_type[id];
 		if (name == "Brick") {
 			Brick* brick = new Brick(fp);
-			brick->Collider::setpos(x, y);
+			brick->Collider::setpos(x, y, 1, 1);
+			assert(x < MAX_LEVEL_RANGE);
 			mp[0][x].push_back(brick);
 		}
 	}
+	Mario* m = new Mario;
+	actors[4].push_back(m);
 	fclose(fp);
 	camera.start();
 }
@@ -55,11 +59,9 @@ bool Level::update()
 	if (main_theme.GetPlayStatus() == MUSIC_MODE_STOP) {
 		main_theme.Play(0);
 	}
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j <= 300; j++) {
-			for (Collider* c : level.mp[i][j]) {
-				c->calc();
-			}
+	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
+		for (Collider* c : level.actors[i]) {
+			c->calc();
 		}
 	}
 	last_time = clock();

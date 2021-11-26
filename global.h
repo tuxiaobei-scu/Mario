@@ -1,8 +1,11 @@
 #pragma once
 #include "graphics.h"
 #include <iostream>
+#include <assert.h>
 #include <vector>
 #define EPS 1e-5
+#define MAX_LEVEL_RANGE 500
+#define MAX_LEVEL_LAYER 5
 
 extern int SCORE;
 extern int COLLIDER_ID;

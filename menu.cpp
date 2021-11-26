@@ -112,13 +112,13 @@ bool Option_cursor::update()
 	if (level_id != -1) {
 		key_msg keyMsg;
 		bool flag = keymsg.getmsg(keyMsg, key_down);
-		if (flag && level_id != levels.size() - 1) {
+		if (flag && keyMsg.msg == key_msg_down &&level_id != levels.size() - 1) {
 			level_id++;
 			level.start((levels[level_id] + ".mio").c_str());
 			LEVEL_NAME = levels[level_id];
 		}
 		flag = keymsg.getmsg(keyMsg, key_up);
-		if (flag && level_id != 0) {
+		if (flag && keyMsg.msg == key_msg_down && level_id != 0) {
 			level_id--;
 			level.start((levels[level_id] + ".mio").c_str());
 			LEVEL_NAME = levels[level_id];

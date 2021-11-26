@@ -1,5 +1,6 @@
 #pragma once
 #include "collider.h"
+#include "global.h"
 #include <vector>
 #include <iostream>
 class Level
@@ -10,9 +11,9 @@ private:
 	MUSIC main_theme;
 	void reset();
 public:
-	std::vector<Collider*>mp[5][500];
-	std::vector<Collider>actors[5];
-	std::vector<Collider>unrun_actors;
+	std::vector<Collider*>mp[MAX_LEVEL_LAYER + 5][MAX_LEVEL_RANGE + 5];
+	std::vector<Collider*>actors[MAX_LEVEL_LAYER + 5];
+	std::vector<Collider*>unrun_actors[MAX_LEVEL_RANGE + 5];
 	void start(const char* path);
 	void start();
 	void stop();

@@ -36,13 +36,20 @@ bool Camera::render()
 	if (!isshow) return false;
 	int l = max(0.0, floor(nowx));
 	int r = l + 22;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (int j = l; j <= r; j++) {
 			for (Collider* c : level.mp[i][j]) {
+				c->update();
 				std::pair<double, double>pos = c->getpos();
 				Costume ct = c->getcostume();
 				putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)(pos.first * 40 - nowx), (int)(pos.second * 40 - nowy));
 			}
+		}
+		for (Collider* c : level.actors[i]) {
+			c->update();
+			std::pair<double, double>pos = c->getpos();
+			Costume ct = c->getcostume();
+			putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)(pos.first * 40 - nowx), (int)(pos.second * 40 - nowy));
 		}
 	}
 	
