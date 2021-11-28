@@ -9,7 +9,7 @@ int COLLIDER_ID = 0;
 int START_TIME = 0;
 int NOW_SCENR = 0;
 int PLAYERS_NUM = 1;
-double GRAVITY = 20;
+double GRAVITY = 100;
 std::string LEVEL_NAME;
 std::vector<std::string>gp_type = {"", "Mario_big", "Mario_small" , "Mario_fire" , "Brick"};
 

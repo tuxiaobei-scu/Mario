@@ -22,17 +22,19 @@ void Collider::calc()
 {
 	if (freeze) return;
 	if (fx * vx > maxwx) fx = maxwx / vx;
-	if (fy * vy > maxwy) fy = maxwy / vy;
+	//if (fy * vy > maxwy) fy = maxwy / vy;
 	double ax, ay = fy / m + GRAVITY;
 	if (fabs(vx) > EPS) ax = (vx > 0 ? fx - f : fx + f) / m;
 	else ax = fx / m;
-	SCORE = fabs(fx);
+	SCORE = onfloor;
 	double tim = (clock() - level.last_time) / 1000.0;
 	vx += tim * ax, vy += tim * ay;
+	double prex = x, prey = y;
 	move(x, y, tim * vx, tim * vy);
 	double lstx = x, lsty = y;
-	y = checkonfloor();
+	y = checkonfloor(prex, prey);
 	if (fabs(y - lsty) > EPS) vy = 0, onfloor = true;
+	else onfloor = false;
 	x = checkleftright();
 	if (fabs(x - lstx) > EPS) vx = 0;
 	//if (checkleftright()) x = lstx, vx = 0;
@@ -51,7 +53,7 @@ double Collider::checkleftright()
 		for (int j = l; j <= r; j++) {
 			for (auto b : level.mp[i][j]) {
 				int p = (vx > 0) ? 1 : -1;
-				if (b->collider_layer == 1 && checkcollide(x + 0.1 * p, y, b)) {
+				if (b->collider_layer == 1 && checkcollide(x + 0.01 * p, y, b)) {
 					return b->x - (width + b->width) / 2 * p;
 				}
 			}
@@ -60,13 +62,13 @@ double Collider::checkleftright()
 	return x;
 }
 
-double Collider::checkonfloor()
+double Collider::checkonfloor(double prex, double prey)
 {
 	int l = max(0, x - 3), r = min(l + 6, 499);
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (int j = l; j <= r; j++) {
 			for (auto b : level.mp[i][j]) {
-				if (b->collider_layer == 1 && checkcollide(x, y + 0.1, b)) 
+				if (b->collider_layer == 1 && prey <= b->y - (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y + 0.01, b))
 					return b->y - (height + b->height) / 2;
 			}
 		}
