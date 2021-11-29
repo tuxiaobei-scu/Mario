@@ -10,7 +10,7 @@ Mario::Mario()
 	id = ++COLLIDER_ID;
 	setpos(2, 5, 1, 1);
 	freeze = false;
-	maxwx = 100, maxwy = 1000;
+	maxwx = 150, maxwy = 1000;
 }
 
 bool Mario::update()

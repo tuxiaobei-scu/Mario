@@ -25,7 +25,10 @@ void Collider::calc()
 	//if (fy * vy > maxwy) fy = maxwy / vy;
 	double ax, ay = fy / m + GRAVITY;
 	if (fabs(vx) > EPS) ax = (vx > 0 ? fx - f : fx + f) / m;
-	else ax = fx / m;
+	else {
+		if (fabs(fx) > f) ax = fx / m;
+		else ax = 0, vx = 0;
+	}
 	SCORE = onfloor;
 	double tim = (clock() - level.last_time) / 1000.0;
 	vx += tim * ax, vy += tim * ay;
