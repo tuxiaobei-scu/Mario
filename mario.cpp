@@ -11,6 +11,7 @@ Mario::Mario()
 	setpos(2, 5, 1, 1);
 	freeze = false;
 	maxwx = 150, maxwy = 1000;
+	out_of_range = false;
 }
 
 bool Mario::update()
@@ -40,13 +41,13 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_down || right_key) {
 			right_key = true;
 			if (input_direction == 0) {
-				input_direction = -1;
+				input_direction = 1;
 				fx = 50;
 			}
 		}
 		if (keyMsg.msg == key_msg_up) {
 			right_key = false;
-			if (input_direction == -1) {
+			if (input_direction == 1) {
 				input_direction = 0;
 				fx = 0;
 			}
@@ -54,13 +55,14 @@ bool Mario::update()
 	}
 	flag = keymsg.getmsg(keyMsg, key_up);
 	if (onfloor && state != "jump") state = "walk";
+	if (!onfloor && state == "walk") state = "fall";
 	if (state == "jump" && clock() - jump_time > 200){
 		state = "fall";
 		is_jump = false;
 		fy = 0;
 	}
 	if (flag) {
-		if (keyMsg.msg == key_msg_down && !jump_time) {
+		if (keyMsg.msg == key_msg_down && !up_key) {
 			up_key = true;
 			if (state != "jump" && state != "fall") {
 				fy = -200;
@@ -70,15 +72,17 @@ bool Mario::update()
 			}
 		}
 		if (keyMsg.msg == key_msg_up) {
+			if (state == "jump") {
+				state = "fall";
+				is_jump = false;
+				fy = 0;
+				jump_time = 0;
+			}
 			up_key = false;
-			state = "fall";
-			is_jump = false;
-			fy = 0;
-			jump_time = 0;
 		}
 	}
-	
-
+	LEVEL_NAME = state;
+	SCORE = vx;
 	return false;
 }
 

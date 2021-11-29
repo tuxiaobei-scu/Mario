@@ -23,6 +23,7 @@ protected:
 	double maxwx = 20, maxwy = 20; //最大功率
 	bool static_y;
 	bool onfloor = false;
+	bool out_of_range = true;
 public:
 	virtual Costume getcostume() = 0;
 	virtual std::pair<int, int> getctpos() = 0;

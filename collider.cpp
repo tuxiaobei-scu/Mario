@@ -21,19 +21,24 @@ bool Collider::operator < (const Collider& c) {
 void Collider::calc()
 {
 	if (freeze) return;
-	if (fx * vx > maxwx) fx = maxwx / vx;
+	double fx_real = fx, fy_real = fy;
+	if (fx_real * vx > maxwx) fx_real = maxwx / vx;
 	//if (fy * vy > maxwy) fy = maxwy / vy;
 	double ax, ay = fy / m + GRAVITY;
-	if (fabs(vx) > EPS) ax = (vx > 0 ? fx - f : fx + f) / m;
+	if (fabs(vx) > 0.1) ax = (vx > 0 ? fx_real - f : fx_real + f) / m;
 	else {
-		if (fabs(fx) > f) ax = fx / m;
+		if (fabs(fx_real) > f) ax = fx_real / m;
 		else ax = 0, vx = 0;
 	}
-	SCORE = onfloor;
+	
 	double tim = (clock() - level.last_time) / 1000.0;
 	vx += tim * ax, vy += tim * ay;
 	double prex = x, prey = y;
 	move(x, y, tim * vx, tim * vy);
+	if (!out_of_range) {
+		if (x < width / 2) x = width / 2;
+		if (x > level.map_range - width / 2) x = level.map_range - width / 2;
+	}
 	double lstx = x, lsty = y;
 	y = checkonfloor(prex, prey);
 	if (fabs(y - lsty) > EPS) vy = 0, onfloor = true;
