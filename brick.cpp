@@ -27,3 +27,8 @@ Costume Brick::getcostume()
 {
 	return ct;
 }
+
+bool Brick::report_collision(int direction, Collider* target)
+{
+	return true;
+}

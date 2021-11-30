@@ -1,6 +1,10 @@
 #pragma once
 #include "global.h"
 #include <algorithm>
+#define TOP 0
+#define RIGHT 1
+#define BOTTOM 2
+#define LEFT 3
 class Collider
 {
 private:
@@ -9,6 +13,7 @@ private:
 	bool checkcollide(double x, double y, const Collider* b);
 	bool move(double& x, double& y, double dx, double dy);
 	double checkonfloor(double prex, double prey);
+	double checkceiling(double prex, double prey);
 	double checkleftright();
 protected:
 	int id;
@@ -24,6 +29,8 @@ protected:
 	bool static_y;
 	bool onfloor = false;
 	bool out_of_range = true;
+	bool last_direction = false; // falseÓÒ, true ×ó
+	virtual bool report_collision(int direction, Collider* target) = 0;
 public:
 	virtual Costume getcostume() = 0;
 	virtual std::pair<int, int> getctpos() = 0;

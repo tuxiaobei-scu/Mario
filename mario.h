@@ -9,11 +9,14 @@ class Mario :
 private:
 	int jump_time = 0;
 	std::string state = "walk";
-	std::vector<Costume>frames[3];
 	int sx = 0, sy = 0;
 	Costume ct = Costume{2, 0, 6};
 	int input_direction = 0;
-	bool down_key = false, up_key= false, right_key = false, left_key = false;
+	int mario_level = 2;
+	int animation_time;
+	bool jump_key = false;
+protected:
+	bool report_collision(int direction, Collider* target);
 public:
 	Costume getcostume();
 	std::pair<int, int> getctpos();

@@ -5,6 +5,7 @@
 #include "level.h"
 #include <cstdio>
 
+
 Camera::Camera()
 {
 	FILE* fp = fopen("graphics.txt", "r");
@@ -22,6 +23,17 @@ Camera::Camera()
 				v[i][j] = newimage();
 				getimage(v[i][j], img, x + j * mx, y + i * ny, width, heigh);
 				zoomImage(v[i][j], 2.5);
+			}
+		}
+		if (gp.size() < 4) {
+			v.resize(n << 1);
+			for (auto& p : v) p.resize(m);
+			for (int i = n; i < (n << 1); i++) {
+				for (int j = 0; j < m; j++) {
+					v[i][j] = newimage();
+					copyimage(v[i][j], v[i - n][j]);
+					mirror_image(v[i][j]);
+				}
 			}
 		}
 		gp.push_back(v);
@@ -42,14 +54,14 @@ bool Camera::render()
 				c->update();
 				std::pair<double, double>pos = c->getpos();
 				Costume ct = c->getcostume();
-				putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)(pos.first * 40 - nowx), (int)(pos.second * 40 - nowy));
+				putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 			}
 		}
 		for (Collider* c : level.actors[i]) {
 			c->update();
 			std::pair<double, double>pos = c->getpos();
 			Costume ct = c->getcostume();
-			putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)(pos.first * 40 - nowx), (int)(pos.second * 40 - nowy));
+			putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 		}
 	}
 	
@@ -67,4 +79,8 @@ void Camera::start()
 	isshow = true;
 }
 
+void Camera::movecam(double x, double y)
+{
+	nowx = x, nowy = y;
+}
 Camera camera;

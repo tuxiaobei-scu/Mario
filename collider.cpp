@@ -1,6 +1,7 @@
 #include "collider.h"
 #include "level.h"
 #include "global.h"
+#include "camera.h"
 
 
 void Collider::setpos(double x, double y, double width, double height) {
@@ -25,7 +26,8 @@ void Collider::calc()
 	if (fx_real * vx > maxwx) fx_real = maxwx / vx;
 	//if (fy * vy > maxwy) fy = maxwy / vy;
 	double ax, ay = fy / m + GRAVITY;
-	if (fabs(vx) > 0.1) ax = (vx > 0 ? fx_real - f : fx_real + f) / m;
+	
+	if (fabs(vx) > 1) ax = (vx > 0 ? fx_real - f : fx_real + f) / m, last_direction = vx < 0;
 	else {
 		if (fabs(fx_real) > f) ax = fx_real / m;
 		else ax = 0, vx = 0;
@@ -42,11 +44,16 @@ void Collider::calc()
 	double lstx = x, lsty = y;
 	y = checkonfloor(prex, prey);
 	if (fabs(y - lsty) > EPS) vy = 0, onfloor = true;
-	else onfloor = false;
+	else {
+		onfloor = false;
+		y = checkceiling(prex, prey);
+	}
 	x = checkleftright();
 	if (fabs(x - lstx) > EPS) vx = 0;
 	//if (checkleftright()) x = lstx, vx = 0;
-	
+	if (collider_layer == 0) {
+		camera.movecam(min(max(0, x - 10), level.map_range - 10), 0);
+	}
 }
 
 bool Collider::checkcollide(double x, double y, const Collider* b)
@@ -69,7 +76,23 @@ double Collider::checkleftright()
 	}
 	return x;
 }
-
+double Collider::checkceiling(double prex, double prey)
+{
+	int l = max(0, x - 3), r = min(l + 6, 499);
+	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
+		for (int j = l; j <= r; j++) {
+			for (auto b : level.mp[i][j]) {
+				if (b->collider_layer == 1 && prey >= b->y + (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y - 0.01, b)) {
+					report_collision(TOP, b);
+					report_collision(BOTTOM, this);
+					vy = 0;
+					return b->y + (height + b->height) / 2;
+				}
+			}
+		}
+	}
+	return y;
+}
 double Collider::checkonfloor(double prex, double prey)
 {
 	int l = max(0, x - 3), r = min(l + 6, 499);

@@ -8,6 +8,8 @@ class Brick :
 private:
 	int sx = 0, sy = 0;
 	Costume ct;
+protected:
+	bool report_collision(int direction, Collider* target);
 public:
 	Costume getcostume();
 	std::pair<int, int> getctpos();

@@ -1,6 +1,7 @@
 #include "global.h"
 #include <cstring>
 #include <vector>
+#include <algorithm>
 int SCORE = 0;
 int COIN_TOTAL = 0;
 int LIVES = 3;
@@ -64,4 +65,19 @@ void getimage1(PIMAGE pDstImg, LPCSTR  pImgFile, int srcX, int srcY, int dstX, i
 	getimage(pimg1, pImgFile);
 	getimage(pDstImg, pimg1, srcX, srcY, srcWidth, srcHeigh);
 	delimage(pimg1);
+}
+
+void mirror_image(PIMAGE& pimg)
+{
+	color_t* data = getbuffer(pimg);
+	int width = getwidth(pimg), height = getheight(pimg);
+	for (int i = 0; i < height; i++) {
+		std::reverse(data + width * i, data + width * i + width);
+	}
+}
+
+void copyimage(PIMAGE& pDstimg, PIMAGE psrcimg)
+{
+	int width = getwidth(psrcimg), height = getheight(psrcimg);
+	getimage(pDstimg, psrcimg, 0, 0, width, height);
 }

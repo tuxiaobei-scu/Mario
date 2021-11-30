@@ -27,4 +27,6 @@ extern PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight);
 extern void zoomImage(PIMAGE& pimg, int zoomWidth, int zoomHeight);
 extern void zoomImage(PIMAGE& pimg, float scale);
 extern void getimage(PIMAGE pDstImg, LPCSTR pImgFile, int srcX, int srcY, int srcWidth, int srcHeigh);
-extern void getimage1(PIMAGE pDstImg, LPCSTR  pImgFile, int srcX, int srcY, int dstX, int dstY);
+extern void getimage1(PIMAGE pDstImg, LPCSTR pImgFile, int srcX, int srcY, int dstX, int dstY);
+extern void mirror_image(PIMAGE& pimg);
+extern void copyimage(PIMAGE& pDstimg, PIMAGE psrcimg);

@@ -13,7 +13,7 @@ private:
 	
 public:
 	bool update();
-	void movecam(int target);
+	void movecam(double x, double y);
 	void start();
 	void stop();
 	bool finish_init = false;
