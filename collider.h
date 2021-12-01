@@ -15,6 +15,12 @@ private:
 	double checkonfloor(double prex, double prey);
 	double checkceiling(double prex, double prey);
 	double checkleftright();
+	const int collide_re[10][10] = {
+		{3, 3}, 
+		{3, 0}
+	};
+	//0²»¼ì²â£¬1½ö1¼ì²â£¬2½öÅÅ³â£¬3ÅÅ³âÇÒ¼ì²â
+	//0 ÈËÎï£¬1 ×©¿é
 protected:
 	int id;
 	bool freeze = true;
@@ -38,7 +44,6 @@ public:
 	void setpos(double x, double y, double width, double height);
 	std::pair<double, double> getpos();
 	int collider_layer = 0; //Åö×²Í¼²ã
-	//0 ÈËÎï£¬1 ×©¿é
 	void calc();
 	bool operator < (const Collider& c);
 	void start();

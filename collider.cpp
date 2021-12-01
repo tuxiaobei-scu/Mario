@@ -29,7 +29,7 @@ void Collider::calc()
 	
 	if (fabs(vx) > 1) ax = (vx > 0 ? fx_real - f : fx_real + f) / m, last_direction = vx < 0;
 	else {
-		if (fabs(fx_real) > f) ax = fx_real / m;
+		if (fabs(fx_real) > f) ax = fx_real / m, last_direction = fx_real < 0;
 		else ax = 0, vx = 0;
 	}
 	
@@ -68,8 +68,12 @@ double Collider::checkleftright()
 		for (int j = l; j <= r; j++) {
 			for (auto b : level.mp[i][j]) {
 				int p = (vx > 0) ? 1 : -1;
-				if (b->collider_layer == 1 && checkcollide(x + 0.01 * p, y, b)) {
-					return b->x - (width + b->width) / 2 * p;
+				int flag1 = collide_re[collider_layer][b->collider_layer];
+				int flag2 = collide_re[b->collider_layer][collider_layer];
+				if ((flag1 || flag2) && checkcollide(x + 0.01 * p, y, b)) {
+					if (flag1 & 1) report_collision(2 - p, b);
+					if (flag2 & 1) b->report_collision(2 + p, this);
+					if (flag1 & 2) return b->x - (width + b->width) / 2 * p;
 				}
 			}
 		}
@@ -78,15 +82,17 @@ double Collider::checkleftright()
 }
 double Collider::checkceiling(double prex, double prey)
 {
-	int l = max(0, x - 3), r = min(l + 6, 499);
+	int l = max(0, x - 3), r = min(l + 6, level.map_range);
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (int j = l; j <= r; j++) {
 			for (auto b : level.mp[i][j]) {
-				if (b->collider_layer == 1 && prey >= b->y + (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y - 0.01, b)) {
-					report_collision(TOP, b);
-					report_collision(BOTTOM, this);
-					vy = 0;
-					return b->y + (height + b->height) / 2;
+				int flag1 = collide_re[collider_layer][b->collider_layer];
+				int flag2 = collide_re[b->collider_layer][collider_layer];
+				if ((flag1 || flag2) && prey >= b->y + (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y - 0.01, b)) {
+					if (flag1 & 2) vy = 0;
+					if (flag1 & 1) report_collision(TOP, b);
+					if (flag2 & 1) b->report_collision(BOTTOM, this);
+					if (flag1 & 2) return b->y + (height + b->height) / 2;
 				}
 			}
 		}
@@ -95,12 +101,18 @@ double Collider::checkceiling(double prex, double prey)
 }
 double Collider::checkonfloor(double prex, double prey)
 {
-	int l = max(0, x - 3), r = min(l + 6, 499);
+	int l = max(0, x - 3), r = min(l + 6, level.map_range);
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (int j = l; j <= r; j++) {
 			for (auto b : level.mp[i][j]) {
-				if (b->collider_layer == 1 && prey <= b->y - (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y + 0.01, b))
-					return b->y - (height + b->height) / 2;
+				int flag1 = collide_re[collider_layer][b->collider_layer];
+				int flag2 = collide_re[b->collider_layer][collider_layer];
+				if ((flag1 || flag2) && prey <= b->y - (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y + 0.01, b)) {
+					if (flag1 & 1) report_collision(BOTTOM, b);
+					if (flag2 & 1) b->report_collision(TOP, this);
+					if (flag1 & 2) return b->y - (height + b->height) / 2;
+				}
+					
 			}
 		}
 	}
@@ -113,27 +125,6 @@ bool Collider::move(double& x, double& y, double dx, double dy)
 	double tx = x + dx, ty = y + dy;
 	int l = max(0, tx - 3), r = min(l + 6, 499);
 	bool flag = false;
-	/*
-	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
-		for (int j = l; j <= r; j++) {
-			for (auto b : level.mp[i][j]) {
-				double cx = fabs(x - b->x), cy = fabs(y - b->y); //获取碰撞体中心点距离
-				double totw = (this->width + b->width) / 2, toth = (this->height + b->height) / 2;
-				if (cx >= totw || cy >= toth) continue; //不存在碰撞
-				if (totw - cx < toth - cy) { //在x方向上的碰撞
-					double p = tx < b->x ? b->x - totw : b->x + totw;
-					if (fabs(p - x) < fabs(tx - x)) tx = p;
-				}
-				else { //在y方向上的碰撞
-					double p = ty < b->y ? b->y - toth : b->y + toth;
-					if (fabs(p - y) < fabs(ty - y)) ty = p;
-					//exit(ty * 1000);
-				}
-				
-			}
-		}
-	}
-	*/
 	x = tx, y = ty;
 	return flag;
 }

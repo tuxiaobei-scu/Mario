@@ -89,7 +89,7 @@ Costume Mario::getcostume()
 	if (state == "walk") {
 		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
 		else {
-			if ((vx < 0) ^ (fx < 0)) ct = Costume{ mario_level, last_direction, 3 }, animation_time = clock();
+			if ((vx < 0) ^ (fx < 0) && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = clock();
 			else {
 				if (ct.c >= 0 && ct.c <= 2) {
 					if (clock() - animation_time >= change_time)
