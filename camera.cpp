@@ -51,14 +51,14 @@ bool Camera::render()
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (int j = l; j <= r; j++) {
 			for (Collider* c : level.mp[i][j]) {
-				c->update();
+				if (!level.freeze) c->update();
 				std::pair<double, double>pos = c->getpos();
 				Costume ct = c->getcostume();
 				putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 			}
 		}
 		for (Collider* c : level.actors[i]) {
-			c->update();
+			if (!level.freeze) c->update();
 			std::pair<double, double>pos = c->getpos();
 			Costume ct = c->getcostume();
 			putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));

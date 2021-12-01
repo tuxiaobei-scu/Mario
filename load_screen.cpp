@@ -2,6 +2,7 @@
 #include "global.h"
 #include "graphics.h"
 #include "level.h"
+#include "menu.h"
 #include <ctime>
 
 Load_screen::Load_screen()
@@ -9,7 +10,8 @@ Load_screen::Load_screen()
 	mario = newimage();
 	getimage1(mario, "resources\\graphics\\mario_bros.png", 320, 8, 335, 31);
 	zoomImage(mario, 1.5);
-	music.OpenFile("resources\\sound\\begin.wav");
+	begin_music.OpenFile("resources\\sound\\begin.wav");
+	game_over_music.OpenFile("resources\\music\\game_over.mp3");
 }
 
 bool Load_screen::render()
@@ -25,13 +27,17 @@ bool Load_screen::render()
 		sprintf_s(s, "%d", LIVES);
 		xyprintf(430, 300, s);
 	}
+	else if (name == "game_over") {
+		xyprintf(300, 300, "GAME OVER");
+	}
 	return true;
 }
 
 bool Load_screen::update()
 {
 	if (!isrun) return false;
-	if (clock() - start_time > 2000) {
+	int tim = name == "game_over" ? 5000 : 2000;
+	if (clock() - start_time > tim) {
 		stop();
 		return false;
 	}
@@ -46,7 +52,11 @@ void Load_screen::start(std::string name)
 	start_time = clock();
 	this->name = name;
 	if (name == "begin") {
-		music.Play(0);
+		begin_music.Play(0);
+	}
+	else if (name == "game_over") {
+		level.freeze = true;
+		game_over_music.Play(0);
 	}
 }
 
@@ -54,8 +64,14 @@ void Load_screen::stop()
 {
 	isshow = false;
 	isrun = false;
-	level.freeze = false;
-	level.start();
+	if (name == "begin") {
+		level.freeze = false;
+		level.start();
+	}
+	else if (name == "game_over") {
+		menu.start();
+	}
+	
 }
 Load_screen load_screen;
 

@@ -15,8 +15,13 @@
 void Menu::reset()
 {
 	NOW_SCENR = 0;
+	LIVES = 3;
 	isshow = true;
+	isrun = true;
 	music.Play(0);
+	level.freeze = true;
+	camera.movecam(0, 0);
+	level.start();
 }
 
 Menu::Menu()

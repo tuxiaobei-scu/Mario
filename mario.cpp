@@ -1,5 +1,7 @@
 #include "mario.h"
 #include "keymsg.h"
+#include "load_screen.h"
+#include "level.h"
 Mario::Mario()
 {
 	id = ++COLLIDER_ID;
@@ -12,6 +14,10 @@ Mario::Mario()
 
 bool Mario::update()
 {
+	if (y > 20) {
+		level.death();
+		return false;
+	}
 	key_msg keyMsg;
 	//Ïò×óÒÆ¶¯
 	bool flag = keymsg.getmsg(keyMsg, key_left);
@@ -73,8 +79,6 @@ bool Mario::update()
 			}
 		}
 	}
-	LEVEL_NAME = state;
-	SCORE = vx;
 	return false;
 }
 
