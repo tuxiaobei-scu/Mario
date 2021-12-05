@@ -10,10 +10,12 @@ Mario::Mario()
 	maxwx = 150, maxwy = 1000;
 	out_of_range = false;
 	animation_time = clock();
+	name = "mario";
 }
 
 bool Mario::update()
 {
+
 	if (y > 20) {
 		level.death();
 		return false;
@@ -82,7 +84,7 @@ bool Mario::update()
 	return false;
 }
 
-std::pair<int, int> Mario::getctpos()
+std::pair<double, double> Mario::getctpos()
 {
 	return std::make_pair(sx, sy);
 }
@@ -90,7 +92,9 @@ std::pair<int, int> Mario::getctpos()
 Costume Mario::getcostume()
 {
 	int change_time = 150 - maxwx / 2;
-	if (state == "walk") {
+	if (level.death_time) {
+		ct = Costume{ 2, 0, 5 };
+	} else if (state == "walk") {
 		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
 		else {
 			if ((vx < 0) ^ (fx < 0) && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = clock();
@@ -114,12 +118,24 @@ Costume Mario::getcostume()
 }
 
 
-bool Mario::report_collision(int direction, Collider* target)
+bool Mario::report_collision(int direction, Collider* target, int target_collider_layer)
 {
-	if (direction == TOP && target->collider_layer == 1 && state == "jump") {
-		state = "fall";
-		is_jump = false;
-		fy = 0;
+	switch (target_collider_layer) {
+	case 1:
+		if (direction == TOP && target->collider_layer == 1 && state == "jump") {
+			state = "fall";
+			is_jump = false;
+			fy = 0;
+		}
+		break;
+	case 2:
+		if (direction == BOTTOM) {
+			vy = -20;
+		}
+		else {
+			level.death();
+		}
+	
 	}
 	return true;
 }

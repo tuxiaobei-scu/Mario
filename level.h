@@ -19,6 +19,7 @@ public:
 	void start(const char* path);
 	void start();
 	void stop();
+	bool remove(Collider* t);
 	bool update();
 	bool running();
 	bool freeze = true;

@@ -10,7 +10,7 @@ void Collider::setpos(double x, double y, double width, double height) {
 }
 
 std::pair<double, double> Collider::getpos() {
-	std::pair<int, int> p = getctpos();
+	std::pair<double, double> p = getctpos();
 	return std::make_pair(x + p.first - width / 2, y + p.second - height / 2);
 }
 
@@ -63,58 +63,76 @@ bool Collider::checkcollide(double x, double y, const Collider* b)
 }
 double Collider::checkleftright()
 {
+	if (collider_layer == -1) return x;
 	int l = max(0, x - 3), r = min(l + 6, 499);
+	std::vector<Collider*> v;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
-		for (int j = l; j <= r; j++) {
-			for (auto b : level.mp[i][j]) {
-				int p = (vx > 0) ? 1 : -1;
-				int flag1 = collide_re[collider_layer][b->collider_layer];
-				int flag2 = collide_re[b->collider_layer][collider_layer];
-				if ((flag1 || flag2) && checkcollide(x + 0.01 * p, y, b)) {
-					if (flag1 & 1) report_collision(2 - p, b);
-					if (flag2 & 1) b->report_collision(2 + p, this);
-					if (flag1 & 2) return b->x - (width + b->width) / 2 * p;
-				}
-			}
+		for (int j = l; j <= r; j++)
+			v.insert(v.end(), level.mp[i][j].begin(), level.mp[i][j].end());
+		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
+	}
+	for (auto b : v) {
+		if (b->id == this->id || b->collider_layer == -1) continue;
+		int p = (vx > 0) ? 1 : -1;
+		int flag1 = collide_re[collider_layer][b->collider_layer];
+		int flag2 = collide_re[b->collider_layer][collider_layer];
+		if ((flag1 || flag2) && checkcollide(x + 0.01 * p, y, b)) {
+			int a_collider_layer = collider_layer;
+			int b_collider_layer = b->collider_layer;
+			if (flag1 & 1) report_collision(2 - p, b, b_collider_layer);
+			if (flag2 & 1) b->report_collision(2 + p, this, a_collider_layer);
+			if (flag1 & 2) return b->x - (width + b->width) / 2 * p;
 		}
 	}
 	return x;
 }
 double Collider::checkceiling(double prex, double prey)
 {
+	if (collider_layer == -1) return y;
 	int l = max(0, x - 3), r = min(l + 6, level.map_range);
+	std::vector<Collider*> v;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
-		for (int j = l; j <= r; j++) {
-			for (auto b : level.mp[i][j]) {
-				int flag1 = collide_re[collider_layer][b->collider_layer];
-				int flag2 = collide_re[b->collider_layer][collider_layer];
-				if ((flag1 || flag2) && prey >= b->y + (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y - 0.01, b)) {
-					if (flag1 & 2) vy = 0;
-					if (flag1 & 1) report_collision(TOP, b);
-					if (flag2 & 1) b->report_collision(BOTTOM, this);
-					if (flag1 & 2) return b->y + (height + b->height) / 2;
-				}
-			}
+		for (int j = l; j <= r; j++)
+			v.insert(v.end(), level.mp[i][j].begin(), level.mp[i][j].end());
+		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
+	}
+	for (auto b : v) {
+		if (b->id == this->id || b->collider_layer == -1) continue;
+		int flag1 = collide_re[collider_layer][b->collider_layer];
+		int flag2 = collide_re[b->collider_layer][collider_layer];
+		if ((flag1 || flag2) && prey >= b->y + (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y - 0.01, b)) {
+			int a_collider_layer = collider_layer;
+			int b_collider_layer = b->collider_layer;
+			if (flag1 & 2) vy = 0;
+			if (flag1 & 1) report_collision(TOP, b, b_collider_layer);
+			if (flag2 & 1) b->report_collision(BOTTOM, this, a_collider_layer);
+			if (flag1 & 2) return b->y + (height + b->height) / 2;
 		}
 	}
 	return y;
 }
 double Collider::checkonfloor(double prex, double prey)
 {
+	if (collider_layer == -1) return y;
 	int l = max(0, x - 3), r = min(l + 6, level.map_range);
+	std::vector<Collider*> v;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
-		for (int j = l; j <= r; j++) {
-			for (auto b : level.mp[i][j]) {
-				int flag1 = collide_re[collider_layer][b->collider_layer];
-				int flag2 = collide_re[b->collider_layer][collider_layer];
-				if ((flag1 || flag2) && prey <= b->y - (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y + 0.01, b)) {
-					if (flag1 & 1) report_collision(BOTTOM, b);
-					if (flag2 & 1) b->report_collision(TOP, this);
-					if (flag1 & 2) return b->y - (height + b->height) / 2;
-				}
-					
-			}
+		for (int j = l; j <= r; j++) 
+			v.insert(v.end(), level.mp[i][j].begin(), level.mp[i][j].end());
+		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
+	}
+	for (auto b : v) {
+		if (b->id == this->id || b->collider_layer == -1) continue;
+		int flag1 = collide_re[collider_layer][b->collider_layer];
+		int flag2 = collide_re[b->collider_layer][collider_layer];
+		if ((flag1 || flag2) && prey <= b->y - (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y + 0.01, b)) {
+			int a_collider_layer = collider_layer;
+			int b_collider_layer = b->collider_layer;
+			if (flag1 & 1) report_collision(BOTTOM, b, b_collider_layer);
+			if (flag2 & 1) b->report_collision(TOP, this, a_collider_layer);
+			if (flag1 & 2) return b->y - (height + b->height) / 2;
 		}
+
 	}
 	return y;
 }

@@ -2,3 +2,4 @@ resources/graphics/mario_bros.png 80 0 16 32 1 0 19 16 Mario_big
 resources/graphics/mario_bros.png 80 32 16 16 1 0 14 16 Mario_small
 resources/graphics/mario_bros.png 80 48 16 32 1 0 19 16 Mario_fire
 resources/graphics/tile_set.png 0 0 16 16 8 16 4 16 Brick
+resources/graphics/smb_enemies_sheet.png 0 4 16 16 3 30 3 30 Mushroom

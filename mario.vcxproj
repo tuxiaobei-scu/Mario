@@ -157,6 +157,7 @@
     <ClInclude Include="load_screen.h" />
     <ClInclude Include="mario.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="chestnut.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="brick.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mario.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="chestnut.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="graphics.txt" />

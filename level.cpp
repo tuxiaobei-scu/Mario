@@ -1,12 +1,14 @@
 #include "level.h"
 #include "collider.h"
 #include "brick.h"
+#include "chestnut.h"
 #include "camera.h"
 #include "mario.h"
 #include "load_screen.h"
 #include <sys/types.h>
 #include "dirent.h"
 #include <iostream>
+#include <algorithm>
 
 void Level::reset()
 {
@@ -50,6 +52,12 @@ void Level::start(const char* path)
 			assert(x < MAX_LEVEL_RANGE);
 			mp[0][x].push_back(brick);
 		}
+		else if (name == "Chestnut") {
+			Chestnut* chestnut = new Chestnut(fp);
+			chestnut->Collider::setpos(x, y, 1, 1);
+			assert(x < MAX_LEVEL_RANGE);
+			actors[3].push_back(chestnut);
+		}
 	}
 	Mario* m = new Mario;
 	actors[4].push_back(m);
@@ -69,7 +77,6 @@ void Level::death()
 	freeze = true;
 	main_theme.Stop();
 	LIVES--;
-	restart();
 }
 
 bool Level::update()
@@ -84,7 +91,7 @@ bool Level::update()
 		else {
 			load_screen.start("game_over");
 		}
-		
+		restart();
 	}
 	if (freeze) return camera.update();
 	if (main_theme.GetPlayStatus() == MUSIC_MODE_STOP) {
@@ -109,6 +116,25 @@ void Level::start()
 		main_theme.Play(0);
 	}
 	
+}
+
+bool Level::remove(Collider* t) {
+	int l = max(0, t->x - 3), r = min(l + 6, level.map_range);
+	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
+		for (int j = l; j <= r; j++) {
+			auto p = find(level.mp[i][j].begin(), level.mp[i][j].end(), t);
+			if (p != level.mp[i][j].end()) {
+				level.mp[i][j].erase(p);
+				return true;
+			}
+		}
+		auto p = find(level.actors[i].begin(), level.actors[i].end(), t);
+		if (p != level.actors[i].end()) {
+			level.actors[i].erase(p);
+			return true;
+		}
+	}
+	return false;
 }
 
 void Level::stop()

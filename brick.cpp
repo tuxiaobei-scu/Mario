@@ -11,6 +11,7 @@ Brick::Brick(FILE* fp)
 	id = ++COLLIDER_ID;
 	freeze = true;
 	width = 1, height = 1;
+	name = "brick";
 }
 
 bool Brick::update()
@@ -18,7 +19,7 @@ bool Brick::update()
 	return false;
 }
 
-std::pair<int, int> Brick::getctpos()
+std::pair<double, double> Brick::getctpos()
 {
 	return std::make_pair(sx, sy);
 }
@@ -28,7 +29,7 @@ Costume Brick::getcostume()
 	return ct;
 }
 
-bool Brick::report_collision(int direction, Collider* target)
+bool Brick::report_collision(int direction, Collider* target, int target_collider_layer)
 {
 	return true;
 }

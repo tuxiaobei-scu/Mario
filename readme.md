@@ -2,18 +2,7 @@
 
 made by tuxiaobei
 
-## 说明
+![image-20211205123022243](readme.assets/image-20211205123022243.png)
 
-### 1.graphics.txt
+开发环境：Microsoft Visual Studio Community 2022 (64 位) - Current 版本 17.0.0
 
-左上角坐标(x,y)、素材宽度、素材高度、纵向重复数量、纵向相隔像素、横向重复数量、横向相隔像素
-
-
-
-## 项目日志
-
-#### 2021-11-17
-
-完成选关、关卡读取与渲染初步
-
-![image-20211117222718152](readme.assets/image-20211117222718152.png)
