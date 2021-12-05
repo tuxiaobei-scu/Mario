@@ -2,6 +2,7 @@
 #include "keymsg.h"
 #include "load_screen.h"
 #include "level.h"
+#include "musicplayer.h"
 Mario::Mario()
 {
 	id = ++COLLIDER_ID;
@@ -56,17 +57,23 @@ bool Mario::update()
 	flag = keymsg.getmsg(keyMsg, 'X');
 	if (onfloor && state != "jump") state = "walk";
 	if (!onfloor && state == "walk") state = "fall";
-	if (state == "jump" && clock() - jump_time > 200){
+	int ck = clock();
+	if (state == "jump" && ck - jump_time > 200){
 		state = "fall";
 		is_jump = false;
 		fy = 0;
+	}
+	if (state == "jump" && !jump_sound && ck - jump_time >= 150) {
+		musicplayer.play("sound-big_jump");
+		jump_sound = true;
 	}
 	if (flag) {
 		if (keyMsg.msg == key_msg_down && !jump_key) {
 			if (state != "jump" && state != "fall") {
 				jump_key = true;
 				fy = -200;
-				jump_time = clock();
+				jump_sound = false;
+				jump_time = ck;
 				state = "jump";
 				is_jump = true;
 			}
@@ -74,10 +81,15 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_up) {
 			jump_key = false;
 			if (state == "jump") {
+				if (ck - jump_time < 150 && !jump_sound) {
+					jump_sound = true;
+					musicplayer.play("sound-small_jump");
+				}
 				state = "fall";
 				is_jump = false;
 				fy = 0;
 				jump_time = 0;
+				
 			}
 		}
 	}
@@ -94,6 +106,10 @@ Costume Mario::getcostume()
 	int change_time = 150 - maxwx / 2;
 	if (level.death_time) {
 		ct = Costume{ 2, 0, 5 };
+		double c = (clock() - level.death_time - 800) / 1000.0;
+		if (c > 0) {
+			sy = ( c * c - c) * 15;
+		}
 	} else if (state == "walk") {
 		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
 		else {
@@ -123,6 +139,10 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 	switch (target_collider_layer) {
 	case 1:
 		if (direction == TOP && target->collider_layer == 1 && state == "jump") {
+			if (!jump_sound) {
+				jump_sound = true;
+				musicplayer.play("sound-small_jump");
+			}
 			state = "fall";
 			is_jump = false;
 			fy = 0;
@@ -131,11 +151,11 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 	case 2:
 		if (direction == BOTTOM) {
 			vy = -20;
+			musicplayer.play("sound-stomp");
 		}
 		else {
 			level.death();
 		}
-	
 	}
 	return true;
 }

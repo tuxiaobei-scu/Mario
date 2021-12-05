@@ -15,6 +15,7 @@ private:
 	int mario_level = 2;
 	int animation_time;
 	bool jump_key = false;
+	bool jump_sound = false;
 protected:
 	bool report_collision(int direction, Collider* target, int target_collider_layer);
 public:

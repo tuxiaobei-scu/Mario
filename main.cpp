@@ -18,7 +18,6 @@ int main()
 	setfont(-30, 20, "FixedsysTTF");
 	setcolor(WHITE);				//文字的颜色
 	setbkmode(TRANSPARENT);			//设置文字背景色为透明	
-	
 	for (; is_run(); delay_fps(60)) {
 		cleardevice();
 		keymsg.update();

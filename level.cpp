@@ -13,12 +13,20 @@
 void Level::reset()
 {
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++)
-		for (int j = 0; j < MAX_LEVEL_RANGE; j++)
+		for (int j = 0; j < MAX_LEVEL_RANGE; j++) {
+			for (auto p : mp[i][j]) delete p;
 			mp[i][j].clear();
-	for (int i = 0; i < MAX_LEVEL_RANGE; i++)
+		}
+	for (int i = 0; i < MAX_LEVEL_RANGE; i++) {
+		for (auto p : actors[i]) delete p;
 		actors[i].clear();
-	for (int i = 0; i < MAX_LEVEL_RANGE; i++)
+	}
+		
+	for (int i = 0; i < MAX_LEVEL_RANGE; i++) {
+		for (auto p : unrun_actors[i]) delete p;
 		unrun_actors[i].clear();
+	}
+		
 }
 
 void Level::start(const char* path)
