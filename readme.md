@@ -4,5 +4,4 @@ made by tuxiaobei
 
 ![image-20211205123022243](readme.assets/image-20211205123022243.png)
 
-¿ª·¢»·¾³£ºMicrosoft Visual Studio Community 2022 (64 Î») - Current °æ±¾ 17.0.0
-
+å¼€å‘ç¯å¢ƒï¼šMicrosoft Visual Studio Community 2022 (64 ä½) - Current ç‰ˆæœ¬ 17.0.0
