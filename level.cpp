@@ -81,7 +81,7 @@ void Level::restart()
 void Level::death()
 {
 	death_sound.Play(0);
-	death_time = clock();
+	death_time = now_time;
 	freeze = true;
 	main_theme.Stop();
 	LIVES--;
@@ -90,7 +90,9 @@ void Level::death()
 bool Level::update()
 {
 	if (!isrun) return false;
-	if (death_time && clock() - death_time > 3000) {
+	last_time = now_time;
+	now_time = clock();
+	if (death_time && now_time - death_time > 3000) {
 		death_time = 0;
 		level.stop();
 		if (LIVES) {
@@ -110,7 +112,6 @@ bool Level::update()
 			c->calc();
 		}
 	}
-	last_time = clock();
 	return camera.update();
 }
 
@@ -120,7 +121,8 @@ void Level::start()
 	camera.start();
 	if (!freeze) {
 		start_time = clock();
-		last_time = clock();
+		now_time = start_time;
+		last_time = now_time;
 		main_theme.Play(0);
 	}
 	

@@ -27,6 +27,7 @@ public:
 	int limit_time = 300;
 	int start_time;
 	int last_time;
+	int now_time;
 	int death_time = 0;
 	Level();
 };

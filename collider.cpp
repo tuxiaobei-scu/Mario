@@ -32,8 +32,7 @@ void Collider::calc()
 		if (fabs(fx_real) > f) ax = fx_real / m, last_direction = fx_real < 0;
 		else ax = 0, vx = 0;
 	}
-	
-	double tim = (clock() - level.last_time) / 1000.0;
+	double tim = (level.now_time - level.last_time) / 1000.0;
 	vx += tim * ax, vy += tim * ay;
 	double prex = x, prey = y;
 	move(x, y, tim * vx, tim * vy);
@@ -48,6 +47,7 @@ void Collider::calc()
 		onfloor = false;
 		y = checkceiling(prex, prey);
 	}
+	
 	x = checkleftright();
 	if (fabs(x - lstx) > EPS) vx = 0;
 	//if (checkleftright()) x = lstx, vx = 0;
@@ -89,6 +89,7 @@ double Collider::checkleftright()
 double Collider::checkceiling(double prex, double prey)
 {
 	if (collider_layer == -1) return y;
+	if (vy > 0) return y;
 	int l = max(0, x - 3), r = min(l + 6, level.map_range);
 	std::vector<Collider*> v;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
@@ -114,6 +115,7 @@ double Collider::checkceiling(double prex, double prey)
 double Collider::checkonfloor(double prex, double prey)
 {
 	if (collider_layer == -1) return y;
+	if (vy < 0) return y;
 	int l = max(0, x - 3), r = min(l + 6, level.map_range);
 	std::vector<Collider*> v;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {

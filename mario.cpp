@@ -10,7 +10,7 @@ Mario::Mario()
 	freeze = false;
 	maxwx = 150, maxwy = 1000;
 	out_of_range = false;
-	animation_time = clock();
+	animation_time = level.now_time;
 	name = "mario";
 }
 
@@ -57,13 +57,12 @@ bool Mario::update()
 	flag = keymsg.getmsg(keyMsg, 'X');
 	if (onfloor && state != "jump") state = "walk";
 	if (!onfloor && state == "walk") state = "fall";
-	int ck = clock();
-	if (state == "jump" && ck - jump_time > 200){
+	if (state == "jump" && level.now_time - jump_time > 200){
 		state = "fall";
 		is_jump = false;
 		fy = 0;
 	}
-	if (state == "jump" && !jump_sound && ck - jump_time >= 150) {
+	if (state == "jump" && !jump_sound && level.now_time - jump_time >= 150) {
 		musicplayer.play("sound-big_jump");
 		jump_sound = true;
 	}
@@ -73,7 +72,7 @@ bool Mario::update()
 				jump_key = true;
 				fy = -200;
 				jump_sound = false;
-				jump_time = ck;
+				jump_time = level.now_time;
 				state = "jump";
 				is_jump = true;
 			}
@@ -81,7 +80,7 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_up) {
 			jump_key = false;
 			if (state == "jump") {
-				if (ck - jump_time < 150 && !jump_sound) {
+				if (level.now_time - jump_time < 150 && !jump_sound) {
 					jump_sound = true;
 					musicplayer.play("sound-small_jump");
 				}
@@ -106,22 +105,22 @@ Costume Mario::getcostume()
 	int change_time = 150 - maxwx / 2;
 	if (level.death_time) {
 		ct = Costume{ 2, 0, 5 };
-		double c = (clock() - level.death_time - 800) / 1000.0;
+		double c = (level.now_time - level.death_time - 800) / 1000.0;
 		if (c > 0) {
 			sy = ( c * c - c) * 15;
 		}
 	} else if (state == "walk") {
 		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
 		else {
-			if ((vx < 0) ^ (fx < 0) && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = clock();
+			if ((vx < 0) ^ (fx < 0) && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;
 			else {
 				if (ct.c >= 0 && ct.c <= 2) {
-					if (clock() - animation_time >= change_time)
-						ct = Costume{ mario_level, last_direction, (ct.c + 1) % 3 }, animation_time = clock();
+					if (level.now_time - animation_time >= change_time)
+						ct = Costume{ mario_level, last_direction, (ct.c + 1) % 3 }, animation_time = level.now_time;
 				}
 				else {
 					ct = Costume{ mario_level, last_direction, 0 };
-					animation_time = clock();
+					animation_time = level.now_time;
 				}
 
 			}

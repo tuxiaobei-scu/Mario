@@ -17,7 +17,7 @@ Chestnut::Chestnut(FILE* fp)
 
 bool Chestnut::update()
 {
-	if (state == 2 && clock() - animation_time > 500) {
+	if (state == 2 && level.now_time - animation_time > 500) {
 		level.remove(this);
 	}
 	return false;
@@ -31,9 +31,10 @@ std::pair<double, double> Chestnut::getctpos()
 Costume Chestnut::getcostume()
 {
 	if (state == 0) {
-		if (clock() - animation_time > 150) {
+		int cl = level.now_time;
+		if (cl - animation_time > 150) {
 			ct.c ^= 1;
-			animation_time = clock();
+			animation_time = cl;
 		}
 	}
 	if (state == 2) {
@@ -50,7 +51,7 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 		if (direction == TOP) {
 			sy = 0.25;
 			state = 2;
-			animation_time = clock();
+			animation_time = level.now_time;
 		}
 		else {
 			state = 1;

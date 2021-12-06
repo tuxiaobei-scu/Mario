@@ -46,8 +46,9 @@ bool Coins::render() {
 
 bool Coins::update() {
 	if (!isrun) return false;
-	if (clock() - animation_time > 200) {
-		animation_time = clock();
+	int cl = clock();
+	if (cl - animation_time > 200) {
+		animation_time = cl;
 		now_costume++;
 		if (now_costume >= costumes_num) now_costume = 0;
 	}
@@ -74,7 +75,7 @@ bool Timer::render() {
 	xyprintf(625, 30, "TIME");
 	if (!level.freeze) {
 		char s[10];
-		sprintf(s, "%03d", level.limit_time - ((clock() - level.start_time) / 1000));
+		sprintf(s, "%03d", level.limit_time - ((level.now_time - level.start_time) / 1000));
 		xyprintf(625, 61, s);
 	}
 	else if (level.death_time) {
