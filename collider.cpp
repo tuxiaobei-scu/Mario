@@ -27,9 +27,15 @@ void Collider::calc()
 	//if (fy * vy > maxwy) fy = maxwy / vy;
 	double ax, ay = fy / m + GRAVITY;
 	
-	if (fabs(vx) > 1) ax = (vx > 0 ? fx_real - f : fx_real + f) / m, last_direction = vx < 0;
+	if (fabs(vx) > 1) {
+		ax = (vx > 0 ? fx_real - f : fx_real + f) / m;
+		if (onfloor) last_direction = vx < 0;
+	}
 	else {
-		if (fabs(fx_real) > f) ax = fx_real / m, last_direction = fx_real < 0;
+		if (fabs(fx_real) > f) {
+			ax = fx_real / m;
+			if (onfloor) last_direction = fx_real < 0;
+		}
 		else ax = 0, vx = 0;
 	}
 	double tim = (level.now_time - level.last_time) / 1000.0;

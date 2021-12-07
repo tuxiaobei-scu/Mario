@@ -31,7 +31,7 @@ protected:
 	double width, height;
 	double vx = 0, vy = 0; //当前速度
 	double fx = 0, fy = 0; //当前外力
-	double f = 20; //摩檫力
+	double f = 15; //摩檫力
 	double m = 1;  //物体的质量
 	double maxwx = 20, maxwy = 20; //最大功率
 	bool static_y;

@@ -8,7 +8,7 @@ Mario::Mario()
 	id = ++COLLIDER_ID;
 	setpos(2, 5, 1, 1);
 	freeze = false;
-	maxwx = 150, maxwy = 1000;
+	maxwx = 100, maxwy = 1000;
 	out_of_range = false;
 	animation_time = level.now_time;
 	name = "mario";
@@ -28,7 +28,7 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_down || keymsg.left_key) {
 			if (input_direction == 0) {
 				input_direction = -1;
-				fx = -50;
+				fx = -40;
 			}
 		}
 		if (keyMsg.msg == key_msg_up) {
@@ -44,7 +44,7 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_down || keymsg.right_key) {
 			if (input_direction == 0) {
 				input_direction = 1;
-				fx = 50;
+				fx = 42;
 			}
 		}
 		if (keyMsg.msg == key_msg_up) {
@@ -70,7 +70,7 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_down && !jump_key) {
 			if (state != "jump" && state != "fall") {
 				jump_key = true;
-				fy = -200;
+				fy = -128 - min((fabs(vx) * 1.6), 10);
 				jump_sound = false;
 				jump_time = level.now_time;
 				state = "jump";
@@ -112,7 +112,7 @@ Costume Mario::getcostume()
 	} else if (state == "walk") {
 		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
 		else {
-			if ((vx < 0) ^ (fx < 0) && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;
+			if ((vx < 0) ^ (fx < 0) && fabs(fx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;
 			else {
 				if (ct.c >= 0 && ct.c <= 2) {
 					if (level.now_time - animation_time >= change_time)
