@@ -149,6 +149,8 @@
     <ClInclude Include="ege\fps.h" />
     <ClInclude Include="ege\label.h" />
     <ClInclude Include="ege\sys_edit.h" />
+    <ClInclude Include="flagpole.h" />
+    <ClInclude Include="freeze_block.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="headers.h" />
@@ -164,6 +166,8 @@
     <ClCompile Include="brick.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collider.cpp" />
+    <ClCompile Include="flagpole.cpp" />
+    <ClCompile Include="freeze_block.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="headers.cpp" />
     <ClCompile Include="keymsg.cpp" />

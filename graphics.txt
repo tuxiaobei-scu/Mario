@@ -3,3 +3,8 @@ resources/graphics/mario_bros.png 80 32 16 16 1 0 14 16 Mario_small
 resources/graphics/mario_bros.png 80 48 16 32 1 0 19 16 Mario_fire
 resources/graphics/tile_set.png 0 0 16 16 8 16 4 16 Brick
 resources/graphics/smb_enemies_sheet.png 0 4 16 16 3 30 3 30 Mushroom
+resources/graphics/tile_set.png 260 136 8 24 6 32 1 0 Pole
+resources/graphics/item_objects.png 128 32 16 16 1 0 1 0 Flag
+resources/graphics/tile_set.png 176 0 16 16 8 16 12 16 Sp_brick
+resources/graphics/tile_set.png 384 0 16 16 8 16 12 16 Question_Block
+resources/graphics/item_objects.png 128 0 16 16 1 0 1 0 Small_flag

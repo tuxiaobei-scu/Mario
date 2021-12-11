@@ -11,7 +11,7 @@ Chestnut::Chestnut(FILE* fp)
 	id = ++COLLIDER_ID;
 	freeze = false;
 	width = 1, height = 1;
-	maxwx = 60;
+	maxwx = 50;
 	name = "chestnut";
 }
 
@@ -61,6 +61,9 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 		break;
 	case 1:
 		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx;
+		break;
+	case 2:
+		if ((direction == LEFT && fx < 0 && target->fx > 0) || (direction == RIGHT && fx > 0 && target->fx < 0)) fx = -fx, vx = -vx;
 		break;
 	}
 	return true;

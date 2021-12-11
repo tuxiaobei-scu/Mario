@@ -36,6 +36,19 @@ Camera::Camera()
 				}
 			}
 		}
+		if (std::string(s1) == "Pole") {
+			for (int i = 0; i < n; i++) {
+				PIMAGE img = newimage(20, 60);
+				copyimage(img, v[i][0]);
+				delimage(v[i][0]);
+				v[i][0] = newimage(20, 380);
+				putimage(v[i][0], 0, 0, img);
+				for (int j = 0; j < 8; j++) {
+					putimage(v[i][0], 0, 60 + j * 40, 20, 40, img, 0, 20);
+				}
+				delimage(img);
+			}
+		}
 		gp.push_back(v);
 		//std::string s2 = s1;
 		//gp_type.push_back(s2);
@@ -46,6 +59,7 @@ Camera::Camera()
 bool Camera::render()
 {
 	if (!isshow) return false;
+	
 	int l = max(0.0, floor(nowx));
 	int r = l + 22;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
@@ -58,13 +72,19 @@ bool Camera::render()
 			}
 		}
 		for (Collider* c : level.actors[i]) {
+			if (c->id == level.mario->id) continue;
 			if (!level.freeze) c->update();
 			std::pair<double, double>pos = c->getpos();
 			Costume ct = c->getcostume();
 			putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 		}
+		if (level.mario->show_layer == i) {
+			if (!level.freeze) level.mario->update();
+			std::pair<double, double>pos = level.mario->getpos();
+			Costume ct = level.mario->getcostume();
+			putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
+		}
 	}
-	
 }
 
 bool Camera::update()

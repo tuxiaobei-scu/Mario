@@ -14,8 +14,8 @@ public:
 	Costume getcostume();
 	std::pair<double, double> getctpos();
 	bool update();
-	std::vector<Costume>costumes;
 	Brick(FILE* fp);
-	int show_layer = 0;
+	Brick(int a, int b);
+	int show_layer = 3;
 };
 

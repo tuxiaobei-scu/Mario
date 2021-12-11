@@ -1,21 +1,18 @@
 #pragma once
 #include "collider.h"
-class Chestnut :
+class Freeze_block :
     public Collider
 {
 private:
 	double sx = 0, sy = 0;
-	int direction;
 	Costume ct;
-	int animation_time = -1;
-	int state = 0; //0Õý³££¬1¶³½á£¬2ËÀÍö
 protected:
 	bool report_collision(int direction, Collider* target, int target_collider_layer);
 public:
 	Costume getcostume();
 	std::pair<double, double> getctpos();
 	bool update();
-	Chestnut(FILE* fp);
-	int show_layer = 3;
+	Freeze_block(Costume ct, int show_layer, double width = 0, double hetght = 0);
+	int show_layer;
 };
 

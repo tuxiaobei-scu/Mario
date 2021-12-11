@@ -3,6 +3,7 @@
 #include "graphics.h"
 #include "level.h"
 #include "menu.h"
+#include "musicplayer.h"
 #include <ctime>
 
 Load_screen::Load_screen()
@@ -30,13 +31,16 @@ bool Load_screen::render()
 	else if (name == "game_over") {
 		xyprintf(300, 300, "GAME OVER");
 	}
+	else if (name == "course_clear") {
+		xyprintf(280, 300, "COURSE CLEAR");
+	}
 	return true;
 }
 
 bool Load_screen::update()
 {
 	if (!isrun) return false;
-	int tim = name == "game_over" ? 5000 : 2000;
+	int tim = name == "begin" ? 2000 : 5000;
 	if (clock() - start_time > tim) {
 		stop();
 		return false;
@@ -58,6 +62,9 @@ void Load_screen::start(std::string name)
 		level.freeze = true;
 		game_over_music.Play(0);
 	}
+	else if (name == "course_clear") {
+		musicplayer.play("music-course_clear");
+	}
 }
 
 void Load_screen::stop()
@@ -68,7 +75,7 @@ void Load_screen::stop()
 		level.freeze = false;
 		level.start();
 	}
-	else if (name == "game_over") {
+	else if (name == "game_over" || name == "course_clear") {
 		menu.start();
 	}
 	

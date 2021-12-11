@@ -1,6 +1,7 @@
 #pragma once
 #include "collider.h"
 #include "global.h"
+#include "mario.h"
 #include <vector>
 #include <iostream>
 class Level
@@ -9,12 +10,15 @@ private:
 	bool isshow = true;
 	bool isrun = true;
 	void reset();
+	void basic_block();
 	MUSIC main_theme, death_sound;
 public:
 	std::vector<Collider*>mp[MAX_LEVEL_LAYER + 5][MAX_LEVEL_RANGE + 5];
 	std::vector<Collider*>actors[MAX_LEVEL_LAYER + 5];
 	std::vector<Collider*>unrun_actors[MAX_LEVEL_RANGE + 5];
+	Mario* mario;
 	void death();
+	void finish();
 	void restart();
 	void start(const char* path);
 	void start();
@@ -29,6 +33,8 @@ public:
 	int last_time;
 	int now_time;
 	int death_time = 0;
+	int finish_time = 0;
+	bool finish_move = false;
 	Level();
 };
 

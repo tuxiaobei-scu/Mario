@@ -6,20 +6,32 @@
 Mario::Mario()
 {
 	id = ++COLLIDER_ID;
-	setpos(2, 5, 1, 1);
+	setpos(2, 12, 1, 1);
 	freeze = false;
 	maxwx = 100, maxwy = 1000;
 	out_of_range = false;
 	animation_time = level.now_time;
 	name = "mario";
+	show_layer = 3;
 }
 
 bool Mario::update()
 {
-
 	if (y > 20) {
 		level.death();
 		return false;
+	}
+	//SCORE = fx;
+	if (level.finish_time) {
+		if (level.finish_move && level.now_time - level.finish_time > 1800) {
+			state = "walk";
+			fx = 30, fy = 0;
+		}else if (level.now_time - level.finish_time > 1500 && !pole_direction) {
+			pole_direction = true;
+			x = level.map_range - 9.5 - 0.375 + 0.75 * pole_direction;
+			ct.b = pole_direction;
+		}
+		return true;
 	}
 	key_msg keyMsg;
 	//Ïò×óÒÆ¶¯
@@ -28,7 +40,7 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_down || keymsg.left_key) {
 			if (input_direction == 0) {
 				input_direction = -1;
-				fx = -40;
+				fx = -30;
 			}
 		}
 		if (keyMsg.msg == key_msg_up) {
@@ -44,7 +56,7 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_down || keymsg.right_key) {
 			if (input_direction == 0) {
 				input_direction = 1;
-				fx = 42;
+				fx = 30;
 			}
 		}
 		if (keyMsg.msg == key_msg_up) {
@@ -70,7 +82,7 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_down && !jump_key) {
 			if (state != "jump" && state != "fall") {
 				jump_key = true;
-				fy = -128 - min((fabs(vx) * 1.6), 10);
+				fy = -128 - min((fabs(vx) * 1.65), 10);
 				jump_sound = false;
 				jump_time = level.now_time;
 				state = "jump";
@@ -103,12 +115,18 @@ std::pair<double, double> Mario::getctpos()
 Costume Mario::getcostume()
 {
 	int change_time = 150 - maxwx / 2;
-	if (level.death_time) {
+	if (state == "pole_fall") {
+		if (level.now_time - animation_time >= change_time && fabs(vy) > 1) {
+			animation_time = level.now_time;
+			ct.c = (ct.c == 7) ? 8 : 7;
+		}
+	}else if (level.death_time) {
 		ct = Costume{ 2, 0, 5 };
 		double c = (level.now_time - level.death_time - 800) / 1000.0;
 		if (c > 0) {
 			sy = ( c * c - c) * 15;
 		}
+		
 	} else if (state == "walk") {
 		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
 		else {
@@ -155,6 +173,18 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 		else {
 			level.death();
 		}
+		break;
+	case 3:
+		if (level.finish_time) break;
+		pole_direction = (x > target->x);
+		animation_time = level.now_time;
+		x = level.map_range - 9.5 - 0.375 + 0.75 * pole_direction;
+		state = "pole_fall";
+		fy = -50, fx = 0;
+		vy = 7, vx = 0;
+		ct = Costume{ mario_level, pole_direction, 7 };
+		level.finish();
+		break;
 	}
 	return true;
 }

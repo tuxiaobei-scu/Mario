@@ -16,6 +16,7 @@ private:
 	int animation_time;
 	bool jump_key = false;
 	bool jump_sound = false;
+	bool pole_direction;
 protected:
 	bool report_collision(int direction, Collider* target, int target_collider_layer);
 public:

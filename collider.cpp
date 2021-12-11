@@ -58,7 +58,7 @@ void Collider::calc()
 	if (fabs(x - lstx) > EPS) vx = 0;
 	//if (checkleftright()) x = lstx, vx = 0;
 	if (collider_layer == 0) {
-		camera.movecam(min(max(0, x - 10), level.map_range - 10), 0);
+		camera.movecam(min(max(0, x - 10), level.map_range - 20), 0);
 	}
 }
 
@@ -72,6 +72,7 @@ double Collider::checkleftright()
 	if (collider_layer == -1) return x;
 	int l = max(0, x - 3), r = min(l + 6, 499);
 	std::vector<Collider*> v;
+	int p = (fabs(vx) >= 0.1 && vx > 0) || (fx > 0) ? 1 : -1;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (int j = l; j <= r; j++)
 			v.insert(v.end(), level.mp[i][j].begin(), level.mp[i][j].end());
@@ -79,10 +80,9 @@ double Collider::checkleftright()
 	}
 	for (auto b : v) {
 		if (b->id == this->id || b->collider_layer == -1) continue;
-		int p = (vx > 0) ? 1 : -1;
 		int flag1 = collide_re[collider_layer][b->collider_layer];
 		int flag2 = collide_re[b->collider_layer][collider_layer];
-		if ((flag1 || flag2) && checkcollide(x + 0.01 * p, y, b)) {
+		if ((flag1 || flag2) && checkcollide(x, y, b)) {
 			int a_collider_layer = collider_layer;
 			int b_collider_layer = b->collider_layer;
 			if (flag1 & 1) report_collision(2 - p, b, b_collider_layer);
