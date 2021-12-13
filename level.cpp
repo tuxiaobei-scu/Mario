@@ -8,6 +8,7 @@
 #include "flagpole.h"
 #include "musicplayer.h"
 #include "freeze_block.h"
+#include "mushroom.h"
 #include <sys/types.h>
 #include "dirent.h"
 #include <iostream>
@@ -108,7 +109,7 @@ void Level::start(const char* path)
 		fscanf(fp, "%d%d", &x, &y);
 		if (x < 0 && y < 0) break;
 		fscanf(fp, "%d", &id);
-		std::string name = gp_type[id];
+		std::string name = camera.gp_type[id];
 		if (name == "Brick") {
 			Brick* brick = new Brick(fp);
 			brick->Collider::setpos(x, y, 1, 1);
@@ -117,6 +118,12 @@ void Level::start(const char* path)
 		}
 		else if (name == "Chestnut") {
 			Chestnut* chestnut = new Chestnut(fp);
+			chestnut->Collider::setpos(x, y, 1, 1);
+			assert(x < MAX_LEVEL_RANGE);
+			actors[3].push_back(chestnut);
+		}
+		else if (name == "Mushroom") {
+			Mushroom* chestnut = new Mushroom(fp);
 			chestnut->Collider::setpos(x, y, 1, 1);
 			assert(x < MAX_LEVEL_RANGE);
 			actors[3].push_back(chestnut);

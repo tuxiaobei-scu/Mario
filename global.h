@@ -17,7 +17,6 @@ extern int NOW_SCENR;
 extern int PLAYERS_NUM;
 extern double GRAVITY;
 extern std::string LEVEL_NAME;
-extern std::vector<std::string>gp_type;
 
 struct Costume {
 	int a, b, c;

@@ -1,5 +1,7 @@
 #pragma once
 #include "global.h"
+#include "camera.h"
+#include "graphics.h"
 #include <algorithm>
 #include <iostream>
 #define TOP 0
@@ -17,13 +19,14 @@ private:
 	double checkceiling(double prex, double prey);
 	double checkleftright();
 	const int collide_re[10][10] = {
-		{3, 3, 1, 1}, 
-		{3, 0, 3, 0},
-		{1, 3, 1, 0},
-		{1, 0, 0, 0}
+		{3, 3, 1, 1, 1}, 
+		{3, 0, 3, 0, 3},
+		{1, 3, 1, 0, 0},
+		{1, 0, 0, 0, 0},
+		{1, 3, 0, 0, 0}
 	};
 	//0不检测，1仅1检测，2仅排斥，3排斥且检测
-	//0 人物，1 砖块，2 怪物，3 旗杆
+	//0 人物，1 砖块，2 怪物，3 旗杆，4 蘑菇
 	//-1空图层，与任何物体不发生碰撞
 protected:
 	bool freeze = true;
@@ -45,6 +48,11 @@ public:
 	virtual Costume getcostume() = 0;
 	virtual std::pair<double, double> getctpos() = 0;
 	virtual bool update() = 0;
+	virtual void render(double x, double y) {
+		Costume ct = getcostume();
+		putimage_withalpha(NULL, camera.gp[ct.a][ct.b][ct.c], (int)x, (int)y);
+		return;
+	}
 	void setpos(double x, double y, double width, double height);
 	std::pair<double, double> getpos();
 	int collider_layer = 0; //碰撞图层

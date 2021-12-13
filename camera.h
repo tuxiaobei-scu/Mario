@@ -1,5 +1,6 @@
 #pragma once
 #include "graphics.h"
+#include <iostream>
 #include <vector>
 class Camera
 {
@@ -9,7 +10,7 @@ private:
 	int map_range;
 	bool isshow = false, isrun = false;
 	bool render();
-	std::vector<std::vector<std::vector<PIMAGE>>>gp; //Í¼Æ¬ËØ²Ä
+	
 	
 public:
 	bool update();
@@ -17,6 +18,8 @@ public:
 	void start();
 	void stop();
 	bool finish_init = false;
+	std::vector<std::vector<std::vector<PIMAGE>>>gp; //Í¼Æ¬ËØ²Ä
+	std::vector<std::string>gp_type;
 	Camera();
 };
 

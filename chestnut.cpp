@@ -5,7 +5,7 @@
 Chestnut::Chestnut(FILE* fp)
 {
 	fscanf(fp, "%d", &direction);
-	fx = 60 * direction;
+	fx = 0;
 	ct = Costume{ 5, 0, 0 };
 	collider_layer = 2;
 	id = ++COLLIDER_ID;
@@ -20,6 +20,7 @@ bool Chestnut::update()
 	if (state == 2 && level.now_time - animation_time > 500) {
 		level.remove(this);
 	}
+	if (fabs(fx) < EPS && onfloor) fx = 75 * direction;
 	return false;
 }
 
@@ -60,10 +61,10 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 		collider_layer = -1;
 		break;
 	case 1:
-		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx;
+		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;
 	case 2:
-		if ((direction == LEFT && fx < 0 && target->fx > 0) || (direction == RIGHT && fx > 0 && target->fx < 0)) fx = -fx, vx = -vx;
+		if ((direction == LEFT && fx < 0 && target->fx > 0) || (direction == RIGHT && fx > 0 && target->fx < 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;
 	}
 	return true;

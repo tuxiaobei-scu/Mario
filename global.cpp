@@ -12,7 +12,6 @@ int NOW_SCENR = 0;
 int PLAYERS_NUM = 1;
 double GRAVITY = 50;
 std::string LEVEL_NAME = "";
-std::vector<std::string>gp_type = {"", "Mario_big", "Mario_small" , "Mario_fire" , "Brick", "Chestnut"};
 
 PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight)
 {

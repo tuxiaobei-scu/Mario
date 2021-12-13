@@ -13,6 +13,7 @@ Camera::Camera()
 	PIMAGE img = newimage();
 	char s[50], s1[50];
 	gp.resize(1);
+	gp_type.resize(1);
 	while (~fscanf(fp, "%s%d%d%d%d%d%d%d%d%s", s, &x, &y, &width, &heigh, &n, &ny, &m, &mx, s1)) {
 		std::vector<std::vector<PIMAGE>>v;
 		v.resize(n);
@@ -50,8 +51,8 @@ Camera::Camera()
 			}
 		}
 		gp.push_back(v);
-		//std::string s2 = s1;
-		//gp_type.push_back(s2);
+		std::string s2 = s1;
+		gp_type.push_back(s2);
 	}
 	finish_init = true;
 }
@@ -67,22 +68,25 @@ bool Camera::render()
 			for (Collider* c : level.mp[i][j]) {
 				if (!level.freeze) c->update();
 				std::pair<double, double>pos = c->getpos();
-				Costume ct = c->getcostume();
-				putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
+				c->render((pos.first - nowx) * 40, (pos.second - nowy) * 40);
+				//Costume ct = c->getcostume();
+				//putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 			}
 		}
 		for (Collider* c : level.actors[i]) {
 			if (c->id == level.mario->id) continue;
 			if (!level.freeze) c->update();
 			std::pair<double, double>pos = c->getpos();
-			Costume ct = c->getcostume();
-			putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
+			c->render((pos.first - nowx) * 40, (pos.second - nowy) * 40);
+			//Costume ct = c->getcostume();
+			//putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 		}
 		if (level.mario->show_layer == i) {
 			if (!level.freeze) level.mario->update();
 			std::pair<double, double>pos = level.mario->getpos();
-			Costume ct = level.mario->getcostume();
-			putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
+			level.mario->render((pos.first - nowx) * 40, (pos.second - nowy) * 40);
+			//Costume ct = level.mario->getcostume();
+			//putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 		}
 	}
 }
