@@ -53,12 +53,9 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 			sy = 0.25;
 			state = 2;
 			animation_time = level.now_time;
+			freeze = true;
+			collider_layer = -1;
 		}
-		else {
-			state = 1;
-		}
-		freeze = true;
-		collider_layer = -1;
 		break;
 	case 1:
 		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx, this->direction = -this->direction;

@@ -158,7 +158,7 @@ void Level::finish()
 
 void Level::death()
 {
-	if (finish_time) return;
+	if (finish_time || death_time) return;
 	death_sound.Play(0);
 	death_time = now_time;
 	freeze = true;

@@ -19,7 +19,7 @@ private:
 	double checkceiling(double prex, double prey);
 	double checkleftright();
 	const int collide_re[10][10] = {
-		{3, 3, 1, 1, 1}, 
+		{3, 3, 1, 1, 1},
 		{3, 0, 3, 0, 3},
 		{1, 3, 1, 0, 0},
 		{1, 0, 0, 0, 0},
@@ -50,6 +50,7 @@ public:
 	virtual bool update() = 0;
 	virtual void render(double x, double y) {
 		Costume ct = getcostume();
+		if (ct.a < 0 || ct.b < 0 || ct.c < 0) return;
 		putimage_withalpha(NULL, camera.gp[ct.a][ct.b][ct.c], (int)x, (int)y);
 		return;
 	}
@@ -61,4 +62,3 @@ public:
 	void start();
 	std::string name;
 };
-

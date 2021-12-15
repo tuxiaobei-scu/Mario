@@ -15,13 +15,45 @@ Mario::Mario()
 	show_layer = 3;
 }
 
+void Mario::change_level(int target)
+{
+	//change_time = level.now_time;
+	//freeze = true;
+	if (mario_level == target) return;
+	if (target == 1 || target == 3) {
+		y -= 0.5;
+		height = 2;
+	}
+	else {
+		y += 0.5;
+		height = 1;
+	}
+	ct.a = target;
+	mario_level = target;
+}
+
+void Mario::downgrade()
+{
+	if (mario_level == 3) {
+		change_level(1);
+	}
+	else if (mario_level == 1) {
+		change_level(2);
+	}
+	else {
+		level.death();
+		return;
+	}
+	invincible_time = level.now_time;
+}
+
 bool Mario::update()
 {
 	if (y > 20) {
 		level.death();
 		return false;
 	}
-	//SCORE = fx;
+	//摸旗动画
 	if (level.finish_time) {
 		if (level.finish_move && level.now_time - level.finish_time > 1800) {
 			state = "walk";
@@ -32,6 +64,10 @@ bool Mario::update()
 			ct.b = pole_direction;
 		}
 		return true;
+	}
+	//无敌时间判断
+	if (level.now_time - invincible_time > 2000) {
+		invincible_time = 0;
 	}
 	key_msg keyMsg;
 	//向左移动
@@ -130,7 +166,7 @@ Costume Mario::getcostume()
 	} else if (state == "walk") {
 		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
 		else {
-			if ((vx < 0) ^ (fx < 0) && fabs(fx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;
+			if ((vx < 0) ^ (fx < 0) && fabs(fx) > 1 && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;
 			else {
 				if (ct.c >= 0 && ct.c <= 2) {
 					if (level.now_time - animation_time >= change_time)
@@ -147,6 +183,16 @@ Costume Mario::getcostume()
 	else if (state == "jump" || state == "fall") {
 		ct = Costume{ mario_level, last_direction, 4 };
 	}
+	if (invincible_time) {
+		int c = level.now_time - invincible_time;
+		if (c > 1000) {
+			if ((c / 50) & 1) return Costume{ -1, -1, -1 };
+		}
+		else {
+			if ((c / 100) & 1) return Costume{ -1, -1, -1 };
+		}
+	}
+	
 	return ct;
 }
 
@@ -170,8 +216,8 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 			vy = -20;
 			musicplayer.play("sound-stomp");
 		}
-		else {
-			level.death();
+		else if (!invincible_time) {
+			downgrade();
 		}
 		break;
 	case 3:
@@ -185,6 +231,8 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 		ct = Costume{ mario_level, pole_direction, 7 };
 		level.finish();
 		break;
+	case 4:
+		change_level(1);
 	}
 	return true;
 }

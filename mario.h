@@ -11,12 +11,17 @@ private:
 	std::string state = "walk";
 	double sx = 0, sy = 0;
 	Costume ct = Costume{2, 0, 6};
-	int input_direction = 0;
-	int mario_level = 2;
-	int animation_time;
-	bool jump_key = false;
+	int input_direction = 0; //输入方向键方向
+	int mario_level = 2;     //马里奥等级
+	int animation_time = 0;      //动画时间戳
+	int change_time = 0;         //改变等级时间戳
+	int invincible_time = 0;     //无敌时间戳
+	int invincible_animation_time = 0; //无敌动画闪烁时间戳
+	bool jump_key = false;   
 	bool jump_sound = false;
-	bool pole_direction;
+	bool pole_direction;     //摸旗方向
+	void downgrade();
+	void change_level(int target);
 protected:
 	bool report_collision(int direction, Collider* target, int target_collider_layer);
 public:
