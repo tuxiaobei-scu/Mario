@@ -11,11 +11,11 @@ private:
 	std::string state = "walk";
 	double sx = 0, sy = 0;
 	Costume ct = Costume{2, 0, 6};
+	Costume change_ct;
 	int input_direction = 0; //输入方向键方向
 	int mario_level = 2;     //马里奥等级
 	int animation_time = 0;      //动画时间戳
 	int change_time = 0;         //改变等级时间戳
-	int invincible_time = 0;     //无敌时间戳
 	int invincible_animation_time = 0; //无敌动画闪烁时间戳
 	bool jump_key = false;   
 	bool jump_sound = false;
@@ -35,5 +35,6 @@ public:
 	std::vector<Costume>costumes;
 	Mario();
 	int show_layer = 0;
+	void render(double x, double y);
 };
 

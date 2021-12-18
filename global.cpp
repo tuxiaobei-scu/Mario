@@ -13,11 +13,17 @@ int PLAYERS_NUM = 1;
 double GRAVITY = 50;
 std::string LEVEL_NAME = "";
 
+bool Costume::operator == (const Costume& p) {
+	return a == p.a && b == p.b && c == p.c;
+}
+
 PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight)
 {
 	int width = getwidth(pimg), height = getheight(pimg);
-	if (zoomWidth <= 0 || zoomHeight <= 0) {
+	if (zoomWidth <= 0) {
 		zoomWidth = width;
+	}
+	if (zoomHeight <= 0) {
 		zoomHeight = height;
 	}
 	PIMAGE tempPimg = newimage(zoomWidth, zoomHeight);

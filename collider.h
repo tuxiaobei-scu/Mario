@@ -30,7 +30,6 @@ private:
 	//0 人物，1 砖块，2 怪物，3 旗杆，4 蘑菇
 	//-1空图层，与任何物体不发生碰撞
 protected:
-	bool freeze = true;
 	bool is_jump = false;
 	double vx = 0, vy = 0; //当前速度
 	double f = 15; //摩檫力
@@ -47,6 +46,7 @@ public:
 	double x, y;   //当前位置
 	double width, height; //碰撞体宽高
 	double fx = 0, fy = 0; //当前外力
+	bool freeze = true; //是否处于冻结状态
 	virtual Costume getcostume() = 0;
 	virtual std::pair<double, double> getctpos() = 0;
 	virtual bool update() = 0;

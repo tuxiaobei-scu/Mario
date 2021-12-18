@@ -20,6 +20,7 @@ extern std::string LEVEL_NAME;
 
 struct Costume {
 	int a, b, c;
+	bool operator == (const Costume& p);
 };
 
 extern PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight);
@@ -29,3 +30,4 @@ extern void getimage(PIMAGE pDstImg, LPCSTR pImgFile, int srcX, int srcY, int sr
 extern void getimage1(PIMAGE pDstImg, LPCSTR pImgFile, int srcX, int srcY, int dstX, int dstY);
 extern void mirror_image(PIMAGE& pimg);
 extern void copyimage(PIMAGE& pDstimg, PIMAGE psrcimg);
+extern PIMAGE getZoomImageCopy(PIMAGE pimg, int zoomWidth, int zoomHeight);

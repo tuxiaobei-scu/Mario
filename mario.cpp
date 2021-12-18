@@ -15,6 +15,45 @@ Mario::Mario()
 	show_layer = 3;
 }
 
+void Mario::render(double x, double y) {
+	Costume ct = getcostume();
+	if (ct.a < 0 || ct.b < 0 || ct.c < 0) return;
+	if (change_time) {
+		int c = level.now_time - change_time;
+		if (c < 500) { //角色改变动画
+			PIMAGE ret = newimage();
+			int a = ct.a;
+			bool flag = (a == 2);
+			if (a == 2) a = 1;
+			copyimage(ret, camera.gp[a][ct.b][ct.c]);
+			double ty = 0;
+			if (c < 100) ty = 20;
+			else if (c < 200) ty = 10;
+			else if (c < 300) ty = 30;
+			else if (c < 400) ty = 25;
+			else ty = 45;
+			if (flag) {
+				zoomImage(ret, 0, 90 - ty);
+				y -= 45 - ty + 5;
+			}
+			else {
+				zoomImage(ret, 0, 45 + ty);
+				y += 45 - ty - 10;
+			}
+			putimage_withalpha(NULL, ret, (int)x, (int)y);
+			delimage(ret);
+			return;
+		} else if (c < 1500) {
+			if ((c / 50) & 1) return;
+		}
+		else{
+			if ((c / 100) & 1) return;
+		}
+	}
+	putimage_withalpha(NULL, camera.gp[ct.a][ct.b][ct.c], (int)x, (int)y);
+	return;
+}
+
 void Mario::downgrade()
 {
 	if (mario_level == 3) {
@@ -27,13 +66,11 @@ void Mario::downgrade()
 		level.death();
 		return;
 	}
-	invincible_time = level.now_time;
+	
 }
 
 void Mario::change_level(int target)
 {
-	//change_time = level.now_time;
-	//freeze = true;
 	if (mario_level == target) return;
 	ct.a = target;
 	mario_level = target;
@@ -60,7 +97,9 @@ void Mario::change_level(int target)
 		}
 		height = 1;
 	}
-	
+	change_time = level.now_time;
+	freeze = true;
+	change_ct = ct;
 }
 
 bool Mario::standup() 
@@ -105,6 +144,16 @@ bool Mario::update()
 		level.death();
 		return false;
 	}
+	//状态改变取消冻结判定
+	if (change_time) {
+		if (freeze && level.now_time - change_time > 500) {
+			freeze = false;
+		}
+		else if (level.now_time - change_time > 2500) {
+			change_time = 0;
+		}
+		
+	}
 	bool flag;
 	key_msg keyMsg;
 	//摸旗动画
@@ -118,10 +167,6 @@ bool Mario::update()
 			ct.b = pole_direction;
 		}
 		return true;
-	}
-	//无敌时间判断
-	if (level.now_time - invincible_time > 2000) {
-		invincible_time = 0;
 	}
 	//冲刺判断
 	flag = keymsg.getmsg(keyMsg, 'Z');
@@ -234,9 +279,8 @@ std::pair<double, double> Mario::getctpos()
 
 Costume Mario::getcostume()
 {
-	int change_time = 150 - maxwx / 2;
 	if (state == "pole_fall") {
-		if (level.now_time - animation_time >= change_time && fabs(vy) > 1) {
+		if (level.now_time - animation_time >= 100 && fabs(vy) > 1) {
 			animation_time = level.now_time;
 			ct.c = (ct.c == 7) ? 8 : 7;
 		}
@@ -248,7 +292,7 @@ Costume Mario::getcostume()
 		}
 		
 	}
-	else if (is_squat && mario_level != 2) {
+	else if (is_squat && mario_level != 2 && level.now_time - change_time >= 500) { //下蹲
 		ct = Costume{ mario_level, last_direction, 5 };
 	}
 	else if (state == "walk") {
@@ -257,7 +301,7 @@ Costume Mario::getcostume()
 			if ((vx < 0) ^ (fx < 0) && fabs(fx) > 1 && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;
 			else {
 				if (ct.c >= 0 && ct.c <= 2) {
-					if (level.now_time - animation_time >= change_time)
+					if (level.now_time - animation_time >= 150 - maxwx / 2 && !freeze)
 						ct = Costume{ mario_level, last_direction, (ct.c + 1) % 3 }, animation_time = level.now_time;
 				}
 				else {
@@ -270,15 +314,6 @@ Costume Mario::getcostume()
 	}
 	else if (state == "jump" || state == "fall") {
 		ct = Costume{ mario_level, last_direction, 4 };
-	}
-	if (invincible_time) {
-		int c = level.now_time - invincible_time;
-		if (c > 1000) {
-			if ((c / 50) & 1) return Costume{ -1, -1, -1 };
-		}
-		else {
-			if ((c / 100) & 1) return Costume{ -1, -1, -1 };
-		}
 	}
 	
 	return ct;
@@ -304,7 +339,7 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 			vy = -20;
 			musicplayer.play("sound-stomp");
 		}
-		else if (!invincible_time) {
+		else if (!change_time) {
 			downgrade();
 		}
 		break;

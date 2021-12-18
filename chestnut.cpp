@@ -49,6 +49,7 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 	if (state != 0) return false;
 	switch (target_collider_layer) {
 	case 0:
+		if (target->freeze) break;
 		if (direction == TOP) {
 			sy = 0.25;
 			state = 2;

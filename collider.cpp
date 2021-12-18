@@ -115,7 +115,7 @@ double Collider::checkleftright()
 			int a_collider_layer = collider_layer;
 			int b_collider_layer = b->collider_layer;
 			if (flag1 & 1) report_collision(2 - p, b, b_collider_layer);
-			if (flag2 & 1 && !freeze) b->report_collision(2 + p, this, a_collider_layer);
+			if (flag2 & 1) b->report_collision(2 + p, this, a_collider_layer);
 			if (flag1 & 2) return b->x - (width + b->width) / 2 * p;
 		}
 	}
@@ -141,7 +141,7 @@ double Collider::checkceiling(double prex, double prey)
 			int b_collider_layer = b->collider_layer;
 			if (flag1 & 2) vy = 0;
 			if (flag1 & 1) report_collision(TOP, b, b_collider_layer);
-			if (flag2 & 1 && !freeze) b->report_collision(BOTTOM, this, a_collider_layer);
+			if (flag2 & 1) b->report_collision(BOTTOM, this, a_collider_layer);
 			if (flag1 & 2) return b->y + (height + b->height) / 2;
 		}
 	}
@@ -166,7 +166,7 @@ double Collider::checkonfloor(double prex, double prey)
 			int a_collider_layer = collider_layer;
 			int b_collider_layer = b->collider_layer;
 			if (flag1 & 1) report_collision(BOTTOM, b, b_collider_layer);
-			if (flag2 & 1 && !freeze) b->report_collision(TOP, this, a_collider_layer);
+			if (flag2 & 1) b->report_collision(TOP, this, a_collider_layer);
 			if (flag1 & 2) return b->y - (height + b->height) / 2;
 		}
 
