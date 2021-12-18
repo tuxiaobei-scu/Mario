@@ -20,7 +20,10 @@ private:
 	bool jump_key = false;   
 	bool jump_sound = false;
 	bool pole_direction;     //摸旗方向
-	void downgrade();
+	bool is_squat = false; //是否下蹲
+	void downgrade(); //丢失状态
+	bool standup();   //尝试起立
+	void squat(); //下蹲
 	void change_level(int target);
 protected:
 	bool report_collision(int direction, Collider* target, int target_collider_layer);

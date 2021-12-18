@@ -3,6 +3,12 @@
 #include "global.h"
 #include "camera.h"
 
+void Collider::render(double x, double y) {
+	Costume ct = getcostume();
+	if (ct.a < 0 || ct.b < 0 || ct.c < 0) return;
+	putimage_withalpha(NULL, camera.gp[ct.a][ct.b][ct.c], (int)x, (int)y);
+	return;
+}
 
 void Collider::setpos(double x, double y, double width, double height) {
 	this->width = width, this->height = height;
@@ -67,10 +73,33 @@ bool Collider::checkcollide(double x, double y, const Collider* b)
 	if (fabs(x - b->x) < (this->width + b->width) / 2 && fabs(y - b->y) < (this->height + b->height) / 2) return true;
 	return false;
 }
+
+std::vector<Collider*> Collider::get_all_contacts() 
+{
+	std::vector<Collider*> ret;
+	if (collider_layer == -1) return ret;
+	int l = max(0, x - 3), r = min(l + 6, level.map_range);
+	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
+		for (int j = l; j <= r; j++) {
+			for (auto b : level.mp[i][j]) {
+				if ((collide_re[collider_layer][b->collider_layer] & 1) && checkcollide(x, y, b))
+					ret.push_back(b);
+			}
+			
+		}
+		for (auto b : level.actors[i]) {
+			if (b->id == this->id) continue;
+			if ((collide_re[collider_layer][b->collider_layer] & 1) && checkcollide(x, y, b))
+				ret.push_back(b);
+		}
+	}
+	return ret;
+}
+
 double Collider::checkleftright()
 {
 	if (collider_layer == -1) return x;
-	int l = max(0, x - 3), r = min(l + 6, 499);
+	int l = max(0, x - 3), r = min(l + 6, level.map_range);
 	std::vector<Collider*> v;
 	int p = (fabs(vx) >= 0.1 && vx > 0) || (fx > 0) ? 1 : -1;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
@@ -149,7 +178,7 @@ double Collider::checkonfloor(double prex, double prey)
 bool Collider::move(double& x, double& y, double dx, double dy)
 {
 	double tx = x + dx, ty = y + dy;
-	int l = max(0, tx - 3), r = min(l + 6, 499);
+	int l = max(0, tx - 3), r = min(l + 6, level.map_range);
 	bool flag = false;
 	x = tx, y = ty;
 	return flag;

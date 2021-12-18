@@ -15,6 +15,21 @@ Mario::Mario()
 	show_layer = 3;
 }
 
+void Mario::downgrade()
+{
+	if (mario_level == 3) {
+		change_level(1);
+	}
+	else if (mario_level == 1) {
+		change_level(2);
+	}
+	else {
+		level.death();
+		return;
+	}
+	invincible_time = level.now_time;
+}
+
 void Mario::change_level(int target)
 {
 	//change_time = level.now_time;
@@ -32,19 +47,40 @@ void Mario::change_level(int target)
 	mario_level = target;
 }
 
-void Mario::downgrade()
+bool Mario::standup() 
 {
-	if (mario_level == 3) {
-		change_level(1);
+	if (mario_level == 2) return false;
+	if (!is_squat) false;
+	double lsty = y;
+	y -= 9.0 / 16.0;
+	sy = 0;
+	height = 2;
+	auto c = get_all_contacts();
+	for (auto b : c) {
+		if (b->y >= y) continue; //如果碰撞体在人物下方，则忽略
+		y = max(y, b->y + (height + b->height) / 2);
 	}
-	else if (mario_level == 1) {
-		change_level(2);
+	c = get_all_contacts();
+	if (!c.empty()) { //起立失败
+		y = lsty;
+		sy = -18.0 / 16.0;
+		height = 14.0 / 16.0;
+		return false;
 	}
-	else {
-		level.death();
-		return;
-	}
-	invincible_time = level.now_time;
+	is_squat = false;
+	return true;
+}
+
+void Mario::squat() 
+{
+	if (mario_level == 2) return;
+	if (is_squat) false;
+	is_squat = true;
+	ct.c = 5;
+	input_direction = 0;
+	y += 9.0 / 16.0;
+	sy = -18.0 / 16.0;
+	height = 14.0 / 16.0;
 }
 
 bool Mario::update()
@@ -70,13 +106,28 @@ bool Mario::update()
 		invincible_time = 0;
 	}
 	key_msg keyMsg;
+	//下蹲
+	bool flag = keymsg.getmsg(keyMsg, key_down);
+	if ((mario_level == 1 || mario_level == 3) && flag) {
+		if (keyMsg.msg == key_msg_down && !is_squat) 
+			squat();
+	}
+	if (is_squat && !keymsg.is_down[key_down])
+		standup();
+	if (onfloor && is_squat) fx = 0, input_direction = 0;
 	//向左移动
-	bool flag = keymsg.getmsg(keyMsg, key_left);
-	if (flag || keymsg.left_key) {
-		if (keyMsg.msg == key_msg_down || keymsg.left_key) {
+	flag = keymsg.getmsg(keyMsg, key_left);
+	if (flag || keymsg.is_down[key_left]) {
+		if (keyMsg.msg == key_msg_down || keymsg.is_down[key_left]) {
 			if (input_direction == 0) {
-				input_direction = -1;
-				fx = -30;
+				if ((!onfloor || !is_squat)) {
+					input_direction = -1;
+					fx = -30;
+				}
+				else {
+					last_direction = true;
+				}
+				
 			}
 		}
 		if (keyMsg.msg == key_msg_up) {
@@ -88,11 +139,17 @@ bool Mario::update()
 	}
 	//向右移动
 	flag = keymsg.getmsg(keyMsg, key_right);
-	if (flag || keymsg.right_key) {
-		if (keyMsg.msg == key_msg_down || keymsg.right_key) {
+	if (flag || keymsg.is_down[key_right]) {
+		if (keyMsg.msg == key_msg_down || keymsg.is_down[key_right]) {
 			if (input_direction == 0) {
-				input_direction = 1;
-				fx = 30;
+				if (!onfloor || !is_squat) {
+					input_direction = 1;
+					fx = 30;
+				}
+				else {
+					last_direction = false;
+				}
+				
 			}
 		}
 		if (keyMsg.msg == key_msg_up) {
@@ -163,7 +220,11 @@ Costume Mario::getcostume()
 			sy = ( c * c - c) * 15;
 		}
 		
-	} else if (state == "walk") {
+	}
+	else if (is_squat && mario_level != 2) {
+		ct = Costume{ mario_level, last_direction, 5 };
+	}
+	else if (state == "walk") {
 		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
 		else {
 			if ((vx < 0) ^ (fx < 0) && fabs(fx) > 1 && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;

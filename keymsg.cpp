@@ -7,22 +7,8 @@ void Keymsg::update()
 		key_msg k = getkey();
 		msg.push_back(k);
 		bool flag = (k.msg == key_msg_down);
-		if (flag || k.msg == key_msg_up) {
-			switch (k.key) {
-			case key_left:
-				left_key = flag;
-				break;
-			case key_right:
-				right_key = flag;
-				break;
-			case key_down:
-				down_key = flag;
-				break;
-			case 'S':
-				S_key = flag;
-				break;
-			}
-		}
+		if (flag || k.msg == key_msg_up) 
+			is_down[k.key] = flag;
 	}
 }
 

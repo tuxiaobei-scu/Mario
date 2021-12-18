@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "graphics.h"
 #include <algorithm>
+#include <vector>
 #include <iostream>
 #define TOP 0
 #define RIGHT 1
@@ -31,7 +32,6 @@ private:
 protected:
 	bool freeze = true;
 	bool is_jump = false;
-	double width, height;
 	double vx = 0, vy = 0; //当前速度
 	double f = 15; //摩檫力
 	double m = 1;  //物体的质量
@@ -40,20 +40,17 @@ protected:
 	bool onfloor = false;
 	bool out_of_range = true;
 	bool last_direction = false; // false右, true 左
+	std::vector<Collider*> get_all_contacts();
 	virtual bool report_collision(int direction, Collider* target, int target_collider_layer) = 0;
 public:
 	int id;
 	double x, y;   //当前位置
+	double width, height; //碰撞体宽高
 	double fx = 0, fy = 0; //当前外力
 	virtual Costume getcostume() = 0;
 	virtual std::pair<double, double> getctpos() = 0;
 	virtual bool update() = 0;
-	virtual void render(double x, double y) {
-		Costume ct = getcostume();
-		if (ct.a < 0 || ct.b < 0 || ct.c < 0) return;
-		putimage_withalpha(NULL, camera.gp[ct.a][ct.b][ct.c], (int)x, (int)y);
-		return;
-	}
+	virtual void render(double x, double y);
 	void setpos(double x, double y, double width, double height);
 	std::pair<double, double> getpos();
 	int collider_layer = 0; //碰撞图层
