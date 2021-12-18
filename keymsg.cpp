@@ -1,5 +1,5 @@
 #include "keymsg.h"
-
+#include "level.h"
 void Keymsg::update()
 {
 	msg.clear();
@@ -7,8 +7,12 @@ void Keymsg::update()
 		key_msg k = getkey();
 		msg.push_back(k);
 		bool flag = (k.msg == key_msg_down);
-		if (flag || k.msg == key_msg_up) 
+		if (flag || k.msg == key_msg_up) {
+			if (!is_down[k.key])
+				down_time[k.key] = level.now_time;
 			is_down[k.key] = flag;
+		}
+			
 	}
 }
 

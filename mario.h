@@ -21,6 +21,7 @@ private:
 	bool jump_sound = false;
 	bool pole_direction;     //摸旗方向
 	bool is_squat = false; //是否下蹲
+	bool is_dash = false; //是否处于冲刺状态
 	void downgrade(); //丢失状态
 	bool standup();   //尝试起立
 	void squat(); //下蹲

@@ -82,14 +82,14 @@ std::vector<Collider*> Collider::get_all_contacts()
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (int j = l; j <= r; j++) {
 			for (auto b : level.mp[i][j]) {
-				if ((collide_re[collider_layer][b->collider_layer] & 1) && checkcollide(x, y, b))
+				if ((collide_re[collider_layer][b->collider_layer] & 2) && checkcollide(x, y, b))
 					ret.push_back(b);
 			}
 			
 		}
 		for (auto b : level.actors[i]) {
 			if (b->id == this->id) continue;
-			if ((collide_re[collider_layer][b->collider_layer] & 1) && checkcollide(x, y, b))
+			if ((collide_re[collider_layer][b->collider_layer] & 2) && checkcollide(x, y, b))
 				ret.push_back(b);
 		}
 	}

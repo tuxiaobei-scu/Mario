@@ -35,16 +35,32 @@ void Mario::change_level(int target)
 	//change_time = level.now_time;
 	//freeze = true;
 	if (mario_level == target) return;
+	ct.a = target;
+	mario_level = target;
 	if (target == 1 || target == 3) {
 		y -= 0.5;
 		height = 2;
+		is_squat = false;
+		squat();
+		standup();
 	}
 	else {
 		y += 0.5;
+		if (is_squat) {
+			is_squat = false;
+			y -= 9.0 / 16.0;
+			sy = 0;
+			auto c = get_all_contacts();
+			for (auto b : c) {
+				if (b->y >= y)
+					y = max(y, b->y + (height + b->height) / 2);
+				else
+					y = min(y, b->y - (height + b->height) / 2);
+			}
+		}
 		height = 1;
 	}
-	ct.a = target;
-	mario_level = target;
+	
 }
 
 bool Mario::standup() 
@@ -71,7 +87,7 @@ bool Mario::standup()
 	return true;
 }
 
-void Mario::squat() 
+void Mario::squat()
 {
 	if (mario_level == 2) return;
 	if (is_squat) false;
@@ -89,6 +105,8 @@ bool Mario::update()
 		level.death();
 		return false;
 	}
+	bool flag;
+	key_msg keyMsg;
 	//ÃþÆì¶¯»­
 	if (level.finish_time) {
 		if (level.finish_move && level.now_time - level.finish_time > 1800) {
@@ -105,9 +123,18 @@ bool Mario::update()
 	if (level.now_time - invincible_time > 2000) {
 		invincible_time = 0;
 	}
-	key_msg keyMsg;
+	//³å´ÌÅÐ¶Ï
+	flag = keymsg.getmsg(keyMsg, 'Z');
+	if (flag && level.now_time - keymsg.down_time['Z'] >= 200) {
+		if (keyMsg.msg == key_msg_down && !is_squat)
+			is_dash = true, maxwx = 150;
+	}
+	if (!keymsg.is_down['Z']) {
+		is_dash = false;
+		maxwx = 100;
+	}
 	//ÏÂ¶×
-	bool flag = keymsg.getmsg(keyMsg, key_down);
+	flag = keymsg.getmsg(keyMsg, key_down);
 	if ((mario_level == 1 || mario_level == 3) && flag) {
 		if (keyMsg.msg == key_msg_down && !is_squat) 
 			squat();
