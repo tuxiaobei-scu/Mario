@@ -12,6 +12,8 @@ made by tuxiaobei
 
 使用图形库：[Easy Graphics Engine(EGE)](https://xege.org/)
 
+请先安装字体文件 [resources/fonts/Fixedsys500c.ttf](https://gitee.com/tuxiaobei/mario/raw/master/resources/fonts/Fixedsys500c.ttf)
+
 ## 操作方式
 
 左/右方向键：向左/右移动
