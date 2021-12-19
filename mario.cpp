@@ -6,7 +6,8 @@
 Mario::Mario()
 {
 	id = ++COLLIDER_ID;
-	setpos(2, 12, 1, 1);
+	setpos(2, 12 + 2 / 16.0, 1, 14.0 / 16.0);
+	sy = -1.0 / 16.0;
 	freeze = false;
 	maxwx = 100, maxwy = 1000;
 	out_of_range = false;
@@ -18,7 +19,7 @@ Mario::Mario()
 void Mario::render(double x, double y) {
 	Costume ct = getcostume();
 	if (ct.a < 0 || ct.b < 0 || ct.c < 0) return;
-	if (change_time) {
+	if (change_time && !level.finish_time && !level.death_time) {
 		int c = level.now_time - change_time;
 		if (c < 500) { //角色改变动画
 			PIMAGE ret = newimage();
@@ -66,7 +67,7 @@ void Mario::downgrade()
 		level.death();
 		return;
 	}
-	
+	musicplayer.play("sound-pipe");
 }
 
 void Mario::change_level(int target)
@@ -75,27 +76,20 @@ void Mario::change_level(int target)
 	ct.a = target;
 	mario_level = target;
 	if (target == 1 || target == 3) {
-		y -= 0.5;
-		height = 2;
+		y -= 7.0 / 16.0;
+		height = 28.0 / 16.0;
 		is_squat = false;
 		squat();
 		standup();
 	}
 	else {
-		y += 0.5;
+		y += 7.0 / 16.0;
 		if (is_squat) {
 			is_squat = false;
-			y -= 9.0 / 16.0;
-			sy = 0;
-			auto c = get_all_contacts();
-			for (auto b : c) {
-				if (b->y >= y)
-					y = max(y, b->y + (height + b->height) / 2);
-				else
-					y = min(y, b->y - (height + b->height) / 2);
-			}
+			y -= 7.0 / 16.0;
+			sy = -1.0 / 16.0;
 		}
-		height = 1;
+		height = 14.0 / 16.0;
 	}
 	change_time = level.now_time;
 	freeze = true;
@@ -107,9 +101,9 @@ bool Mario::standup()
 	if (mario_level == 2) return false;
 	if (!is_squat) false;
 	double lsty = y;
-	y -= 9.0 / 16.0;
-	sy = 0;
-	height = 2;
+	y -= 7.0 / 16.0;
+	sy = -2.0 / 16.0;
+	height = 28.0 / 16.0;
 	auto c = get_all_contacts();
 	for (auto b : c) {
 		if (b->y >= y) continue; //如果碰撞体在人物下方，则忽略
@@ -118,7 +112,7 @@ bool Mario::standup()
 	c = get_all_contacts();
 	if (!c.empty()) { //起立失败
 		y = lsty;
-		sy = -18.0 / 16.0;
+		sy = -1;
 		height = 14.0 / 16.0;
 		return false;
 	}
@@ -133,8 +127,8 @@ void Mario::squat()
 	is_squat = true;
 	ct.c = 5;
 	input_direction = 0;
-	y += 9.0 / 16.0;
-	sy = -18.0 / 16.0;
+	y += 7.0 / 16.0;
+	sy = -1;
 	height = 14.0 / 16.0;
 }
 
@@ -296,7 +290,7 @@ Costume Mario::getcostume()
 		ct = Costume{ mario_level, last_direction, 5 };
 	}
 	else if (state == "walk") {
-		if (fabs(vx) < 1 && fabs(fx) < f) ct = Costume{ mario_level, last_direction, 6 };
+		if (fabs(vx) < 1) ct = Costume{ mario_level, last_direction, 6 };
 		else {
 			if ((vx < 0) ^ (fx < 0) && fabs(fx) > 1 && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;
 			else {
@@ -347,6 +341,7 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 		if (level.finish_time) break;
 		pole_direction = (x > target->x);
 		animation_time = level.now_time;
+		standup();
 		x = level.map_range - 9.5 - 0.375 + 0.75 * pole_direction;
 		state = "pole_fall";
 		fy = -50, fx = 0;

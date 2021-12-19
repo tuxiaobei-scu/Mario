@@ -1,4 +1,5 @@
 #include "mushroom.h"
+#include "musicplayer.h"
 #include "level.h"
 Mushroom::Mushroom(FILE* fp)
 {
@@ -35,6 +36,7 @@ bool Mushroom::report_collision(int direction, Collider* target, int target_coll
 	switch (target_collider_layer) {
 	case 0:
 		level.remove(this);
+		musicplayer.play("sound-powerup");
 		break;
 	case 1:
 		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
