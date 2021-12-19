@@ -16,9 +16,9 @@ private:
 	bool isshow = false;
 	bool checkcollide(double x, double y, const Collider* b);
 	bool move(double& x, double& y, double dx, double dy);
-	double checkonfloor(double prex, double prey);
-	double checkceiling(double prex, double prey);
-	double checkleftright();
+	std::pair<double, bool> checkonfloor(double prex, double prey);
+	std::pair<double, bool> checkceiling(double prex, double prey);
+	std::pair<double, bool> checkleftright();
 	const int collide_re[10][10] = {
 		{3, 3, 1, 1, 1},
 		{3, 0, 3, 0, 3},

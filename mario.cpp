@@ -259,7 +259,6 @@ bool Mario::update()
 				is_jump = false;
 				fy = 0;
 				jump_time = 0;
-				
 			}
 		}
 	}
@@ -345,6 +344,7 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 		x = level.map_range - 9.5 - 0.375 + 0.75 * pole_direction;
 		state = "pole_fall";
 		fy = -50, fx = 0;
+		y = max(y, 4);
 		vy = 7, vx = 0;
 		ct = Costume{ mario_level, pole_direction, 7 };
 		level.finish();

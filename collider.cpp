@@ -53,15 +53,18 @@ void Collider::calc()
 		if (x > level.map_range - width / 2) x = level.map_range - width / 2;
 	}
 	double lstx = x, lsty = y;
-	y = checkonfloor(prex, prey);
-	if (fabs(y - lsty) > EPS) vy = 0, onfloor = true;
+	std::pair<double, bool> ret = checkonfloor(prex, prey);
+	y = ret.first;
+	if (ret.second) vy = 0, onfloor = true;
 	else {
 		onfloor = false;
-		y = checkceiling(prex, prey);
+		ret = checkceiling(prex, prey);
+		y = ret.first;
 	}
 	
-	x = checkleftright();
-	if (fabs(x - lstx) > EPS) vx = 0;
+	ret = checkleftright();
+	x = ret.first;
+	if (ret.second) vx = 0;
 	//if (checkleftright()) x = lstx, vx = 0;
 	if (collider_layer == 0) {
 		camera.movecam(min(max(0, x - 10), level.map_range - 20), 0);
@@ -96,9 +99,9 @@ std::vector<Collider*> Collider::get_all_contacts()
 	return ret;
 }
 
-double Collider::checkleftright()
+std::pair<double, bool> Collider::checkleftright()
 {
-	if (collider_layer == -1) return x;
+	if (collider_layer == -1) std::make_pair(x, false);
 	int l = max(0, x - 3), r = min(l + 6, level.map_range);
 	std::vector<Collider*> v;
 	int p = (fabs(vx) >= 0.1 && vx > 0) || (fx > 0) ? 1 : -1;
@@ -116,15 +119,15 @@ double Collider::checkleftright()
 			int b_collider_layer = b->collider_layer;
 			if (flag1 & 1) report_collision(2 - p, b, b_collider_layer);
 			if (flag2 & 1) b->report_collision(2 + p, this, a_collider_layer);
-			if (flag1 & 2) return b->x - (width + b->width) / 2 * p;
+			if (flag1 & 2) return std::make_pair(b->x - (width + b->width) / 2 * p, true);
 		}
 	}
-	return x;
+	return std::make_pair(x, false);
 }
-double Collider::checkceiling(double prex, double prey)
+std::pair<double, bool> Collider::checkceiling(double prex, double prey)
 {
-	if (collider_layer == -1) return y;
-	if (vy > 0) return y;
+	if (collider_layer == -1) return std::make_pair(y, false);
+	if (vy > 0) return std::make_pair(y, false);
 	int l = max(0, x - 3), r = min(l + 6, level.map_range);
 	std::vector<Collider*> v;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
@@ -142,15 +145,15 @@ double Collider::checkceiling(double prex, double prey)
 			if (flag1 & 2) vy = 0;
 			if (flag1 & 1) report_collision(TOP, b, b_collider_layer);
 			if (flag2 & 1) b->report_collision(BOTTOM, this, a_collider_layer);
-			if (flag1 & 2) return b->y + (height + b->height) / 2;
+			if (flag1 & 2) return std::make_pair(b->y + (height + b->height) / 2, true);
 		}
 	}
-	return y;
+	return std::make_pair(y, false);
 }
-double Collider::checkonfloor(double prex, double prey)
+std::pair<double, bool> Collider::checkonfloor(double prex, double prey)
 {
-	if (collider_layer == -1) return y;
-	if (vy < 0) return y;
+	if (collider_layer == -1) return std::make_pair(y, false);
+	if (vy < 0) return std::make_pair(y, false);
 	int l = max(0, x - 3), r = min(l + 6, level.map_range);
 	std::vector<Collider*> v;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
@@ -167,11 +170,11 @@ double Collider::checkonfloor(double prex, double prey)
 			int b_collider_layer = b->collider_layer;
 			if (flag1 & 1) report_collision(BOTTOM, b, b_collider_layer);
 			if (flag2 & 1) b->report_collision(TOP, this, a_collider_layer);
-			if (flag1 & 2) return b->y - (height + b->height) / 2;
+			if (flag1 & 2) return std::make_pair(b->y - (height + b->height) / 2, true);
 		}
 
 	}
-	return y;
+	return std::make_pair(y, false);
 }
 
 
