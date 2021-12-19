@@ -27,7 +27,7 @@ bool Collider::operator < (const Collider& c) {
 
 void Collider::calc()
 {
-	if (freeze) return;
+	if (freeze || !isrun) return;
 	double fx_real = fx, fy_real = fy;
 	if (fx_real * vx > maxwx) fx_real = maxwx / vx;
 	//if (fy * vy > maxwy) fy = maxwy / vy;
@@ -111,7 +111,7 @@ std::pair<double, bool> Collider::checkleftright()
 		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
 	}
 	for (auto b : v) {
-		if (b->id == this->id || b->collider_layer == -1) continue;
+		if (b->id == this->id || b->collider_layer == -1 || !b->isrun) continue;
 		int flag1 = collide_re[collider_layer][b->collider_layer];
 		int flag2 = collide_re[b->collider_layer][collider_layer];
 		if ((flag1 || flag2) && checkcollide(x, y, b)) {
@@ -136,7 +136,7 @@ std::pair<double, bool> Collider::checkceiling(double prex, double prey)
 		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
 	}
 	for (auto b : v) {
-		if (b->id == this->id || b->collider_layer == -1) continue;
+		if (b->id == this->id || b->collider_layer == -1 || !b->isrun) continue;
 		int flag1 = collide_re[collider_layer][b->collider_layer];
 		int flag2 = collide_re[b->collider_layer][collider_layer];
 		if ((flag1 || flag2) && prey >= b->y + (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y - 0.01, b)) {
@@ -162,7 +162,7 @@ std::pair<double, bool> Collider::checkonfloor(double prex, double prey)
 		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
 	}
 	for (auto b : v) {
-		if (b->id == this->id || b->collider_layer == -1) continue;
+		if (b->id == this->id || b->collider_layer == -1 || !b->isrun) continue;
 		int flag1 = collide_re[collider_layer][b->collider_layer];
 		int flag2 = collide_re[b->collider_layer][collider_layer];
 		if ((flag1 || flag2) && prey <= b->y - (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y + 0.01, b)) {

@@ -9,6 +9,7 @@
 #include "musicplayer.h"
 #include "freeze_block.h"
 #include "mushroom.h"
+#include "question_block.h"
 #include <sys/types.h>
 #include "dirent.h"
 #include <iostream>
@@ -34,6 +35,8 @@ void Level::reset()
 	finish_move = false;
 		
 }
+
+
 
 void Level::basic_block() 
 {
@@ -85,6 +88,46 @@ void Level::basic_block()
 	/*城堡部分结束*/
 }
 
+Collider* Level::addobject(char* s, double x, double y)
+{
+	int id, pos;
+	sscanf(s, "%d%n", &id, &pos);
+	s += pos;
+	std::string name = camera.gp_type[id];
+	if (name == "Brick") {
+		Brick* brick = new Brick(s);
+		brick->Collider::setpos(x, y, 1, 1);
+		assert(x < MAX_LEVEL_RANGE);
+		assert(x >= 0);
+		mp[3][(int)x].push_back(brick);
+		return brick;
+	}
+	else if (name == "Chestnut") {
+		Chestnut* chestnut = new Chestnut(s);
+		chestnut->Collider::setpos(x, y, 1, 1);
+		assert(x < MAX_LEVEL_RANGE);
+		assert(x >= 0);
+		actors[3].push_back(chestnut);
+		return chestnut;
+	}
+	else if (name == "Mushroom") {
+		Mushroom* mushroom = new Mushroom(s);
+		mushroom->Collider::setpos(x, y, 1, 1);
+		assert(x < MAX_LEVEL_RANGE);
+		assert(x >= 0);
+		actors[2].push_back(mushroom);
+		return mushroom;
+	}
+	else if (name == "Question_Block") {
+		Question_block* question_block = new Question_block(s, x, y);
+		question_block->Collider::setpos(x, y, 1, 1);
+		assert(x < MAX_LEVEL_RANGE);
+		assert(x >= 0);
+		mp[3][(int)x].push_back(question_block);
+		return question_block;
+	}
+}
+
 void Level::start(const char* path)
 {
 	reset();
@@ -105,29 +148,13 @@ void Level::start(const char* path)
 		}
 	}
 	while (true) {
-		int x, y, id;
-		fscanf(fp, "%d%d", &x, &y);
+		double x, y;
+		fgets(s, 256, fp);
+		if (strlen(s) < 3) continue;
+		int pos;
+		sscanf(s, "%lf%lf%n", &x, &y, &pos);
 		if (x < 0 && y < 0) break;
-		fscanf(fp, "%d", &id);
-		std::string name = camera.gp_type[id];
-		if (name == "Brick") {
-			Brick* brick = new Brick(fp);
-			brick->Collider::setpos(x, y, 1, 1);
-			assert(x < MAX_LEVEL_RANGE);
-			mp[3][x].push_back(brick);
-		}
-		else if (name == "Chestnut") {
-			Chestnut* chestnut = new Chestnut(fp);
-			chestnut->Collider::setpos(x, y, 1, 1);
-			assert(x < MAX_LEVEL_RANGE);
-			actors[3].push_back(chestnut);
-		}
-		else if (name == "Mushroom") {
-			Mushroom* chestnut = new Mushroom(fp);
-			chestnut->Collider::setpos(x, y, 1, 1);
-			assert(x < MAX_LEVEL_RANGE);
-			actors[3].push_back(chestnut);
-		}
+		addobject(s + pos, x, y);
 	}
 	fclose(fp);
 	basic_block();

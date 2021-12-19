@@ -1,21 +1,21 @@
 #pragma once
 #include "collider.h"
-class Chestnut :
+class Question_block :
     public Collider
 {
 private:
 	double sx = 0, sy = 0;
-	int direction;
 	Costume ct;
-	int animation_time = -1;
-	int state = 0; //0Õý³££¬1¶³½á£¬2ËÀÍö
+	Collider* target;
+	int used_time = 0;
+	bool change_run = false, change_freeze = false;
 protected:
 	bool report_collision(int direction, Collider* target, int target_collider_layer);
 public:
 	Costume getcostume();
 	std::pair<double, double> getctpos();
 	bool update();
-	Chestnut(char* s);
+	Question_block(char* s, double x, double y);
 	int show_layer = 3;
 };
 

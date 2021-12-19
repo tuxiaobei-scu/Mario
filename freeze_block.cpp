@@ -23,6 +23,7 @@ std::pair<double, double> Freeze_block::getctpos()
 
 Costume Freeze_block::getcostume()
 {
+	if (!isshow) return Costume{ -1, -1, -1 };
 	return ct;
 }
 

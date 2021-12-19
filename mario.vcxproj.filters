@@ -84,6 +84,9 @@
     <ClInclude Include="mushroom.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="question_block.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -132,6 +135,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mushroom.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="question_block.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

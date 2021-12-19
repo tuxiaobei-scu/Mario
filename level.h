@@ -11,11 +11,13 @@ private:
 	bool isrun = true;
 	void reset();
 	void basic_block();
+	char s[256];
 	std::string now_music;
 public:
 	std::vector<Collider*>mp[MAX_LEVEL_LAYER + 5][MAX_LEVEL_RANGE + 5];
 	std::vector<Collider*>actors[MAX_LEVEL_LAYER + 5];
 	std::vector<Collider*>unrun_actors[MAX_LEVEL_RANGE + 5];
+	Collider* addobject(char* s, double x, double y);
 	Mario* mario;
 	void death();
 	void finish();

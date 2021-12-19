@@ -1,10 +1,10 @@
 #include "brick.h"
 #include "global.h"
 
-Brick::Brick(FILE* fp)
+Brick::Brick(char* s)
 {
 	int a, b;
-	fscanf(fp, "%d%d", &a, &b);
+	sscanf(s, "%d%d", &a, &b);
 	ct = Costume{ 4, a, b };
 	collider_layer = 1;
 	id = ++COLLIDER_ID;
@@ -35,6 +35,7 @@ std::pair<double, double> Brick::getctpos()
 
 Costume Brick::getcostume()
 {
+	if (!isshow) return Costume{ -1, -1, -1 };
 	return ct;
 }
 

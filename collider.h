@@ -12,8 +12,6 @@
 class Collider
 {
 private:
-	bool isrun = false;
-	bool isshow = false;
 	bool checkcollide(double x, double y, const Collider* b);
 	bool move(double& x, double& y, double dx, double dy);
 	std::pair<double, bool> checkonfloor(double prex, double prey);
@@ -27,7 +25,7 @@ private:
 		{1, 3, 0, 0, 0}
 	};
 	//0不检测，1仅1检测，2仅排斥，3排斥且检测
-	//0 人物，1 砖块，2 怪物，3 旗杆，4 蘑菇
+	//0 人物，1 砖块，2 怪物，3 旗杆，4 蘑菇/隐藏砖
 	//-1空图层，与任何物体不发生碰撞
 protected:
 	bool is_jump = false;
@@ -43,6 +41,8 @@ protected:
 	virtual bool report_collision(int direction, Collider* target, int target_collider_layer) = 0;
 public:
 	int id;
+	bool isrun = true;  //是否运行
+	bool isshow = true; //是否显示
 	double x, y;   //当前位置
 	double width, height; //碰撞体宽高
 	double fx = 0, fy = 0; //当前外力

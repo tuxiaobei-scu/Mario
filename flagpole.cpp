@@ -23,6 +23,7 @@ std::pair<double, double> Flagpole::getctpos()
 
 Costume Flagpole::getcostume()
 {
+	if (!isshow) return Costume{ -1, -1, -1 };
 	return Costume{6, 0, 0};
 }
 
@@ -54,6 +55,7 @@ std::pair<double, double> Flag::getctpos()
 
 Costume Flag::getcostume()
 {
+	if (!isshow) return Costume{ -1, -1, -1 };
 	return Costume{ 7, 0, 0 };
 }
 
@@ -85,6 +87,7 @@ std::pair<double, double> Small_flag::getctpos()
 
 Costume Small_flag::getcostume()
 {
+	if (!isshow) return Costume{ -1, -1, -1 };
 	return Costume{ 10, 0, 0 };
 }
 

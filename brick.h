@@ -14,7 +14,7 @@ public:
 	Costume getcostume();
 	std::pair<double, double> getctpos();
 	bool update();
-	Brick(FILE* fp);
+	Brick(char* s);
 	Brick(int a, int b);
 	int show_layer = 3;
 };

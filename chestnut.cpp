@@ -2,9 +2,9 @@
 #include "global.h"
 #include "level.h"
 
-Chestnut::Chestnut(FILE* fp)
+Chestnut::Chestnut(char* s)
 {
-	fscanf(fp, "%d", &direction);
+	sscanf(s, "%d", &direction);
 	fx = 0;
 	ct = Costume{ 5, 0, 0 };
 	collider_layer = 2;
@@ -17,6 +17,7 @@ Chestnut::Chestnut(FILE* fp)
 
 bool Chestnut::update()
 {
+	if (!isrun) return false;
 	if (state == 2 && level.now_time - animation_time > 500) {
 		level.remove(this);
 	}
@@ -31,6 +32,7 @@ std::pair<double, double> Chestnut::getctpos()
 
 Costume Chestnut::getcostume()
 {
+	if (!isshow) return Costume{ -1, -1, -1 };
 	if (state == 0) {
 		int cl = level.now_time;
 		if (cl - animation_time > 150) {
@@ -46,6 +48,7 @@ Costume Chestnut::getcostume()
 
 bool Chestnut::report_collision(int direction, Collider* target, int target_collider_layer)
 {
+	if (!isrun) return false;
 	if (state != 0) return false;
 	switch (target_collider_layer) {
 	case 0:

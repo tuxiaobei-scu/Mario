@@ -15,6 +15,6 @@ public:
 	Costume getcostume();
 	std::pair<double, double> getctpos();
 	bool update();
-	Mushroom(FILE* fp);
+	Mushroom(char* s);
 	int show_layer = 2;
 };

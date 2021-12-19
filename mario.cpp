@@ -102,17 +102,24 @@ bool Mario::standup()
 	if (!is_squat) false;
 	double lsty = y;
 	y -= 7.0 / 16.0;
-	sy = -2.0 / 16.0;
+	sy = -4.0 / 16.0;
 	height = 28.0 / 16.0;
 	auto c = get_all_contacts();
 	for (auto b : c) {
-		if (b->y >= y) continue; //如果碰撞体在人物下方，则忽略
+		if (b->y >= y || b->collider_layer != 1) continue; //如果碰撞体在人物下方，则忽略
 		y = max(y, b->y + (height + b->height) / 2);
 	}
 	c = get_all_contacts();
-	if (!c.empty()) { //起立失败
+	bool flag = false;
+	for (auto b : c) {
+		if (b->collider_layer == 1) {
+			flag = true;
+			break;
+		}
+	}
+	if (flag) { //起立失败
 		y = lsty;
-		sy = -1;
+		sy = -18.0 / 16.0;
 		height = 14.0 / 16.0;
 		return false;
 	}
@@ -128,7 +135,7 @@ void Mario::squat()
 	ct.c = 5;
 	input_direction = 0;
 	y += 7.0 / 16.0;
-	sy = -1;
+	sy = -18.0 / 16.0;
 	height = 14.0 / 16.0;
 }
 
@@ -272,6 +279,7 @@ std::pair<double, double> Mario::getctpos()
 
 Costume Mario::getcostume()
 {
+	if (!isshow) return Costume{-1, -1, -1};
 	if (state == "pole_fall") {
 		if (level.now_time - animation_time >= 100 && fabs(vy) > 1) {
 			animation_time = level.now_time;

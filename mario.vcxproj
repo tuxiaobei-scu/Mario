@@ -162,6 +162,7 @@
     <ClInclude Include="chestnut.h" />
     <ClInclude Include="mushroom.h" />
     <ClInclude Include="musicplayer.h" />
+    <ClInclude Include="question_block.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="brick.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="chestnut.cpp" />
     <ClCompile Include="mushroom.cpp" />
     <ClCompile Include="musicplayer.cpp" />
+    <ClCompile Include="question_block.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="graphics.txt" />
