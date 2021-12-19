@@ -1,4 +1,5 @@
 map_range 35
+limit_time 5
 end
 11 11 4 0 0
 12 11 4 0 0

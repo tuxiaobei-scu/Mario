@@ -11,8 +11,6 @@ Load_screen::Load_screen()
 	mario = newimage();
 	getimage1(mario, "resources\\graphics\\mario_bros.png", 320, 8, 335, 31);
 	zoomImage(mario, 1.5);
-	begin_music.OpenFile("resources\\sound\\begin.wav");
-	game_over_music.OpenFile("resources\\music\\game_over.mp3");
 }
 
 bool Load_screen::render()
@@ -56,11 +54,11 @@ void Load_screen::start(std::string name)
 	start_time = clock();
 	this->name = name;
 	if (name == "begin") {
-		begin_music.Play(0);
+		musicplayer.play("sound-begin");
 	}
 	else if (name == "game_over") {
 		level.freeze = true;
-		game_over_music.Play(0);
+		musicplayer.play("music-game_over");
 	}
 	else if (name == "course_clear") {
 		musicplayer.play("music-course_clear");

@@ -37,4 +37,3 @@ public:
 	int show_layer = 0;
 	void render(double x, double y);
 };
-

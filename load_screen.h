@@ -11,7 +11,6 @@ private:
 	int start_time;
 	std::string name;
 	PIMAGE mario;
-	MUSIC begin_music, game_over_music;
 public:
 	bool update();
 	void start(std::string name);

@@ -144,7 +144,7 @@ void Level::finish()
 	if (finish_time) return;
 	musicplayer.play("music-flagpole");
 	finish_time = now_time;
-	main_theme.Stop();
+	musicplayer.stop(now_music);
 	Freeze_block* freeze_block;
 	mario->show_layer = 1;
 	for (int i = 1; i <= 2; i++) {
@@ -159,10 +159,10 @@ void Level::finish()
 void Level::death()
 {
 	if (finish_time || death_time) return;
-	death_sound.Play(0);
+	musicplayer.stop(now_music);
+	musicplayer.play("music-death");
 	death_time = now_time;
 	freeze = true;
-	main_theme.Stop();
 	LIVES--;
 }
 
@@ -194,9 +194,36 @@ bool Level::update()
 		restart();
 	}
 	if (freeze) return camera.update();
-	if (main_theme.GetPlayStatus() == MUSIC_MODE_STOP && !finish_time) {
-		main_theme.Play(0);
+	if (limit_time < ((now_time - start_time) / 1000)) {
+		LIVES = 1;
+		death();
 	}
+	if (!freeze && !finish_time) {
+		if (limit_time - ((now_time - start_time) / 1000) > 100) {
+			if (musicplayer.checkend(now_music)) {
+				musicplayer.play(now_music);
+			}
+		}
+		else {
+			if (now_music == "music-main_theme") {
+				musicplayer.stop(now_music);
+				now_music = "music-out_of_time";
+				musicplayer.play(now_music);
+			}
+			if (musicplayer.checkend(now_music)) {
+				if (now_music == "music-out_of_time") {
+					musicplayer.stop(now_music);
+					now_music = "music-main_theme_sped_up";
+					musicplayer.play(now_music);
+				}
+				else {
+					musicplayer.play(now_music);
+				}
+			}
+		}
+		
+	}
+	
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (Collider* c : level.actors[i]) {
 			c->calc();
@@ -210,7 +237,9 @@ void Level::start()
 	isrun = true;
 	camera.start();
 	if (!freeze && !finish_time) {
-		main_theme.Play(0);
+		now_music = "music-main_theme";
+		musicplayer.SetVolume(now_music, 0.5);
+		musicplayer.play(now_music);
 		start_time = clock();
 		now_time = start_time;
 		last_time = now_time;
@@ -240,7 +269,7 @@ bool Level::remove(Collider* t) {
 void Level::stop()
 {
 	isrun = false;
-	main_theme.Stop();
+	musicplayer.stop(now_music);
 }
 
 bool Level::running()
@@ -250,9 +279,7 @@ bool Level::running()
 
 Level::Level()
 {
-	main_theme.OpenFile("resources\\music\\main_theme.mp3");
-	main_theme.SetVolume(0.5);
-	death_sound.OpenFile("resources\\music\\death.wav");
+	return;
 }
 
 Level level;

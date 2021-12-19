@@ -33,5 +33,29 @@ bool Musicplayer::play(std::string s)
 	auto p = musics.find(s);
 	if (p == musics.end()) return false;
 	p->second->Play(0);
+	return true;
+}
+
+bool Musicplayer::stop(std::string s)
+{
+	auto p = musics.find(s);
+	if (p == musics.end()) return false;
+	p->second->Stop();
+	return true;
+}
+
+bool Musicplayer::checkend(std::string s)
+{
+	auto p = musics.find(s);
+	if (p == musics.end()) return false;
+	return p->second->GetPlayStatus() == MUSIC_MODE_STOP;
+}
+
+bool Musicplayer::SetVolume(std::string s, double v)
+{
+	auto p = musics.find(s);
+	if (p == musics.end()) return false;
+	p->second->SetVolume(v);
+	return true;
 }
 Musicplayer musicplayer;

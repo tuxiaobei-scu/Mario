@@ -44,10 +44,10 @@ void Mario::render(double x, double y) {
 			delimage(ret);
 			return;
 		} else if (c < 1500) {
-			if ((c / 50) & 1) return;
+			if ((c / 100) & 1) return;
 		}
 		else{
-			if ((c / 100) & 1) return;
+			if ((c / 50) & 1) return;
 		}
 	}
 	putimage_withalpha(NULL, camera.gp[ct.a][ct.b][ct.c], (int)x, (int)y);

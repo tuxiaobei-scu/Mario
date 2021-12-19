@@ -11,7 +11,7 @@ private:
 	bool isrun = true;
 	void reset();
 	void basic_block();
-	MUSIC main_theme, death_sound;
+	std::string now_music;
 public:
 	std::vector<Collider*>mp[MAX_LEVEL_LAYER + 5][MAX_LEVEL_RANGE + 5];
 	std::vector<Collider*>actors[MAX_LEVEL_LAYER + 5];

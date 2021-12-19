@@ -8,7 +8,7 @@ private:
 	bool isshow = true;
 	bool isrun = true;
 	PIMAGE title;
-	MUSIC music;
+	MUSIC music; //由于此音乐涉及初始化，不通过播放器播放
 
 	bool render();
 	void reset();

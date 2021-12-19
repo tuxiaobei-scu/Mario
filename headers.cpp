@@ -75,14 +75,14 @@ bool Timer::render() {
 	xyprintf(625, 30, "TIME");
 	char s[10];
 	if (level.finish_time) {
-		sprintf(s, "%03d", level.limit_time - ((level.finish_time - level.start_time) / 1000));
+		sprintf(s, "%03d", max(level.limit_time - ((level.finish_time - level.start_time) / 1000), 0));
 		xyprintf(625, 61, s);
 	} else if (!level.freeze) {
-		sprintf(s, "%03d", level.limit_time - ((level.now_time - level.start_time) / 1000));
+		sprintf(s, "%03d", max(level.limit_time - ((level.now_time - level.start_time) / 1000), 0));
 		xyprintf(625, 61, s);
 	}
 	else if (level.death_time) {
-		sprintf(s, "%03d", level.limit_time - ((level.death_time - level.start_time) / 1000));
+		sprintf(s, "%03d", max(level.limit_time - ((level.death_time - level.start_time) / 1000), 0));
 		xyprintf(625, 61, s);
 	}
 	return true;
