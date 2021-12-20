@@ -163,7 +163,7 @@ void Level::start(const char* path)
 
 void Level::restart()
 {
-	start((LEVEL_NAME + ".mio").c_str());
+	start(("level_data\\" + LEVEL_NAME + ".mio").c_str());
 }
 
 void Level::finish()

@@ -81,7 +81,7 @@ Option_cursor::Option_cursor()
 	zoomImage(icon, 2.5);
 	DIR* dir;
 	struct dirent* ptr;
-	dir = opendir("."); //打开当前目录
+	dir = opendir("level_data"); //打开当前目录
 	while ((ptr = readdir(dir)) != NULL) {
 		std::string s = ptr->d_name;
 		if (s.length() <= 4) continue;
@@ -92,7 +92,7 @@ Option_cursor::Option_cursor()
 	if (levels.size() > 0) {
 		level_id = 0;
 		while (!camera.finish_init) Sleep(10);
-		level.start((levels[0] + ".mio").c_str());
+		level.start(("level_data\\" + levels[0] + ".mio").c_str());
 		LEVEL_NAME = levels[0];
 	}
 	closedir(dir);
@@ -119,13 +119,13 @@ bool Option_cursor::update()
 		bool flag = keymsg.getmsg(keyMsg, key_down);
 		if (flag && keyMsg.msg == key_msg_down &&level_id != levels.size() - 1) {
 			level_id++;
-			level.start((levels[level_id] + ".mio").c_str());
+			level.start(("level_data\\" + levels[level_id] + ".mio").c_str());
 			LEVEL_NAME = levels[level_id];
 		}
 		flag = keymsg.getmsg(keyMsg, key_up);
 		if (flag && keyMsg.msg == key_msg_down && level_id != 0) {
 			level_id--;
-			level.start((levels[level_id] + ".mio").c_str());
+			level.start(("level_data\\" + levels[level_id] + ".mio").c_str());
 			LEVEL_NAME = levels[level_id];
 		}
 		flag = keymsg.getmsg(keyMsg, key_enter);

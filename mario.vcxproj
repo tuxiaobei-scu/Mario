@@ -187,8 +187,6 @@
     <Text Include="graphics.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="1-1.mio" />
-    <None Include="1-2.mio" />
     <None Include="readme.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
