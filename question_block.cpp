@@ -8,7 +8,7 @@ Question_block::Question_block(char* s, double x, double y)
 	int pos;
 	sscanf(s, "%d%n", &isshow, &pos);
 	ct = Costume{ 9, 0, 0 };
-	collider_layer = 1;
+	collider_layer = 4;
 	id = ++COLLIDER_ID;
 	freeze = true;
 	width = 1, height = 1;
@@ -76,6 +76,8 @@ bool Question_block::report_collision(int direction, Collider* target, int targe
 		musicplayer.play("sound-powerup_appears");
 		used_time = level.now_time;
 		collider_layer = 1;
+		isshow = true;
+		target->y = y + (height + target->height) / 2;
 	}
 	return false;
 }

@@ -84,10 +84,10 @@ void Mario::change_level(int target)
 	}
 	else {
 		y += 7.0 / 16.0;
+		sy = -1.0 / 16.0;
 		if (is_squat) {
 			is_squat = false;
 			y -= 7.0 / 16.0;
-			sy = -1.0 / 16.0;
 		}
 		height = 14.0 / 16.0;
 	}
@@ -358,7 +358,8 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 		level.finish();
 		break;
 	case 4:
-		change_level(1);
+		if (target->name != "question_block")
+			change_level(1);
 	}
 	return true;
 }
