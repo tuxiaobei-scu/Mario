@@ -13,7 +13,6 @@ public:
 	std::pair<double, double> getctpos();
 	bool update();
 	Flagpole();
-	int show_layer = 0;
 };
 
 class Flag :
@@ -29,7 +28,6 @@ public:
 	std::pair<double, double> getctpos();
 	bool update();
 	Flag();
-	int show_layer = 1;
 };
 
 class Small_flag :
@@ -45,6 +43,5 @@ public:
 	std::pair<double, double> getctpos();
 	bool update();
 	Small_flag();
-	int show_layer = 0;
 };
 

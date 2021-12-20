@@ -12,6 +12,7 @@ Mushroom::Mushroom(char* s)
 	width = 1, height = 1;
 	maxwx = 75;
 	name = "mushroom";
+	show_layer = 2;
 }
 
 bool Mushroom::update()

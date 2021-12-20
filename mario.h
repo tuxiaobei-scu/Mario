@@ -34,6 +34,5 @@ public:
 	bool update();
 	std::vector<Costume>costumes;
 	Mario();
-	int show_layer = 0;
 	void render(double x, double y);
 };

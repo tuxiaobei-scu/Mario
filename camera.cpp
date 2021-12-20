@@ -62,7 +62,7 @@ bool Camera::render()
 	if (!isshow) return false;
 	
 	int l = max(0.0, floor(nowx));
-	int r = l + 22;
+	int r = min(l + 22, level.map_range);
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (int j = l; j <= r; j++) {
 			for (Collider* c : level.mp[i][j]) {

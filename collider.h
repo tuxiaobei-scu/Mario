@@ -54,6 +54,7 @@ public:
 	void setpos(double x, double y, double width, double height);
 	std::pair<double, double> getpos();
 	int collider_layer = 0; //Åö×²Í¼²ã
+	int show_layer = 0; //ÏÔÊ¾Í¼²ã
 	void calc();
 	bool operator < (const Collider& c);
 	void start();

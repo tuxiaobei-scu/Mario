@@ -9,6 +9,7 @@ Freeze_block::Freeze_block(Costume ct, int show_layer, double width, double hetg
 	freeze = true;
 	this->width = width, this->height = height;
 	name = "freeze_block";
+	show_layer = 1;
 }
 
 bool Freeze_block::update()

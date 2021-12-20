@@ -16,6 +16,5 @@ public:
 	std::pair<double, double> getctpos();
 	bool update();
 	Question_block(char* s, double x, double y);
-	int show_layer = 3;
 };
 

@@ -5,7 +5,6 @@
 class Camera
 {
 private:
-	double nowx, nowy;
 	double targetx, targety;
 	int map_range;
 	bool isshow = false, isrun = false;
@@ -18,6 +17,7 @@ public:
 	void start();
 	void stop();
 	bool finish_init = false;
+	double nowx, nowy;
 	std::vector<std::vector<std::vector<PIMAGE>>>gp; //Í¼Æ¬ËØ²Ä
 	std::vector<std::string>gp_type;
 	Camera();

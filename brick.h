@@ -16,6 +16,5 @@ public:
 	bool update();
 	Brick(char* s);
 	Brick(int a, int b);
-	int show_layer = 3;
 };
 

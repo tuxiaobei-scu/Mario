@@ -11,6 +11,7 @@ Brick::Brick(char* s)
 	freeze = true;
 	width = 1, height = 1;
 	name = "brick";
+	show_layer = 4;
 }
 
 Brick::Brick(int a, int b)

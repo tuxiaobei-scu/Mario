@@ -16,5 +16,4 @@ public:
 	std::pair<double, double> getctpos();
 	bool update();
 	Mushroom(char* s);
-	int show_layer = 2;
 };

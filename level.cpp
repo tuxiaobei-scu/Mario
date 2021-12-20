@@ -23,17 +23,16 @@ void Level::reset()
 			mp[i][j].clear();
 		}
 	for (int i = 0; i < MAX_LEVEL_RANGE; i++) {
-		for (auto p : actors[i]) delete p;
 		actors[i].clear();
 	}
-		
 	for (int i = 0; i < MAX_LEVEL_RANGE; i++) {
 		for (auto p : unrun_actors[i]) delete p;
 		unrun_actors[i].clear();
 	}
+	delete mario;
 	finish_time = 0;
 	finish_move = false;
-		
+	update_pos = 0;
 }
 
 
@@ -107,7 +106,7 @@ Collider* Level::addobject(char* s, double x, double y)
 		chestnut->Collider::setpos(x, y, 1, 1);
 		assert(x < MAX_LEVEL_RANGE);
 		assert(x >= 0);
-		actors[3].push_back(chestnut);
+		unrun_actors[(int)x].push_back(chestnut);
 		return chestnut;
 	}
 	else if (name == "Mushroom") {
@@ -115,7 +114,7 @@ Collider* Level::addobject(char* s, double x, double y)
 		mushroom->Collider::setpos(x, y, 1, 1);
 		assert(x < MAX_LEVEL_RANGE);
 		assert(x >= 0);
-		actors[2].push_back(mushroom);
+		unrun_actors[(int)x].push_back(mushroom);
 		return mushroom;
 	}
 	else if (name == "Question_Block") {
@@ -123,9 +122,10 @@ Collider* Level::addobject(char* s, double x, double y)
 		question_block->Collider::setpos(x, y, 1, 1);
 		assert(x < MAX_LEVEL_RANGE);
 		assert(x >= 0);
-		mp[3][(int)x].push_back(question_block);
+		mp[4][(int)x].push_back(question_block);
 		return question_block;
 	}
+	return NULL;
 }
 
 void Level::start(const char* path)
@@ -250,7 +250,13 @@ bool Level::update()
 		}
 		
 	}
-	
+	int r = min(max(0.0, floor(camera.nowx)) + 22, level.map_range);
+	for (int i = update_pos; i <= r; i++) {
+		for (auto p : unrun_actors[i]) {
+			actors[p->show_layer].push_back(p);
+		}
+	}
+	update_pos = r + 1;
 	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 		for (Collider* c : level.actors[i]) {
 			c->calc();

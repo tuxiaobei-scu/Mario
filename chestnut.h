@@ -16,6 +16,5 @@ public:
 	std::pair<double, double> getctpos();
 	bool update();
 	Chestnut(char* s);
-	int show_layer = 3;
 };
 

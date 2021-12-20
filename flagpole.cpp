@@ -9,6 +9,7 @@ Flagpole::Flagpole()
 	name = "flagpole";
 	x = level.map_range - 9.5, y = 8.25;
 	sx = -0.125;
+	show_layer = 0;
 }
 
 bool Flagpole::update()
@@ -39,6 +40,7 @@ Flag::Flag()
 	sx = -0.5;
 	freeze = true;
 	name = "flag";
+	show_layer = 1;
 }
 
 bool Flag::update()
@@ -70,6 +72,7 @@ Small_flag::Small_flag()
 	id = ++COLLIDER_ID;
 	//sx = -0.5;
 	freeze = true;
+	show_layer = 0;
 	name = "small_flag";
 }
 

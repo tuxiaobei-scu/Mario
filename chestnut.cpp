@@ -13,6 +13,7 @@ Chestnut::Chestnut(char* s)
 	width = 1, height = 1;
 	maxwx = 50;
 	name = "chestnut";
+	show_layer = 3;
 }
 
 bool Chestnut::update()

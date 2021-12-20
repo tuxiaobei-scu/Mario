@@ -13,6 +13,7 @@ private:
 	void basic_block();
 	char s[256];
 	std::string now_music;
+	int update_pos = 0;
 public:
 	std::vector<Collider*>mp[MAX_LEVEL_LAYER + 5][MAX_LEVEL_RANGE + 5];
 	std::vector<Collider*>actors[MAX_LEVEL_LAYER + 5];

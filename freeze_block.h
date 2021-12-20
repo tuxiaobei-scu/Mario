@@ -13,6 +13,5 @@ public:
 	std::pair<double, double> getctpos();
 	bool update();
 	Freeze_block(Costume ct, int show_layer, double width = 0, double hetght = 0);
-	int show_layer;
 };
 
