@@ -3,6 +3,7 @@
 #include "load_screen.h"
 #include "level.h"
 #include "musicplayer.h"
+#include "headers.h"
 Mario::Mario()
 {
 	id = ++COLLIDER_ID;
@@ -280,26 +281,26 @@ std::pair<double, double> Mario::getctpos()
 Costume Mario::getcostume()
 {
 	if (!isshow) return Costume{-1, -1, -1};
-	if (state == "pole_fall") {
+	if (state == "pole_fall") { //如果摸旗，从旗杆滑落
 		if (level.now_time - animation_time >= 100 && fabs(vy) > 1) {
 			animation_time = level.now_time;
-			ct.c = (ct.c == 7) ? 8 : 7;
+			ct.c = (ct.c == 7) ? 8 : 7; //如果滑落两个造型中切换
 		}
-	}else if (level.death_time) {
+	}else if (level.death_time) { //死亡状态
 		ct = Costume{ 2, 0, 5 };
 		double c = (level.now_time - level.death_time - 800) / 1000.0;
 		if (c > 0) {
-			sy = ( c * c - c) * 15;
+			sy = ( c * c - c) * 15; //用抛物线退出
 		}
 		
 	}
 	else if (is_squat && mario_level != 2 && level.now_time - change_time >= 500) { //下蹲
 		ct = Costume{ mario_level, last_direction, 5 };
 	}
-	else if (state == "walk") {
-		if (fabs(vx) < 1) ct = Costume{ mario_level, last_direction, 6 };
+	else if (state == "walk") {  //行走
+		if (fabs(vx) < 1) ct = Costume{ mario_level, last_direction, 6 }; //无速度，站立
 		else {
-			if ((vx < 0) ^ (fx < 0) && fabs(fx) > 1 && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time;
+			if ((vx < 0) ^ (fx < 0) && fabs(fx) > 1 && fabs(vx) > 1) ct = Costume{ mario_level, last_direction, 3 }, animation_time = level.now_time; //转向
 			else {
 				if (ct.c >= 0 && ct.c <= 2) {
 					if (level.now_time - animation_time >= 150 - maxwx / 2 && !freeze)
@@ -324,7 +325,7 @@ Costume Mario::getcostume()
 bool Mario::report_collision(int direction, Collider* target, int target_collider_layer)
 {
 	switch (target_collider_layer) {
-	case 1:
+	case 1: //如果碰撞为砖块
 		if (direction == TOP && target->collider_layer == 1 && state == "jump") {
 			if (!jump_sound) {
 				jump_sound = true;
@@ -335,16 +336,16 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 			fy = 0;
 		}
 		break;
-	case 2:
-		if (direction == BOTTOM) {
-			vy = -20;
+	case 2: //如果碰撞为板栗
+		if (direction == BOTTOM) { //如果碰撞方向为下方（即马里奥在板栗的上方）
+			vy = -20;              //反弹 
 			musicplayer.play("sound-stomp");
 		}
-		else if (!change_time) {
-			downgrade();
+		else if (!change_time) { //如果不在造型改变的无敌时间
+			downgrade(); //丢失状态
 		}
 		break;
-	case 3:
+	case 3: //如果摸到旗杆
 		if (level.finish_time) break;
 		pole_direction = (x > target->x);
 		animation_time = level.now_time;
@@ -354,12 +355,28 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 		fy = -50, fx = 0;
 		y = max(y, 4);
 		vy = 7, vx = 0;
+		int sc;
+		if (y < 6) {
+			sc = 4000;
+		}
+		else if (y < 9) {
+			sc = 800;
+		}
+		else if (y < 12) {
+			sc = 200;
+		}
+		else {
+			sc = 100;
+		}
 		ct = Costume{ mario_level, pole_direction, 7 };
 		level.finish();
+		score.add_score(level.map_range - 8.5, 12.5, sc, true);
 		break;
-	case 4:
-		if (target->name != "question_block")
-			change_level(1);
+	case 4: //如果碰撞对象时蘑菇或问号砖
+		if (target->name != "question_block") {
+			change_level(1); //如果是蘑菇，变为大状态
+			score.add_score(x, y, 1000);
+		}
 	}
 	return true;
 }

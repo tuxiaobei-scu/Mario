@@ -87,6 +87,12 @@
     <ClInclude Include="question_block.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="add_score.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="coin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -138,6 +144,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="question_block.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="add_score.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="coin.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

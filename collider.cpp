@@ -10,6 +10,20 @@ void Collider::render(double x, double y) {
 	return;
 }
 
+bool Collider::report_collision(int direction, Collider* target, int target_collider_layer)
+{
+	return false;
+}
+
+bool Collider::update()
+{
+	return false;
+}
+
+Costume Collider::getcostume() {
+	return Costume{ -1, -1, -1 };
+}
+
 void Collider::setpos(double x, double y, double width, double height) {
 	this->width = width, this->height = height;
 	this->x = x + width / 2, this->y = y + height / 2;
@@ -30,9 +44,7 @@ void Collider::calc()
 	if (freeze || !isrun) return;
 	double fx_real = fx, fy_real = fy;
 	if (fx_real * vx > maxwx) fx_real = maxwx / vx;
-	//if (fy * vy > maxwy) fy = maxwy / vy;
 	double ax, ay = fy / m + GRAVITY;
-	
 	if (fabs(vx) > 1) {
 		ax = (vx > 0 ? fx_real - f : fx_real + f) / m;
 		if (onfloor) last_direction = vx < 0;

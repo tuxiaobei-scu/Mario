@@ -1,6 +1,7 @@
 #pragma once
 #include "graphics.h"
 #include <vector>
+#include <map>
 #include <iostream>
 class Menu
 {
@@ -32,5 +33,6 @@ private:
 public:
 	bool update();
 	Option_cursor();
+	std::map<std::string, int>levels_top_score;
 };
 extern Option_cursor option_cursor;

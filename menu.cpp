@@ -15,6 +15,7 @@
 void Menu::reset()
 {
 	NOW_SCENR = 0;
+	SCORE = 0;
 	LIVES = 3;
 	isshow = true;
 	isrun = true;
@@ -42,9 +43,6 @@ bool Menu::render()
 	option_cursor.update();
 	//putimage_withalpha(NULL, title, 170, 100, 2, 150, 440, 220); //显示标题
 	putimage_withalpha(NULL, title, 170, 100); //显示标题
-	char topscore[20];
-	sprintf(topscore, "TOP - %06d" , TOP_SCORE);
-	xyprintf(272, 480, topscore);
 	return true;
 }
 
@@ -88,6 +86,7 @@ Option_cursor::Option_cursor()
 		if (s.substr(s.length() - 4, s.length()) != ".mio") continue;
 		s = s.erase(s.length() - 4, s.length());
 		levels.push_back(s);
+		levels_top_score[s] = 0;
 	}
 	if (levels.size() > 0) {
 		level_id = 0;
@@ -102,12 +101,17 @@ bool Option_cursor::render()
 {
 	if (!isshow) return false;
 	putimage_withalpha(NULL, icon, 240, 400);
-	if (level_id - 1 >= 0)  
+	if (level_id - 1 >= 0)
 		xyprintf(272, 350, levels[level_id - 1].c_str());
 	if (level_id >= 0)
 		xyprintf(272, 395, levels[level_id].c_str());
 	if (level_id + 1 < levels.size()) 
 		xyprintf(272, 440, levels[level_id + 1].c_str());
+	if (LEVEL_NAME != "") {
+		char topscore[20];
+		sprintf(topscore, "TOP - %06d", levels_top_score[LEVEL_NAME]);
+		xyprintf(272, 480, topscore);
+	}
 	return true;
 }
 

@@ -9,3 +9,5 @@ resources/graphics/tile_set.png 176 0 16 16 8 16 12 16 Sp_brick
 resources/graphics/tile_set.png 384 0 16 16 8 16 12 16 Question_Block
 resources/graphics/item_objects.png 128 0 16 16 1 0 1 0 Small_flag
 resources/graphics/item_objects.png 0 0 16 16 3 16 3 16 Mushroom
+resources/graphics/tile_set.png 384 16 16 16 4 32 3 16 Coin
+resources/graphics/smb_enemies_sheet.png 90 0 16 24 3 30 10 30 tortoise

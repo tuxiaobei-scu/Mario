@@ -51,6 +51,13 @@ bool Musicplayer::checkend(std::string s)
 	return p->second->GetPlayStatus() == MUSIC_MODE_STOP;
 }
 
+bool Musicplayer::isplay(std::string s)
+{
+	auto p = musics.find(s);
+	if (p == musics.end()) return false;
+	return p->second->GetPlayStatus() == MUSIC_MODE_PLAY;
+}
+
 bool Musicplayer::SetVolume(std::string s, double v)
 {
 	auto p = musics.find(s);

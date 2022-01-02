@@ -139,8 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="add_score.h" />
     <ClInclude Include="brick.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="coin.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="dirent.h" />
     <ClInclude Include="ege.h" />
@@ -165,8 +167,10 @@
     <ClInclude Include="question_block.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="add_score.cpp" />
     <ClCompile Include="brick.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="coin.cpp" />
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="flagpole.cpp" />
     <ClCompile Include="freeze_block.cpp" />

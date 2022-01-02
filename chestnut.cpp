@@ -1,10 +1,11 @@
 #include "chestnut.h"
+#include "headers.h"
 #include "global.h"
 #include "level.h"
 
 Chestnut::Chestnut(char* s)
 {
-	sscanf(s, "%d", &direction);
+	sscanf(s, "%d", &direction); //一个参数，运动方向
 	fx = 0;
 	ct = Costume{ 5, 0, 0 };
 	collider_layer = 2;
@@ -52,20 +53,21 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 	if (!isrun) return false;
 	if (state != 0) return false;
 	switch (target_collider_layer) {
-	case 0:
+	case 0: //如果碰到马里奥
 		if (target->freeze) break;
-		if (direction == TOP) {
+		if (direction == TOP) { //如果是被踩到的，死亡
 			sy = 0.25;
 			state = 2;
 			animation_time = level.now_time;
 			freeze = true;
+			score.add_score(x, y, 200);
 			collider_layer = -1;
 		}
 		break;
-	case 1:
+	case 1: //如果碰到砖块，反弹
 		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;
-	case 2:
+	case 2: //如果碰到其他对向行走板栗，反弹
 		if ((direction == LEFT && fx < 0 && target->fx > 0) || (direction == RIGHT && fx > 0 && target->fx < 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;
 	}

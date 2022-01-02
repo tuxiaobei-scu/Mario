@@ -11,6 +11,7 @@ public:
 	bool stop(std::string s);
 	bool checkend(std::string s);
 	bool SetVolume(std::string s, double v);
+	bool isplay(std::string s);
 	Musicplayer();
 };
 

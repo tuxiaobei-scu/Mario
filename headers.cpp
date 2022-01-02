@@ -1,6 +1,8 @@
 #include "headers.h"
 #include "global.h"
 #include "graphics.h"
+#include "add_score.h"
+#include "musicplayer.h"
 #include "level.h"
 #include <ctime>
 #include <cstdio>
@@ -17,6 +19,13 @@ bool Score::render() {
 bool Score::update() {
 	if (!isrun) return false;
 	return render();
+}
+
+void Score::add_score(double x, double y, int score, bool type)
+{
+	Collider* t = new Add_score(x, y, score, type);
+	level.mp[5][(int)x].push_back(t);
+	SCORE += score;
 }
 Score score;
 
@@ -75,7 +84,26 @@ bool Timer::render() {
 	xyprintf(625, 30, "TIME");
 	char s[10];
 	if (level.finish_time) {
-		sprintf(s, "%03d", max(level.limit_time - ((level.finish_time - level.start_time) / 1000), 0));
+		int c = level.now_time - level.finish_time;
+		if (c > 2500) {
+			if (end_show_time > 0) {
+				if (!count_down) {
+					musicplayer.play("sound-count_down");
+					count_down = true;
+				}
+				if ((c / 20) & 2) {
+					end_show_time--;
+					SCORE += 50;
+				}
+			}
+			else {
+				if (count_down) {
+					musicplayer.stop("sound-count_down");
+					count_down = false;
+				}
+			}
+		}
+		sprintf(s, "%03d", end_show_time);
 		xyprintf(625, 61, s);
 	} else if (!level.freeze) {
 		sprintf(s, "%03d", max(level.limit_time - ((level.now_time - level.start_time) / 1000), 0));

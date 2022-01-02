@@ -9,7 +9,9 @@
 #include "musicplayer.h"
 #include "freeze_block.h"
 #include "mushroom.h"
+#include "coin.h"
 #include "question_block.h"
+#include "headers.h"
 #include <sys/types.h>
 #include "dirent.h"
 #include <iostream>
@@ -89,6 +91,8 @@ void Level::basic_block()
 
 Collider* Level::addobject(char* s, double x, double y)
 {
+	assert(x < MAX_LEVEL_RANGE);
+	assert(x >= 0);
 	int id, pos;
 	sscanf(s, "%d%n", &id, &pos);
 	s += pos;
@@ -96,34 +100,32 @@ Collider* Level::addobject(char* s, double x, double y)
 	if (name == "Brick") {
 		Brick* brick = new Brick(s);
 		brick->Collider::setpos(x, y, 1, 1);
-		assert(x < MAX_LEVEL_RANGE);
-		assert(x >= 0);
 		mp[3][(int)x].push_back(brick);
 		return brick;
 	}
 	else if (name == "Chestnut") {
 		Chestnut* chestnut = new Chestnut(s);
 		chestnut->Collider::setpos(x, y, 1, 1);
-		assert(x < MAX_LEVEL_RANGE);
-		assert(x >= 0);
 		unrun_actors[(int)x].push_back(chestnut);
 		return chestnut;
 	}
 	else if (name == "Mushroom") {
 		Mushroom* mushroom = new Mushroom(s);
 		mushroom->Collider::setpos(x, y, 1, 1);
-		assert(x < MAX_LEVEL_RANGE);
-		assert(x >= 0);
 		unrun_actors[(int)x].push_back(mushroom);
 		return mushroom;
 	}
 	else if (name == "Question_Block") {
 		Question_block* question_block = new Question_block(s, x, y);
 		question_block->Collider::setpos(x, y, 1, 1);
-		assert(x < MAX_LEVEL_RANGE);
-		assert(x >= 0);
 		mp[4][(int)x].push_back(question_block);
 		return question_block;
+	}
+	else if (name == "Coin") {
+		Coin* coin = new Coin(s);
+		coin->Collider::setpos(x, y, 1, 1);
+		mp[3][(int)x].push_back(coin);
+		return coin;
 	}
 	return NULL;
 }
@@ -181,6 +183,7 @@ void Level::finish()
 			mp[2][map_range - i].push_back(freeze_block);
 		}
 	}
+	timer.end_show_time = max(level.limit_time - ((level.finish_time - level.start_time) / 1000), 0);
 }
 
 void Level::death()
@@ -282,19 +285,18 @@ void Level::start()
 
 bool Level::remove(Collider* t) {
 	int l = max(0, t->x - 3), r = min(l + 6, level.map_range);
-	for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
-		for (int j = l; j <= r; j++) {
-			auto p = find(level.mp[i][j].begin(), level.mp[i][j].end(), t);
-			if (p != level.mp[i][j].end()) {
-				level.mp[i][j].erase(p);
-				return true;
-			}
-		}
-		auto p = find(level.actors[i].begin(), level.actors[i].end(), t);
-		if (p != level.actors[i].end()) {
-			level.actors[i].erase(p);
+	int layer = t->show_layer;
+	for (int j = l; j <= r; j++) {
+		auto p = find(level.mp[layer][j].begin(), level.mp[layer][j].end(), t);
+		if (p != level.mp[layer][j].end()) {
+			level.mp[layer][j].erase(p);
 			return true;
 		}
+	}
+	auto p = find(level.actors[layer].begin(), level.actors[layer].end(), t);
+	if (p != level.actors[layer].end()) {
+		level.actors[layer].erase(p);
+		return true;
 	}
 	return false;
 }

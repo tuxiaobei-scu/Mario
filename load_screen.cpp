@@ -61,6 +61,7 @@ void Load_screen::start(std::string name)
 		musicplayer.play("music-game_over");
 	}
 	else if (name == "course_clear") {
+		option_cursor.levels_top_score[LEVEL_NAME] = max(SCORE, option_cursor.levels_top_score[LEVEL_NAME]);
 		musicplayer.play("music-course_clear");
 	}
 }
