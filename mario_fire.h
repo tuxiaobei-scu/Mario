@@ -16,5 +16,5 @@ public:
 	std::pair<double, double> getctpos();
 	bool update();
 	void render(double x, double y);
-	Mario_fire(int x, int y, int direction);
+	Mario_fire(double x, double y, int direction);
 };

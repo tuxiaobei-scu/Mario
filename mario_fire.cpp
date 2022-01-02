@@ -1,4 +1,5 @@
 #include "mario_fire.h"
+#include "musicplayer.h"
 #include "level.h"
 void Mario_fire::render(double x, double y) {
 	Costume ct = getcostume();
@@ -7,7 +8,7 @@ void Mario_fire::render(double x, double y) {
 	return;
 }
 
-Mario_fire::Mario_fire(int x, int y, int direction)
+Mario_fire::Mario_fire(double x, double y, int direction)
 {
 	ct = { 16, 0, 0 };
 	show_layer = 3;
@@ -22,6 +23,7 @@ Mario_fire::Mario_fire(int x, int y, int direction)
 	maxwx = 200;
 	this->x = x, this->y = y;
 	sx = -0.25, sy = -0.25;
+	musicplayer.play("sound-fireball");
 }
 
 void Mario_fire::fire_death()
