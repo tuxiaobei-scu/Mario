@@ -10,7 +10,9 @@
 #include "freeze_block.h"
 #include "mushroom.h"
 #include "coin.h"
+#include "tortoise.h"
 #include "question_block.h"
+#include "death_animation.h"
 #include "headers.h"
 #include <sys/types.h>
 #include "dirent.h"
@@ -127,6 +129,12 @@ Collider* Level::addobject(char* s, double x, double y)
 		mp[3][(int)x].push_back(coin);
 		return coin;
 	}
+	else if (name == "tortoise") {
+		Tortoise* tortoise = new Tortoise(s);
+		tortoise->Collider::setpos(x, y, 1, 1);
+		unrun_actors[(int)x].push_back(tortoise);
+		return tortoise;
+	}
 	return NULL;
 }
 
@@ -160,6 +168,13 @@ void Level::start(const char* path)
 	}
 	fclose(fp);
 	basic_block();
+	int r = min(22, level.map_range);
+	for (int i = update_pos; i <= r; i++) {
+		for (auto p : unrun_actors[i]) {
+			actors[p->show_layer].push_back(p);
+		}
+	}
+	update_pos = r + 1;
 	camera.start();
 }
 

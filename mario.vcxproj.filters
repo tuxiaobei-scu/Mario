@@ -93,6 +93,12 @@
     <ClInclude Include="coin.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="tortoise.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="death_animation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -150,6 +156,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="coin.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="tortoise.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="death_animation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

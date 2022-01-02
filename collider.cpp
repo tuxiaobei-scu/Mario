@@ -20,6 +20,11 @@ bool Collider::update()
 	return false;
 }
 
+void Collider::kill(int direction)
+{
+	return;
+}
+
 Costume Collider::getcostume() {
 	return Costume{ -1, -1, -1 };
 }
@@ -81,6 +86,8 @@ void Collider::calc()
 	if (collider_layer == 0) {
 		camera.movecam(min(max(0, x - 10), level.map_range - 20), 0);
 	}
+	collision_history[collision_history_pos ^ 1].clear();
+	collision_history_pos ^= 1;
 }
 
 bool Collider::checkcollide(double x, double y, const Collider* b)
@@ -129,8 +136,12 @@ std::pair<double, bool> Collider::checkleftright()
 		if ((flag1 || flag2) && checkcollide(x, y, b)) {
 			int a_collider_layer = collider_layer;
 			int b_collider_layer = b->collider_layer;
-			if (flag1 & 1) report_collision(2 - p, b, b_collider_layer);
-			if (flag2 & 1) b->report_collision(2 + p, this, a_collider_layer);
+			if ((flag1 & 1) || (flag2 & 1))
+				collision_history[collision_history_pos].insert(b);
+			if (collision_history[collision_history_pos ^ 1].count(b) == 0) {
+				if (flag1 & 1) report_collision(2 - p, b, b_collider_layer);
+				if (flag2 & 1) b->report_collision(2 + p, this, a_collider_layer);
+			}
 			if (flag1 & 2) return std::make_pair(b->x - (width + b->width) / 2 * p, true);
 		}
 	}
@@ -154,9 +165,13 @@ std::pair<double, bool> Collider::checkceiling(double prex, double prey)
 		if ((flag1 || flag2) && prey >= b->y + (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y - 0.01, b)) {
 			int a_collider_layer = collider_layer;
 			int b_collider_layer = b->collider_layer;
+			if ((flag1 & 1) || (flag2 & 1))
+				collision_history[collision_history_pos].insert(b);
+			if (collision_history[collision_history_pos ^ 1].count(b) == 0) {
+				if (flag1 & 1) report_collision(TOP, b, b_collider_layer);
+				if (flag2 & 1) b->report_collision(BOTTOM, this, a_collider_layer);
+			}
 			if (flag1 & 2) vy = 0;
-			if (flag1 & 1) report_collision(TOP, b, b_collider_layer);
-			if (flag2 & 1) b->report_collision(BOTTOM, this, a_collider_layer);
 			if (flag1 & 2) return std::make_pair(b->y + (height + b->height) / 2, true);
 		}
 	}
@@ -180,8 +195,12 @@ std::pair<double, bool> Collider::checkonfloor(double prex, double prey)
 		if ((flag1 || flag2) && prey <= b->y - (height + b->height) / 2 && fabs(prex - b->x) < (this->width + b->width) / 2 - EPS && checkcollide(x, y + 0.01, b)) {
 			int a_collider_layer = collider_layer;
 			int b_collider_layer = b->collider_layer;
-			if (flag1 & 1) report_collision(BOTTOM, b, b_collider_layer);
-			if (flag2 & 1) b->report_collision(TOP, this, a_collider_layer);
+			if ((flag1 & 1) || (flag2 & 1))
+				collision_history[collision_history_pos].insert(b);
+			if (collision_history[collision_history_pos ^ 1].count(b) == 0) {
+				if (flag1 & 1) report_collision(BOTTOM, b, b_collider_layer);
+				if (flag2 & 1) b->report_collision(TOP, this, a_collider_layer);
+			}
 			if (flag1 & 2) return std::make_pair(b->y - (height + b->height) / 2, true);
 		}
 

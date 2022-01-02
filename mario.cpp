@@ -339,6 +339,7 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 	case 2: //如果碰撞为板栗
 		if (direction == BOTTOM) { //如果碰撞方向为下方（即马里奥在板栗的上方）
 			vy = -20;              //反弹 
+			y = target->y - (height + target->height) / 2.0;
 			musicplayer.play("sound-stomp");
 		}
 		else if (!change_time) { //如果不在造型改变的无敌时间

@@ -2,6 +2,7 @@
 #include "global.h"
 #include "camera.h"
 #include "graphics.h"
+#include <set>
 #include <algorithm>
 #include <vector>
 #include <iostream>
@@ -28,9 +29,10 @@ private:
 	//0不排斥不检测，1仅检测，2仅排斥，3排斥且检测
 	//0 人物，1 砖块，2 怪物，3 旗杆，4 蘑菇/隐藏砖, 5 金币
 	//-1空图层，与任何物体不发生碰撞
+	std::set<Collider*>collision_history[2];
+	int collision_history_pos = 0;
 protected:
 	bool is_jump = false;
-	double vx = 0, vy = 0; //当前速度
 	double f = 15; //摩檫力
 	double m = 1;  //物体的质量
 	double maxwx = 20, maxwy = 20; //最大功率
@@ -46,6 +48,7 @@ public:
 	bool isrun = true;  //是否运行
 	bool isshow = true; //是否显示
 	double x, y;   //当前位置
+	double vx = 0, vy = 0; //当前速度
 	double width, height; //碰撞体宽高
 	double fx = 0, fy = 0; //当前外力
 	bool freeze = true; //是否处于冻结状态
@@ -53,6 +56,7 @@ public:
 	virtual std::pair<double, double> getctpos() = 0;
 	virtual bool update();
 	virtual void render(double x, double y);
+	virtual void kill(int direction);
 	void setpos(double x, double y, double width, double height);
 	std::pair<double, double> getpos();
 	int collider_layer = 0; //碰撞图层

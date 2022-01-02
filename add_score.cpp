@@ -9,6 +9,7 @@ Add_score::Add_score(double x, double y, int score, bool type)
 {
 	this->x = x, this->y = y;
 	this->score = score, this->type = type;
+	height = 0, width = 0;
 	show_layer = 5;
 	collider_layer = -1;
 	appear_time = level.now_time;

@@ -144,6 +144,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="collider.h" />
+    <ClInclude Include="death_animation.h" />
     <ClInclude Include="dirent.h" />
     <ClInclude Include="ege.h" />
     <ClInclude Include="ege\button.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="mushroom.h" />
     <ClInclude Include="musicplayer.h" />
     <ClInclude Include="question_block.h" />
+    <ClInclude Include="tortoise.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="add_score.cpp" />
@@ -172,6 +174,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="collider.cpp" />
+    <ClCompile Include="death_animation.cpp" />
     <ClCompile Include="flagpole.cpp" />
     <ClCompile Include="freeze_block.cpp" />
     <ClCompile Include="global.cpp" />
@@ -186,6 +189,7 @@
     <ClCompile Include="mushroom.cpp" />
     <ClCompile Include="musicplayer.cpp" />
     <ClCompile Include="question_block.cpp" />
+    <ClCompile Include="tortoise.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="graphics.txt" />

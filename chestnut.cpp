@@ -2,6 +2,7 @@
 #include "headers.h"
 #include "global.h"
 #include "level.h"
+#include "death_animation.h"
 
 Chestnut::Chestnut(char* s)
 {
@@ -11,7 +12,7 @@ Chestnut::Chestnut(char* s)
 	collider_layer = 2;
 	id = ++COLLIDER_ID;
 	freeze = false;
-	width = 1, height = 1;
+	width = 0.75, height = 1;
 	maxwx = 50;
 	name = "chestnut";
 	show_layer = 3;
@@ -68,8 +69,26 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;
 	case 2: //如果碰到其他对向行走板栗，反弹
-		if ((direction == LEFT && fx < 0 && target->fx > 0) || (direction == RIGHT && fx > 0 && target->fx < 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
+		fx = -fx, vx = -vx, this->direction = -this->direction;
+		//if ((direction == LEFT && vx < 0 && (target->vx > 0 || target->freeze)) || (direction == RIGHT && fx > 0 && (target->fx < 0 || target->freeze))) 
+		//	fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;
 	}
 	return true;
+}
+
+void Chestnut::kill(int direction)
+{
+	if (killed) return;
+	score.add_score(x, y, 200);
+	killed = true;
+	double p;
+	if (direction == RIGHT || direction == LEFT) {
+		p = direction == RIGHT ? -15 : 15;
+	}
+	else {
+		p = vx < 0 ? -15 : 15;
+	}
+	level.actors[5].push_back(new Death_animation(Costume{ 5, 0, 0 }, x, y, p, -10));
+	level.remove(this);
 }
