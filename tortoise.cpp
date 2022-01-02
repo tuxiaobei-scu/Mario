@@ -105,7 +105,9 @@ bool Tortoise::report_collision(int direction, Collider* target, int target_coll
 			}
 		}
 		else {
-			fx = -fx, vx = -vx, this->direction = -this->direction;
+			if (direction == LEFT || direction == RIGHT) {
+				fx = -fx, vx = -vx, this->direction = -this->direction;
+			}
 		}
 		break;
 	}

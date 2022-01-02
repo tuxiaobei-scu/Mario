@@ -42,7 +42,9 @@ bool Mushroom::report_collision(int direction, Collider* target, int target_coll
 		musicplayer.play("sound-powerup");
 		break;
 	case 1:
-		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
+		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) 
+			fx = -fx, vx = -vx, this->direction = -this->direction;
+			
 		break;
 	}
 	return true;

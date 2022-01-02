@@ -3,6 +3,7 @@
 #include "load_screen.h"
 #include "level.h"
 #include "musicplayer.h"
+#include "mario_fire.h"
 #include "headers.h"
 Mario::Mario()
 {
@@ -22,7 +23,7 @@ void Mario::render(double x, double y) {
 	if (ct.a < 0 || ct.b < 0 || ct.c < 0) return;
 	if (change_time && !level.finish_time && !level.death_time) {
 		int c = level.now_time - change_time;
-		if (c < 500) { //角色改变动画
+		if (c < 500 && change_size) { //角色改变动画
 			PIMAGE ret = newimage();
 			int a = ct.a;
 			bool flag = (a == 2);
@@ -75,22 +76,29 @@ void Mario::change_level(int target)
 {
 	if (mario_level == target) return;
 	ct.a = target;
-	mario_level = target;
-	if (target == 1 || target == 3) {
-		y -= 7.0 / 16.0;
-		height = 28.0 / 16.0;
-		is_squat = false;
-		squat();
-		standup();
+	if ((mario_level == 1 && target == 3) || (mario_level == 3 && target == 1)) {
+		mario_level = target;
+		change_size = false;
 	}
 	else {
-		y += 7.0 / 16.0;
-		sy = -1.0 / 16.0;
-		if (is_squat) {
-			is_squat = false;
+		mario_level = target;
+		change_size = true;
+		if (target == 1 || target == 3) {
 			y -= 7.0 / 16.0;
+			height = 28.0 / 16.0;
+			is_squat = false;
+			squat();
+			standup();
 		}
-		height = 14.0 / 16.0;
+		else {
+			y += 7.0 / 16.0;
+			sy = -1.0 / 16.0;
+			if (is_squat) {
+				is_squat = false;
+				y -= 7.0 / 16.0;
+			}
+			height = 14.0 / 16.0;
+		}
 	}
 	change_time = level.now_time;
 	freeze = true;
@@ -172,9 +180,20 @@ bool Mario::update()
 	}
 	//冲刺判断
 	flag = keymsg.getmsg(keyMsg, 'Z');
-	if (flag && level.now_time - keymsg.down_time['Z'] >= 200) {
-		if (keyMsg.msg == key_msg_down && !is_squat)
-			is_dash = true, maxwx = 150;
+	if (flag) {
+		if (level.now_time - keymsg.down_time['Z'] >= 500) {
+			if (keyMsg.msg == key_msg_down && !is_squat)
+				is_dash = true, maxwx = 150;
+		}
+		else if (mario_level == 3 && keyMsg.msg == key_msg_up && !is_squat) { //发射火焰
+			if (mario_fire_num < 2) {
+				mario_fire_num++;
+				int p = last_direction ? -1 : 1;
+				level.actors[2].push_back(new Mario_fire(x, y, p));
+				fire_time = level.now_time;
+			}
+		}
+		
 	}
 	if (!keymsg.is_down['Z']) {
 		is_dash = false;
@@ -317,7 +336,17 @@ Costume Mario::getcostume()
 	else if (state == "jump" || state == "fall") {
 		ct = Costume{ mario_level, last_direction, 4 };
 	}
-	
+	if (fire_time && mario_level == 3) {
+		if (level.now_time - fire_time > 150) {
+			fire_time = 0;
+		}
+		else {
+			if (ct.c < 16) {
+				if (ct.c < 3) ct.c += 16;
+				else ct.c = 16;
+			}
+		}
+	}
 	return ct;
 }
 
@@ -375,7 +404,12 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 		break;
 	case 4: //如果碰撞对象时蘑菇或问号砖
 		if (target->name != "question_block") {
-			change_level(1); //如果是蘑菇，变为大状态
+			if (target->name == "mushroom" && mario_level == 2) {
+				change_level(1); //如果是蘑菇，变为大状态
+			}
+			else if (target->name == "flower") {
+				change_level(3); //如果是花，变为火焰马里奥
+			}
 			score.add_score(x, y, 1000);
 		}
 	}

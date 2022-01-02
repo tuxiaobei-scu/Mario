@@ -69,7 +69,9 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;
 	case 2: //如果碰到其他对向行走板栗，反弹
-		fx = -fx, vx = -vx, this->direction = -this->direction;
+		if (direction == LEFT || direction == RIGHT) {
+			fx = -fx, vx = -vx, this->direction = -this->direction;
+		}
 		//if ((direction == LEFT && vx < 0 && (target->vx > 0 || target->freeze)) || (direction == RIGHT && fx > 0 && (target->fx < 0 || target->freeze))) 
 		//	fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;

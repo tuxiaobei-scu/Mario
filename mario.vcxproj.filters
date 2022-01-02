@@ -99,6 +99,12 @@
     <ClInclude Include="death_animation.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="flower.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mario_fire.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,6 +168,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="death_animation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="flower.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mario_fire.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

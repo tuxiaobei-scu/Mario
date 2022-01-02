@@ -17,11 +17,13 @@ private:
 	int animation_time = 0;      //动画时间戳
 	int change_time = 0;         //改变等级时间戳
 	int invincible_animation_time = 0; //无敌动画闪烁时间戳
+	int fire_time = 0; //发射火焰时间
 	bool jump_key = false;   
 	bool jump_sound = false;
 	bool pole_direction;     //摸旗方向
 	bool is_squat = false; //是否下蹲
 	bool is_dash = false; //是否处于冲刺状态
+	bool change_size = false; //是否改变状态大小
 	void downgrade(); //丢失状态
 	bool standup();   //尝试起立
 	void squat(); //下蹲
@@ -35,4 +37,5 @@ public:
 	std::vector<Costume>costumes;
 	Mario();
 	void render(double x, double y);
+	int mario_fire_num = 0; //发射火焰个数
 };

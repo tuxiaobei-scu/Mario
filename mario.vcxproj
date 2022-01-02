@@ -153,6 +153,7 @@
     <ClInclude Include="ege\label.h" />
     <ClInclude Include="ege\sys_edit.h" />
     <ClInclude Include="flagpole.h" />
+    <ClInclude Include="flower.h" />
     <ClInclude Include="freeze_block.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="graphics.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="load_screen.h" />
     <ClInclude Include="mario.h" />
+    <ClInclude Include="mario_fire.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="chestnut.h" />
     <ClInclude Include="mushroom.h" />
@@ -176,6 +178,7 @@
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="death_animation.cpp" />
     <ClCompile Include="flagpole.cpp" />
+    <ClCompile Include="flower.cpp" />
     <ClCompile Include="freeze_block.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="headers.cpp" />
@@ -184,6 +187,7 @@
     <ClCompile Include="load_screen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mario.cpp" />
+    <ClCompile Include="mario_fire.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="chestnut.cpp" />
     <ClCompile Include="mushroom.cpp" />

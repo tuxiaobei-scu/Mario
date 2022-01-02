@@ -11,6 +11,7 @@
 #include "mushroom.h"
 #include "coin.h"
 #include "tortoise.h"
+#include "flower.h"
 #include "question_block.h"
 #include "death_animation.h"
 #include "headers.h"
@@ -129,11 +130,17 @@ Collider* Level::addobject(char* s, double x, double y)
 		mp[3][(int)x].push_back(coin);
 		return coin;
 	}
-	else if (name == "tortoise") {
+	else if (name == "Tortoise") {
 		Tortoise* tortoise = new Tortoise(s);
 		tortoise->Collider::setpos(x, y, 1, 1);
 		unrun_actors[(int)x].push_back(tortoise);
 		return tortoise;
+	}
+	else if (name == "Flower") {
+		Flower* flower = new Flower(s);
+		flower->Collider::setpos(x, y, 1, 1);
+		unrun_actors[(int)x].push_back(flower);
+		return flower;
 	}
 	return NULL;
 }
