@@ -9,8 +9,7 @@ private:
 	int map_range;
 	bool isshow = false, isrun = false;
 	bool render();
-	
-	
+	bool key_d = false;
 public:
 	bool update();
 	void movecam(double x, double y);

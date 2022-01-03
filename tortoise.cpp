@@ -36,8 +36,6 @@ bool Tortoise::update()
 			state = 0;
 			freeze = false;
 			sy = -0.5;
-		} else if (level.now_time - sleep_time > 8000) {
-			ct = Costume{ 13, 0, 8 };
 		}
 	}
 	
@@ -66,6 +64,9 @@ Costume Tortoise::getcostume()
 	}
 	else if (state == 1 || state == 2) {
 		ct = Costume{ 13, 0, 9 };
+		if (level.now_time - sleep_time > 9000) {
+			ct = Costume{ 13, 0, 8 };
+		}
 	}
 	return ct;
 }
@@ -104,9 +105,7 @@ bool Tortoise::report_collision(int direction, Collider* target, int target_coll
 		break;
 	case 2: //碰到其他怪物
 		if (state == 2) { //滚动击杀
-			if (target->name == "chestnut") {
-				target->kill((direction + 2) & 3);
-			}
+			target->kill((direction + 2) & 3);
 		}
 		else {
 			if (fx < 0 != target->fx < 0) {
@@ -134,5 +133,7 @@ void Tortoise::kill(int direction)
 		p = vx < 0 ? -15 : 15;
 	}
 	level.actors[5].push_back(new Death_animation(Costume{ 13, 0, 9 }, x, y, p, -10));
+	isrun = false;
+	freeze = true;
 	level.remove(this);
 }

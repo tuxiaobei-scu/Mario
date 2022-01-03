@@ -15,6 +15,7 @@ extern int TOP_SCORE;
 extern int START_TIME;
 extern int NOW_SCENR;
 extern int PLAYERS_NUM;
+extern bool DEBUG_MODE;
 extern double GRAVITY;
 extern std::string LEVEL_NAME;
 

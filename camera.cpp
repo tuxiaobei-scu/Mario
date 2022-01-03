@@ -3,6 +3,7 @@
 #include "global.h"
 #include "collider.h"
 #include "level.h"
+#include "keymsg.h"
 #include <cstdio>
 
 
@@ -89,11 +90,69 @@ bool Camera::render()
 			//putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 		}
 	}
+	if (DEBUG_MODE) {
+		for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
+			for (int j = l; j <= r; j++) {
+				for (Collider* c : level.mp[i][j]) {
+					setcolor(EGERGB((c->collider_layer & 1) * 255, (c->collider_layer & 2) * 255, (c->collider_layer & 4) * 255));
+					rectangle((c->x - c->width / 2.0 - nowx) * 40, (c->y - c->height / 2.0 - nowy) * 40, (c->x + c->width / 2.0 - nowx) * 40, (c->y + c->height / 2.0 - nowy) * 40);
+					std::pair<double, double>pos = c->getpos();
+					setfillcolor(EGERGB(0, 0, 255));
+					pieslicef((pos.first - nowx) * 40, (pos.second - nowy) * 40, 0, 360, 5);
+				}
+			}
+			for (Collider* c : level.actors[i]) {
+				if (c->id == level.mario->id) continue;
+				setcolor(EGERGB((c->collider_layer & 1) * 255, (c->collider_layer & 2) * 255, (c->collider_layer & 4) * 255));
+				rectangle((c->x - c->width / 2.0 - nowx) * 40, (c->y - c->height / 2.0 - nowy) * 40, (c->x + c->width / 2.0 - nowx) * 40, (c->y + c->height / 2.0 - nowy) * 40);
+				std::pair<double, double>pos = c->getpos();
+				c->onfloor ? setfillcolor(EGERGB(255, 0, 0)) : setfillcolor(EGERGB(0, 255, 0));
+				pieslicef((pos.first - nowx) * 40, (pos.second - nowy) * 40, 0, 360, 5);
+				setlinewidth(3);
+				setcolor(EGERGB((int)(min(128 + fabs(c->fx), 255)), (int)max((128 - fabs(c->fx)), 0), 0));
+				line((c->x - nowx) * 40, (c->y - nowy) * 40, (c->x + c->fx / 40.0 - nowx) * 40, (c->y - nowy) * 40);
+				setcolor(EGERGB((int)(min(128 + fabs(c->fy), 255)), (int)max((128 - fabs(c->fy)), 0), 0));
+				line((c->x - nowx) * 40, (c->y - nowy) * 40, (c->x - nowx) * 40, (c->y + c->fy / 40.0 - nowy) * 40);
+				setlinewidth(1);
+			}
+			if (level.mario->show_layer == i) {
+				Mario* c = level.mario;
+				setcolor(EGERGB((c->collider_layer & 1) * 255, (c->collider_layer & 2) * 255, (c->collider_layer & 4) * 255));
+				rectangle((c->x - c->width / 2.0 - nowx) * 40, (c->y - c->height / 2.0 - nowy) * 40, (c->x + c->width / 2.0 - nowx) * 40, (c->y + c->height / 2.0 - nowy) * 40);
+				std::pair<double, double>pos = c->getpos();
+				c->onfloor ? setfillcolor(EGERGB(255, 0, 0)) : setfillcolor(EGERGB(0, 255, 0));
+				pieslicef((pos.first - nowx) * 40, (pos.second - nowy) * 40, 0, 360, 5);
+				setlinewidth(3);
+				setcolor(EGERGB((int)(min(0 + fabs(c->vx) * 30, 255)), (int)max((255 - fabs(c->vx) * 30), 0), 0));
+				line((c->x - nowx) * 40, (c->y - nowy) * 40, (c->x + c->fx / 40.0 - nowx) * 40, (c->y - nowy) * 40);
+				setcolor(EGERGB((int)(min(0 + fabs(c->vy) * 30, 255)), (int)max((255 - fabs(c->vy) * 30), 0), 0));
+				line((c->x - nowx) * 40, (c->y - nowy) * 40, (c->x - nowx) * 40, (c->y + c->fy / 40.0 - nowy) * 40);
+				setlinewidth(1);
+			}
+		}
+		setfillcolor(EGERGB(0, 0, 0));
+		setcolor(EGERGB(255, 255, 255));
+	}
 }
 
 bool Camera::update()
 {
 	if (!isrun) return false;
+	key_msg keyMsg;
+	bool flag = keymsg.getmsg(keyMsg, 'D');
+	if (flag) {
+		if (key_d) {
+			if (keyMsg.msg == key_msg_up) {
+				key_d = false;
+			}
+		}
+		else {
+			if (keyMsg.msg == key_msg_down) {
+				key_d = true;
+				DEBUG_MODE ^= 1;
+			}
+		}
+	}
 	return render();
 }
 

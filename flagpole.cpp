@@ -7,7 +7,7 @@ Flagpole::Flagpole()
 	freeze = true;
 	width = 0.125, height = 9.5;
 	name = "flagpole";
-	x = level.map_range - 9.5, y = 8.25;
+	x = level.map_range - 9.5, y = 8.25 - 1;
 	sx = -0.125;
 	show_layer = 0;
 }

@@ -38,7 +38,6 @@ protected:
 	double m = 1;  //物体的质量
 	double maxwx = 20, maxwy = 20; //最大功率
 	bool static_y;
-	bool onfloor = false;
 	bool out_of_range = true;
 	bool last_direction = false; // false右, true 左
 	std::vector<Collider*> get_all_contacts();
@@ -53,6 +52,7 @@ public:
 	double vx = 0, vy = 0; //当前速度
 	double width, height; //碰撞体宽高
 	double fx = 0, fy = 0; //当前外力
+	bool onfloor = false; //是否在地面
 	bool freeze = true; //是否处于冻结状态
 	virtual Costume getcostume();
 	virtual std::pair<double, double> getctpos() = 0;

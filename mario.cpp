@@ -186,7 +186,7 @@ bool Mario::update()
 	if (flag) {
 		if (level.now_time - keymsg.down_time['Z'] >= 500) {
 			if (keyMsg.msg == key_msg_down && !is_squat)
-				is_dash = true, maxwx = 200;
+				is_dash = true, maxwx = 150;
 		}
 		else if (mario_level == 3 && keyMsg.msg == key_msg_up && !is_squat) { //·¢Éä»ðÑæ
 			if (mario_fire_num < 2) {
@@ -294,10 +294,10 @@ bool Mario::update()
 	}
 	if (invincible_state_time) {
 		if (is_squat) {
-			maxwx = 250;
+			maxwx = 200;
 		}
 		else {
-			maxwx = 200;
+			maxwx = 150;
 		}
 	}
 	return false;

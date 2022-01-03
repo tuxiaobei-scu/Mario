@@ -11,6 +11,7 @@ int START_TIME = 0;
 int NOW_SCENR = 0;
 int PLAYERS_NUM = 1;
 double GRAVITY = 50;
+bool DEBUG_MODE = false;
 std::string LEVEL_NAME = "";
 
 bool Costume::operator == (const Costume& p) {

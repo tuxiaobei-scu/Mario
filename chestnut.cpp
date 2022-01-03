@@ -100,5 +100,7 @@ void Chestnut::kill(int direction)
 		p = vx < 0 ? -15 : 15;
 	}
 	level.actors[5].push_back(new Death_animation(Costume{ 5, 0, 0 }, x, y, p, -10));
+	isrun = false;
+	freeze = true;
 	level.remove(this);
 }

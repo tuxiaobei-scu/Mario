@@ -69,6 +69,7 @@ void Collider::calc()
 	}
 	double tim = (level.now_time - level.last_time) / 1000.0;
 	vx += tim * ax, vy += tim * ay;
+	vx = min(vx, maxwx);
 	double prex = x, prey = y;
 	move(x, y, tim * vx, tim * vy);
 	if (!out_of_range) {

@@ -45,7 +45,7 @@ bool Mario_fire::update()
 		}
 		return true;
 	}
-	if (fabs(x - level.mario->x) > 10 || x < 0 || x > level.map_range || y > 16) { //³¬³öÊÓÏß£¬»ðÑæËÀÍö
+	if ((fabs(x - level.mario->x) > 10 && x > 20 && x < level.map_range - 20) || x < 0 || x > level.map_range || y > 16) { //³¬³öÊÓÏß£¬»ðÑæËÀÍö
 		level.mario->mario_fire_num--;
 		level.remove(this);
 		return true;

@@ -54,15 +54,15 @@ void Level::basic_block()
 	for (int i = 1; i <= 10; i++) {
 		for (int j = 14; j <= 15; j++) {
 			Brick* brick = new Brick(0, 0);
-			brick->Collider::setpos(map_range - i, j, 1, 1);
+			brick->Collider::setpos(map_range - i, j - 1, 1, 1);
 			mp[2][map_range - i].push_back(brick);
 		}
 	}
 	Brick* brick = new Brick(1, 0);
-	brick->Collider::setpos(map_range - 10, 13, 1, 1);
+	brick->Collider::setpos(map_range - 10, 12, 1, 1);
 	mp[2][map_range - 10].push_back(brick);
 	Flag* flag = new Flag();
-	flag->Collider::setpos(map_range - 10, 4, 1, 1);
+	flag->Collider::setpos(map_range - 10, 3, 1, 1);
 	mp[1][map_range - 10].push_back(flag);
 	/*旗杆部分结束*/
 	/*城堡部分开始*/
@@ -70,25 +70,25 @@ void Level::basic_block()
 	for (int i = 1; i <= 5; i++) {
 		for (int j = 12; j <= 13; j++) {
 			freeze_block = new Freeze_block(Costume{ 8, (i == 3), 2 - (i == 3 && j == 12) }, 1);
-			freeze_block->Collider::setpos(map_range - i, j, 1, 1);
+			freeze_block->Collider::setpos(map_range - i, j - 1, 1, 1);
 			mp[1][map_range - i].push_back(freeze_block);
 		}
 		freeze_block = new Freeze_block(Costume{ 8, (i >= 2 && i <= 4), 0}, 1);
-		freeze_block->Collider::setpos(map_range - i, 11, 1, 1);
+		freeze_block->Collider::setpos(map_range - i, 10, 1, 1);
 		mp[1][map_range - i].push_back(freeze_block);
 		if (i >= 2 && i <= 4) {
 			freeze_block = new Freeze_block(Costume{ 8, 0, 0 }, 1);
-			freeze_block->Collider::setpos(map_range - i, 9, 1, 1);
+			freeze_block->Collider::setpos(map_range - i, 8, 1, 1);
 			mp[1][map_range - i].push_back(freeze_block);
 		}
 	}
 	for (int i = 2; i <= 4; i++) {
 		freeze_block = new Freeze_block(Costume{ 8, 0, 5 - i }, 1);
-		freeze_block->Collider::setpos(map_range - i, 10, 1, 1);
+		freeze_block->Collider::setpos(map_range - i, 9, 1, 1);
 		mp[1][map_range - i].push_back(freeze_block);
 	}
 	Small_flag* s_flag = new Small_flag();
-	s_flag->Collider::setpos(map_range - 3, 10, 1, 1);
+	s_flag->Collider::setpos(map_range - 3, 9, 1, 1);
 	mp[0][map_range - 3].push_back(s_flag);
 	/*城堡部分结束*/
 }
@@ -212,7 +212,7 @@ void Level::finish()
 	for (int i = 1; i <= 2; i++) {
 		for (int j = 12; j <= 13; j++) {
 			freeze_block = new Freeze_block(Costume{ 8, 0, 2 }, 1);
-			freeze_block->Collider::setpos(map_range - i, j, 1, 1);
+			freeze_block->Collider::setpos(map_range - i, j - 1, 1, 1);
 			mp[2][map_range - i].push_back(freeze_block);
 		}
 	}
@@ -223,6 +223,10 @@ void Level::death()
 {
 	if (finish_time || death_time) return;
 	musicplayer.stop(now_music);
+	if (invincible) {
+		musicplayer.stop("music-invincible");
+		invincible = false;
+	}
 	musicplayer.play("music-death");
 	death_time = now_time;
 	freeze = true;
@@ -272,7 +276,6 @@ bool Level::update()
 		} else {
 			if (invincible) {
 				musicplayer.stop("music-invincible");
-				musicplayer.play(now_music);
 				invincible = false;
 			}
 			if (limit_time - ((now_time - start_time) / 1000) > 100) {
@@ -323,7 +326,7 @@ void Level::start()
 	if (!freeze && !finish_time) {
 		now_music = "music-main_theme";
 		musicplayer.SetVolume(now_music, 0.5);
-		musicplayer.play(now_music);
+		//musicplayer.play(now_music);
 		start_time = clock();
 		now_time = start_time;
 		last_time = now_time;
