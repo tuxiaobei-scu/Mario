@@ -164,6 +164,9 @@ bool Mario::update()
 		}
 		
 	}
+	if (level.now_time - invincible_state_time > 9500) {
+		invincible_state_time = 0; //无敌星时间结束
+	}
 	bool flag;
 	key_msg keyMsg;
 	//摸旗动画
@@ -183,7 +186,7 @@ bool Mario::update()
 	if (flag) {
 		if (level.now_time - keymsg.down_time['Z'] >= 500) {
 			if (keyMsg.msg == key_msg_down && !is_squat)
-				is_dash = true, maxwx = 150;
+				is_dash = true, maxwx = 200;
 		}
 		else if (mario_level == 3 && keyMsg.msg == key_msg_up && !is_squat) { //发射火焰
 			if (mario_fire_num < 2) {
@@ -289,6 +292,14 @@ bool Mario::update()
 			}
 		}
 	}
+	if (invincible_state_time) {
+		if (is_squat) {
+			maxwx = 250;
+		}
+		else {
+			maxwx = 200;
+		}
+	}
 	return false;
 }
 
@@ -347,6 +358,14 @@ Costume Mario::getcostume()
 			}
 		}
 	}
+	if (invincible_state_time && (level.now_time / 50) & 2) {
+		if (mario_level != 2) {
+			ct.a = 17;
+		}
+		else {
+			ct.a = 18;
+		}
+	}
 	return ct;
 }
 
@@ -365,7 +384,11 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 			fy = 0;
 		}
 		break;
-	case 2: //如果碰撞为板栗
+	case 2: //如果碰撞为板栗或乌龟
+		if (invincible_state_time) {
+			target->kill((direction + 2) & 3);
+			break;
+		}
 		if (direction == BOTTOM) { //如果碰撞方向为下方（即马里奥在板栗的上方）
 			vy = -20;              //反弹 
 			y = target->y - (height + target->height) / 2.0;
@@ -411,6 +434,11 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 				change_level(3); //如果是花，变为火焰马里奥
 			}
 			score.add_score(x, y, 1000);
+		}
+		break;
+	case 6: //如果碰到无敌星
+		if (target->name == "star") {
+			invincible_state_time = level.now_time;
 		}
 	}
 	return true;

@@ -26,7 +26,7 @@ Camera::Camera()
 				zoomImage(v[i][j], 2.5);
 			}
 		}
-		if (gp.size() < 4) {
+		if (gp.size() < 4 || std::string(s1) == "Big_invincible_mario" || std::string(s1) == "Small_invincible_mario") {
 			v.resize(n << 1);
 			for (auto& p : v) p.resize(m);
 			for (int i = n; i < (n << 1); i++) {

@@ -38,4 +38,5 @@ public:
 	Mario();
 	void render(double x, double y);
 	int mario_fire_num = 0; //发射火焰个数
+	int invincible_state_time = 0; //无敌星时间
 };

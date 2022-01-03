@@ -14,3 +14,5 @@ resources/graphics/smb_enemies_sheet.png 90 0 16 24 3 30 10 30 Tortoise
 resources/graphics/item_objects.png 0 32 16 16 1 16 3 16 Flower
 resources/graphics/item_objects.png 0 48 16 16 1 16 3 16 Star
 resources/graphics/smb_enemies_sheet.png 360 184 16 16 1 30 3 30 Mario_fire
+resources/graphics/mario_bros.png 80 144 16 32 1 0 19 16 Big_invincible_mario
+resources/graphics/mario_bros.png 80 176 16 16 1 0 14 16 Small_invincible_mario

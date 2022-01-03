@@ -8,7 +8,10 @@ Question_block::Question_block(char* s, double x, double y)
 	int pos;
 	sscanf(s, "%d%n", &isshow, &pos);
 	ct = Costume{ 9, 0, 0 };
-	collider_layer = 4;
+	if (!isshow)
+		collider_layer = 4;
+	else
+		collider_layer = 1;
 	show_layer = 3;
 	id = ++COLLIDER_ID;
 	freeze = true;

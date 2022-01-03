@@ -19,18 +19,18 @@ private:
 	std::pair<double, bool> checkceiling(double prex, double prey);
 	std::pair<double, bool> checkleftright();
 	const int collide_re[10][10] = {
-		{3, 3, 1, 1, 1, 1, 0},
+		{3, 3, 1, 1, 1, 1, 1},
 		{3, 0, 3, 0, 3, 0, 1},
 		{1, 3, 1, 0, 0, 0, 1},
 		{1, 0, 0, 0, 0, 0, 0},
 		{1, 3, 0, 0, 0, 0, 0},
 		{1, 0, 0, 0, 0, 0, 0},
-		{0, 1, 1, 0, 0, 0, 0}
+		{1, 1, 1, 0, 0, 0, 0},
 	};
 	//0不排斥不检测，1仅检测，2仅排斥，3排斥且检测
-	//0 人物，1 砖块，2 怪物，3 旗杆，4 蘑菇/隐藏砖, 5 金币, 6马里奥火焰
+	//0 人物，1 砖块，2 怪物，3 旗杆，4 蘑菇/隐藏砖, 5 金币, 6马里奥火焰/无敌星
 	//-1空图层，与任何物体不发生碰撞
-	std::set<Collider*>collision_history[2];
+	std::set<Collider*>collision_history[2]; //历史碰撞记录（滚动）
 	int collision_history_pos = 0;
 protected:
 	bool is_jump = false;
@@ -44,6 +44,7 @@ protected:
 	std::vector<Collider*> get_all_contacts();
 	virtual bool report_collision(int direction, Collider* target, int target_collider_layer);
 	//报告碰撞 (碰撞方向，碰撞对象，碰撞对象碰撞图层)
+	bool checklastcollision(Collider* target); //判断是否连续报告碰撞
 public:
 	int id;
 	bool isrun = true;  //是否运行

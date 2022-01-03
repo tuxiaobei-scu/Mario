@@ -168,6 +168,7 @@
     <ClInclude Include="mushroom.h" />
     <ClInclude Include="musicplayer.h" />
     <ClInclude Include="question_block.h" />
+    <ClInclude Include="star.h" />
     <ClInclude Include="tortoise.h" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +194,7 @@
     <ClCompile Include="mushroom.cpp" />
     <ClCompile Include="musicplayer.cpp" />
     <ClCompile Include="question_block.cpp" />
+    <ClCompile Include="star.cpp" />
     <ClCompile Include="tortoise.cpp" />
   </ItemGroup>
   <ItemGroup>

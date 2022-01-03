@@ -3,6 +3,7 @@
 #include "global.h"
 #include "level.h"
 #include "death_animation.h"
+#include "musicplayer.h"
 
 Chestnut::Chestnut(char* s)
 {
@@ -21,6 +22,8 @@ Chestnut::Chestnut(char* s)
 bool Chestnut::update()
 {
 	if (!isrun) return false;
+	if (x < 0 || x > level.map_range || y > 16)
+		level.remove(this);
 	if (state == 2 && level.now_time - animation_time > 500) {
 		level.remove(this);
 	}
@@ -56,6 +59,7 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 	switch (target_collider_layer) {
 	case 0: //如果碰到马里奥
 		if (target->freeze) break;
+		if (level.mario->invincible_state_time) break;
 		if (direction == TOP) { //如果是被踩到的，死亡
 			sy = 0.25;
 			state = 2;
@@ -66,11 +70,14 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 		}
 		break;
 	case 1: //如果碰到砖块，反弹
-		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) fx = -fx, vx = -vx, this->direction = -this->direction;
+		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) 
+			fx = -fx, vx = -vx, this->direction = -this->direction;
 		break;
 	case 2: //如果碰到其他对向行走板栗，反弹
-		if (direction == LEFT || direction == RIGHT) {
-			fx = -fx, vx = -vx, this->direction = -this->direction;
+		if (fx < 0 != target->fx < 0) {
+			if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0) || (direction == BOTTOM)) {
+				fx = -fx, vx = -vx, this->direction = -this->direction;
+			}
 		}
 		//if ((direction == LEFT && vx < 0 && (target->vx > 0 || target->freeze)) || (direction == RIGHT && fx > 0 && (target->fx < 0 || target->freeze))) 
 		//	fx = -fx, vx = -vx, this->direction = -this->direction;
@@ -82,6 +89,7 @@ bool Chestnut::report_collision(int direction, Collider* target, int target_coll
 void Chestnut::kill(int direction)
 {
 	if (killed) return;
+	musicplayer.play("sound-bump");
 	score.add_score(x, y, 200);
 	killed = true;
 	double p;

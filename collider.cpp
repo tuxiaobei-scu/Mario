@@ -44,6 +44,12 @@ bool Collider::operator < (const Collider& c) {
 	return y < c.y;
 }
 
+bool Collider::checklastcollision(Collider* target)
+{
+	return collision_history[collision_history_pos ^ 1].count(target) != 0;
+}
+
+
 void Collider::calc()
 {
 	if (freeze || !isrun) return;
@@ -71,16 +77,17 @@ void Collider::calc()
 	}
 	double lstx = x, lsty = y;
 	std::pair<double, bool> ret = checkonfloor(prex, prey);
-	y = ret.first;
+	if (fabs(lsty - y) <= EPS) y = ret.first;
 	if (ret.second) vy = 0, onfloor = true;
 	else {
 		onfloor = false;
+		lsty = y;
 		ret = checkceiling(prex, prey);
-		y = ret.first;
+		if (fabs(lsty - y) <= EPS) y = ret.first;
 	}
-	
+	lstx = x;
 	ret = checkleftright();
-	x = ret.first;
+	if (fabs(lstx - x) <= EPS) x = ret.first;
 	if (ret.second) vx = 0;
 	//if (checkleftright()) x = lstx, vx = 0;
 	if (collider_layer == 0) {
@@ -129,23 +136,34 @@ std::pair<double, bool> Collider::checkleftright()
 			v.insert(v.end(), level.mp[i][j].begin(), level.mp[i][j].end());
 		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
 	}
+	double px = x;
+	bool flag = false;
 	for (auto b : v) {
 		if (b->id == this->id || b->collider_layer == -1 || !b->isrun) continue;
 		int flag1 = collide_re[collider_layer][b->collider_layer];
 		int flag2 = collide_re[b->collider_layer][collider_layer];
+		if (b->x > x && p == -1) continue;
 		if ((flag1 || flag2) && checkcollide(x, y, b)) {
 			int a_collider_layer = collider_layer;
 			int b_collider_layer = b->collider_layer;
 			if ((flag1 & 1) || (flag2 & 1))
 				collision_history[collision_history_pos].insert(b);
-			if (collision_history[collision_history_pos ^ 1].count(b) == 0) {
-				if (flag1 & 1) report_collision(2 - p, b, b_collider_layer);
-				if (flag2 & 1) b->report_collision(2 + p, this, a_collider_layer);
+			if (flag1 & 1) report_collision(2 - p, b, b_collider_layer);
+			if (flag2 & 1) b->report_collision(2 + p, this, a_collider_layer);
+			//if (flag1 & 2) return std::make_pair(b->x - (width + b->width) / 2 * p, true);
+
+			if (flag1 & 2) {
+				flag = true;
+				if (p == 1) {
+					px = min(b->x - (width + b->width) / 2, px);
+				}
+				else {
+					px = max(b->x + (width + b->width) / 2, px);
+				}
 			}
-			if (flag1 & 2) return std::make_pair(b->x - (width + b->width) / 2 * p, true);
 		}
 	}
-	return std::make_pair(x, false);
+	return std::make_pair(px, flag);
 }
 std::pair<double, bool> Collider::checkceiling(double prex, double prey)
 {
@@ -158,6 +176,8 @@ std::pair<double, bool> Collider::checkceiling(double prex, double prey)
 			v.insert(v.end(), level.mp[i][j].begin(), level.mp[i][j].end());
 		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
 	}
+	double py = y;
+	bool flag = false;
 	for (auto b : v) {
 		if (b->id == this->id || b->collider_layer == -1 || !b->isrun) continue;
 		int flag1 = collide_re[collider_layer][b->collider_layer];
@@ -167,15 +187,13 @@ std::pair<double, bool> Collider::checkceiling(double prex, double prey)
 			int b_collider_layer = b->collider_layer;
 			if ((flag1 & 1) || (flag2 & 1))
 				collision_history[collision_history_pos].insert(b);
-			if (collision_history[collision_history_pos ^ 1].count(b) == 0) {
-				if (flag1 & 1) report_collision(TOP, b, b_collider_layer);
-				if (flag2 & 1) b->report_collision(BOTTOM, this, a_collider_layer);
-			}
+			if (flag1 & 1) report_collision(TOP, b, b_collider_layer);
+			if (flag2 & 1) b->report_collision(BOTTOM, this, a_collider_layer);
 			if (flag1 & 2) vy = 0;
-			if (flag1 & 2) return std::make_pair(b->y + (height + b->height) / 2, true);
+			if (flag1 & 2) py = max(py, b->y + (height + b->height) / 2), flag = true;
 		}
 	}
-	return std::make_pair(y, false);
+	return std::make_pair(py, flag);
 }
 std::pair<double, bool> Collider::checkonfloor(double prex, double prey)
 {
@@ -188,6 +206,8 @@ std::pair<double, bool> Collider::checkonfloor(double prex, double prey)
 			v.insert(v.end(), level.mp[i][j].begin(), level.mp[i][j].end());
 		v.insert(v.end(), level.actors[i].begin(), level.actors[i].end());
 	}
+	double py = y;
+	bool flag = false;
 	for (auto b : v) {
 		if (b->id == this->id || b->collider_layer == -1 || !b->isrun) continue;
 		int flag1 = collide_re[collider_layer][b->collider_layer];
@@ -197,15 +217,13 @@ std::pair<double, bool> Collider::checkonfloor(double prex, double prey)
 			int b_collider_layer = b->collider_layer;
 			if ((flag1 & 1) || (flag2 & 1))
 				collision_history[collision_history_pos].insert(b);
-			if (collision_history[collision_history_pos ^ 1].count(b) == 0) {
-				if (flag1 & 1) report_collision(BOTTOM, b, b_collider_layer);
-				if (flag2 & 1) b->report_collision(TOP, this, a_collider_layer);
-			}
-			if (flag1 & 2) return std::make_pair(b->y - (height + b->height) / 2, true);
+			if (flag1 & 1) report_collision(BOTTOM, b, b_collider_layer);
+			if (flag2 & 1) b->report_collision(TOP, this, a_collider_layer);
+			if (flag1 & 2) py = min(py, b->y - (height + b->height) / 2), flag = true;
 		}
 
 	}
-	return std::make_pair(y, false);
+	return std::make_pair(py, flag);
 }
 
 

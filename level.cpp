@@ -12,6 +12,7 @@
 #include "coin.h"
 #include "tortoise.h"
 #include "flower.h"
+#include "star.h"
 #include "question_block.h"
 #include "death_animation.h"
 #include "headers.h"
@@ -142,6 +143,12 @@ Collider* Level::addobject(char* s, double x, double y)
 		unrun_actors[(int)x].push_back(flower);
 		return flower;
 	}
+	else if (name == "Star") {
+		Star* star = new Star(s);
+		star->Collider::setpos(x, y, 1, 1);
+		unrun_actors[(int)x].push_back(star);
+		return star;
+	}
 	return NULL;
 }
 
@@ -196,6 +203,10 @@ void Level::finish()
 	musicplayer.play("music-flagpole");
 	finish_time = now_time;
 	musicplayer.stop(now_music);
+	if (invincible) {
+		musicplayer.stop("music-invincible");
+		invincible = false;
+	}
 	Freeze_block* freeze_block;
 	mario->show_layer = 1;
 	for (int i = 1; i <= 2; i++) {
@@ -251,28 +262,43 @@ bool Level::update()
 		death();
 	}
 	if (!freeze && !finish_time) {
-		if (limit_time - ((now_time - start_time) / 1000) > 100) {
-			if (musicplayer.checkend(now_music)) {
-				musicplayer.play(now_music);
-			}
-		}
-		else {
-			if (now_music == "music-main_theme") {
+		if (level.mario->invincible_state_time) {
+			if (!invincible) {
 				musicplayer.stop(now_music);
-				now_music = "music-out_of_time";
-				musicplayer.play(now_music);
+				musicplayer.play("music-invincible");
+				invincible = true;
 			}
-			if (musicplayer.checkend(now_music)) {
-				if (now_music == "music-out_of_time") {
-					musicplayer.stop(now_music);
-					now_music = "music-main_theme_sped_up";
+			
+		} else {
+			if (invincible) {
+				musicplayer.stop("music-invincible");
+				musicplayer.play(now_music);
+				invincible = false;
+			}
+			if (limit_time - ((now_time - start_time) / 1000) > 100) {
+				if (musicplayer.checkend(now_music)) {
 					musicplayer.play(now_music);
 				}
-				else {
+			}
+			else {
+				if (now_music == "music-main_theme") {
+					musicplayer.stop(now_music);
+					now_music = "music-out_of_time";
 					musicplayer.play(now_music);
+				}
+				if (musicplayer.checkend(now_music)) {
+					if (now_music == "music-out_of_time") {
+						musicplayer.stop(now_music);
+						now_music = "music-main_theme_sped_up";
+						musicplayer.play(now_music);
+					}
+					else {
+						musicplayer.play(now_music);
+					}
 				}
 			}
 		}
+		
 		
 	}
 	int r = min(max(0.0, floor(camera.nowx)) + 22, level.map_range);

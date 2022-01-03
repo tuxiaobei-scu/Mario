@@ -14,6 +14,7 @@ private:
 	char s[256];
 	std::string now_music;
 	int update_pos = 0;
+	bool invincible = false;
 public:
 	std::vector<Collider*>mp[MAX_LEVEL_LAYER + 5][MAX_LEVEL_RANGE + 5];
 	std::vector<Collider*>actors[MAX_LEVEL_LAYER + 5];
