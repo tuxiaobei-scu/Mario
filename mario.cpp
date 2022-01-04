@@ -410,13 +410,13 @@ bool Mario::report_collision(int direction, Collider* target, int target_collide
 		y = max(y, 4);
 		vy = 7, vx = 0;
 		int sc;
-		if (y < 6) {
+		if (y < 5) {
 			sc = 4000;
 		}
-		else if (y < 9) {
+		else if (y < 8) {
 			sc = 800;
 		}
-		else if (y < 12) {
+		else if (y < 11) {
 			sc = 200;
 		}
 		else {
