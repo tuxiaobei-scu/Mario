@@ -9,6 +9,7 @@
 
 Camera::Camera()
 {
+	//读取关卡文件
 	FILE* fp = fopen("graphics.txt", "r");
 	int x, y, width, heigh, n, ny, m, mx;
 	PIMAGE img = newimage();
@@ -27,7 +28,7 @@ Camera::Camera()
 				zoomImage(v[i][j], 2.5);
 			}
 		}
-		if (gp.size() < 4 || std::string(s1) == "Big_invincible_mario" || std::string(s1) == "Small_invincible_mario") {
+		if (gp.size() < 4 || std::string(s1) == "Big_invincible_mario" || std::string(s1) == "Small_invincible_mario") { //对马里奥进行镜像复制
 			v.resize(n << 1);
 			for (auto& p : v) p.resize(m);
 			for (int i = n; i < (n << 1); i++) {
@@ -90,6 +91,7 @@ bool Camera::render()
 			//putimage_withalpha(NULL, gp[ct.a][ct.b][ct.c], (int)((pos.first - nowx) * 40), (int)((pos.second - nowy) * 40));
 		}
 	}
+	//调试模式
 	if (DEBUG_MODE) {
 		for (int i = 0; i < MAX_LEVEL_LAYER; i++) {
 			for (int j = l; j <= r; j++) {
@@ -139,7 +141,7 @@ bool Camera::update()
 {
 	if (!isrun) return false;
 	key_msg keyMsg;
-	bool flag = keymsg.getmsg(keyMsg, 'D');
+	bool flag = keymsg.getmsg(keyMsg, 'D'); //开关调试模式
 	if (flag) {
 		if (key_d) {
 			if (keyMsg.msg == key_msg_up) {

@@ -1,6 +1,7 @@
+//ÖÕµãÆì¸ËºÍÆìÖÄ
 #pragma once
 #include "collider.h"
-class Flagpole :
+class Flagpole : //Æì¸Ë
     public Collider
 {
 private:
@@ -15,7 +16,7 @@ public:
 	Flagpole();
 };
 
-class Flag :
+class Flag : //ÆìÖÄ
 	public Collider
 {
 private:
@@ -30,7 +31,7 @@ public:
 	Flag();
 };
 
-class Small_flag :
+class Small_flag : //³Ç±¤Ğ¡ÆìÖÄ
 	public Collider
 {
 private:

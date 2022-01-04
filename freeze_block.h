@@ -1,3 +1,4 @@
+//²»¶¯µÄ×©¿é
 #pragma once
 #include "collider.h"
 class Freeze_block :

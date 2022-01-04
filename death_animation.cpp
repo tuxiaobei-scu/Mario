@@ -32,10 +32,10 @@ void Death_animation::render(double x, double y) {
 	//彩色图转灰度图
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {	
-			buffer[x + y * width] = EGEARGB(0, 0, 0, 0);
+			buffer[x + y * width] = EGEARGB(0, 0, 0, 0); //赋值为全透明图
 		}
 	}
-	putimage_rotate(p, camera.gp[ct.a][ct.b][ct.c], 50, 50, 0.5, 0.5, rad);
+	putimage_rotate(p, camera.gp[ct.a][ct.b][ct.c], 50, 50, 0.5, 0.5, rad); //旋转绘图
 	putimage_withalpha(NULL, p, (int)x - 50, (int)y - 50);
 	delimage(p);
 	return;

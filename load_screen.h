@@ -1,3 +1,4 @@
+//¹ý¶É½çÃæ
 #pragma once
 #include <cstring>
 #include <iostream>

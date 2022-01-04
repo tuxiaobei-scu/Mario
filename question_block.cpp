@@ -17,7 +17,7 @@ Question_block::Question_block(char* s, double x, double y)
 	freeze = true;
 	width = 1, height = 1;
 	name = "question_block";
-	target = level.addobject(s + pos, x, y);
+	target = level.addobject(s + pos, x, y); //新增顶出的角色
 	target->freeze = true;
 	target->isrun = false;
 	target->isshow = false;
@@ -75,11 +75,11 @@ Costume Question_block::getcostume()
 
 bool Question_block::report_collision(int direction, Collider* target, int target_collider_layer)
 {
-	if (!used_time && target_collider_layer == 0 && direction == BOTTOM) {
+	if (!used_time && target_collider_layer == 0 && direction == BOTTOM) { //被顶
 		ct.c = 3;
 		musicplayer.play("sound-powerup_appears");
 		used_time = level.now_time;
-		collider_layer = 1;
+		collider_layer = 1; //改变图层为砖块
 		isshow = true;
 		target->y = y + (height + target->height) / 2;
 	}

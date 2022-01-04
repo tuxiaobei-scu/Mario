@@ -46,7 +46,7 @@ void Mario::render(double x, double y) {
 			putimage_withalpha(NULL, ret, (int)x, (int)y);
 			delimage(ret);
 			return;
-		} else if (c < 1500) {
+		} else if (c < 1500) { //角色改变闪烁
 			if ((c / 100) & 1) return;
 		}
 		else{
@@ -76,19 +76,19 @@ void Mario::change_level(int target)
 {
 	if (mario_level == target) return;
 	ct.a = target;
-	if ((mario_level == 1 && target == 3) || (mario_level == 3 && target == 1)) {
+	if ((mario_level == 1 && target == 3) || (mario_level == 3 && target == 1)) { //如果均为大状态，直接改变
 		mario_level = target;
 		change_size = false;
 	}
-	else {
+	else { //涉及碰撞箱的体积变化
 		mario_level = target;
 		change_size = true;
 		if (target == 1 || target == 3) {
 			y -= 7.0 / 16.0;
 			height = 28.0 / 16.0;
 			is_squat = false;
-			squat();
-			standup();
+			squat(); //先蹲下
+			standup(); //再尝试起立
 		}
 		else {
 			y += 7.0 / 16.0;
@@ -126,7 +126,7 @@ bool Mario::standup()
 			break;
 		}
 	}
-	if (flag) { //起立失败
+	if (flag) { //起立失败，继续下蹲
 		y = lsty;
 		sy = -18.0 / 16.0;
 		height = 14.0 / 16.0;
@@ -172,9 +172,9 @@ bool Mario::update()
 	//摸旗动画
 	if (level.finish_time) {
 		if (level.finish_move && level.now_time - level.finish_time > 1800) {
-			state = "walk";
+			state = "walk"; //开始向城堡行走
 			fx = 30, fy = 0;
-		}else if (level.now_time - level.finish_time > 1500 && !pole_direction) {
+		}else if (level.now_time - level.finish_time > 1500 && !pole_direction) { //如果在旗杆左侧，则翻转到右侧
 			pole_direction = true;
 			x = level.map_range - 9.5 - 0.375 + 0.75 * pole_direction;
 			ct.b = pole_direction;
@@ -255,15 +255,16 @@ bool Mario::update()
 			}
 		}
 	}
+	//跳跃
 	flag = keymsg.getmsg(keyMsg, 'X');
 	if (onfloor && state != "jump") state = "walk";
 	if (!onfloor && state == "walk") state = "fall";
-	if (state == "jump" && level.now_time - jump_time > 200){
+	if (state == "jump" && level.now_time - jump_time > 200){ //超过时间，停止给予y方向的力，设为下落状态
 		state = "fall";
 		is_jump = false;
 		fy = 0;
 	}
-	if (state == "jump" && !jump_sound && level.now_time - jump_time >= 150) {
+	if (state == "jump" && !jump_sound && level.now_time - jump_time >= 150) { 
 		musicplayer.play("sound-big_jump");
 		jump_sound = true;
 	}
@@ -271,14 +272,14 @@ bool Mario::update()
 		if (keyMsg.msg == key_msg_down && !jump_key) {
 			if (state != "jump" && state != "fall") {
 				jump_key = true;
-				fy = -128 - min((fabs(vx) * 1.65), 10);
+				fy = -128 - min((fabs(vx) * 1.65), 10); //横向速度越快，跳得越高
 				jump_sound = false;
 				jump_time = level.now_time;
 				state = "jump";
 				is_jump = true;
 			}
 		}
-		if (keyMsg.msg == key_msg_up) {
+		if (keyMsg.msg == key_msg_up) { //松开x键，停止给予y方向的力，设为下落状态
 			jump_key = false;
 			if (state == "jump") {
 				if (level.now_time - jump_time < 150 && !jump_sound) {
@@ -292,7 +293,7 @@ bool Mario::update()
 			}
 		}
 	}
-	if (invincible_state_time) {
+	if (invincible_state_time) { //无敌星状态加快速度
 		if (is_squat) {
 			maxwx = 200;
 		}
@@ -347,7 +348,7 @@ Costume Mario::getcostume()
 	else if (state == "jump" || state == "fall") {
 		ct = Costume{ mario_level, last_direction, 4 };
 	}
-	if (fire_time && mario_level == 3) {
+	if (fire_time && mario_level == 3) { //火焰马里奥的射球造型
 		if (level.now_time - fire_time > 150) {
 			fire_time = 0;
 		}
@@ -358,7 +359,7 @@ Costume Mario::getcostume()
 			}
 		}
 	}
-	if (invincible_state_time && (level.now_time / 50) & 2) {
+	if (invincible_state_time && (level.now_time / 50) & 2) { //判断是否为无敌星状态，无敌星状态闪烁
 		if (mario_level != 2) {
 			ct.a = 17;
 		}

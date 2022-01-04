@@ -1,3 +1,4 @@
+//马里奥
 #pragma once
 #include "collider.h"
 #include "global.h"
@@ -7,13 +8,13 @@ class Mario :
 	public Collider
 {
 private:
-	int jump_time = 0;
-	std::string state = "walk";
+	int jump_time = 0; //跳跃开始时间
+	std::string state = "walk"; //状态
 	double sx = 0, sy = 0;
 	Costume ct = Costume{2, 0, 6};
 	Costume change_ct;
 	int input_direction = 0; //输入方向键方向
-	int mario_level = 2;     //马里奥等级
+	int mario_level = 2;     //马里奥等级，1大马里奥，2小马里奥，3火焰马里奥
 	int animation_time = 0;      //动画时间戳
 	int change_time = 0;         //改变等级时间戳
 	int invincible_animation_time = 0; //无敌动画闪烁时间戳

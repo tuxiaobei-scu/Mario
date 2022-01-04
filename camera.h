@@ -1,3 +1,4 @@
+//摄像机
 #pragma once
 #include "graphics.h"
 #include <iostream>
@@ -15,10 +16,10 @@ public:
 	void movecam(double x, double y);
 	void start();
 	void stop();
-	bool finish_init = false;
-	double nowx, nowy;
+	bool finish_init = false; //是否完成初始化
+	double nowx, nowy; //摄像机位置
 	std::vector<std::vector<std::vector<PIMAGE>>>gp; //图片素材
-	std::vector<std::string>gp_type;
+	std::vector<std::string>gp_type; //角色名称
 	Camera();
 };
 

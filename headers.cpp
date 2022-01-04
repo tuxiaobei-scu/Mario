@@ -83,9 +83,9 @@ bool Timer::render() {
 	if (!isshow) return false;
 	xyprintf(625, 30, "TIME");
 	char s[10];
-	if (level.finish_time) {
+	if (level.finish_time) { //关卡时间结算，转为分数
 		int c = level.now_time - level.finish_time;
-		if (c > 2500) {
+		if (c > 2500) { 
 			if (end_show_time > 0) {
 				if (!count_down) {
 					musicplayer.play("sound-count_down");

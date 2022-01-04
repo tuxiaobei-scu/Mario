@@ -21,7 +21,7 @@ bool Add_score::update()
 	if (!type) {
 		if (c > 750) level.remove(this);
 		else {
-			alpha = 255 - c / 3;
+			alpha = 255 - c / 3; //½¥³ö
 			sy = -0.5 - c / 500.0;
 		}
 	}
@@ -31,7 +31,7 @@ bool Add_score::update()
 			level.remove(this);
 		}
 		else if (c > 1800) {
-			alpha = 255 - (c - 1800);
+			alpha = 255 - (c - 1800); //½¥³ö
 		}
 	}
 	return true;;

@@ -1,3 +1,4 @@
+//“Ù¿÷≤•∑≈π‹¿Ì
 #pragma once
 #include "graphics.h"
 #include <map>
@@ -7,11 +8,11 @@ class Musicplayer
 private:
 	std::map<std::string, MUSIC*> musics;
 public:
-	bool play(std::string s);
-	bool stop(std::string s);
-	bool checkend(std::string s);
-	bool SetVolume(std::string s, double v);
-	bool isplay(std::string s);
+	bool play(std::string s); //≤•∑≈“Ù¿÷
+	bool stop(std::string s); //Õ£÷π“Ù¿÷
+	bool checkend(std::string s); //≈–∂œ≤•∑≈ «∑ÒΩ· ¯
+	bool SetVolume(std::string s, double v); //…Ë÷√“Ù¿÷“Ù¡ø
+	bool isplay(std::string s); //≈–∂œ «∑Ò‘⁄≤•∑≈
 	Musicplayer();
 };
 

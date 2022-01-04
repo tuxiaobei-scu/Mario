@@ -69,7 +69,7 @@ bool Mario_fire::report_collision(int direction, Collider* target, int target_co
 	switch (target_collider_layer)
 	{
 	case 1:
-		if (direction == BOTTOM) {
+		if (direction == BOTTOM) { //»ðÇò·´µ¯
 			vy = -10;
 			y = target->y - (target->height + height) / 2.0;
 		}

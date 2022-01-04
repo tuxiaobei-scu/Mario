@@ -40,11 +40,11 @@ bool Star::report_collision(int direction, Collider* target, int target_collider
 {
 	if (!isrun) return false;
 	switch (target_collider_layer) {
-	case 0:
+	case 0: //如果碰到马里奥
 		level.remove(this);
 		musicplayer.play("sound-powerup");
 		break;
-	case 1:
+	case 1: //碰到墙壁，反弹
 		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) {
 			fx = -fx, vx = -vx, this->direction = -this->direction;
 			x = target->x + (target->width + width) / 2.0 * ((direction == LEFT) ? 1 : -1);

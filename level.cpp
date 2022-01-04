@@ -207,7 +207,7 @@ void Level::finish()
 		musicplayer.stop("music-invincible");
 		invincible = false;
 	}
-	Freeze_block* freeze_block;
+	Freeze_block* freeze_block; //ÃþÆìºóÔÚ³Ç±¤ÓÒ²àÌí¼Ó×©¿é
 	mario->show_layer = 1;
 	for (int i = 1; i <= 2; i++) {
 		for (int j = 12; j <= 13; j++) {
@@ -242,14 +242,14 @@ bool Level::update()
 		finish_move = true;
 		musicplayer.play("music-stage_clear");
 	}
-	if (finish_time && now_time - finish_time > 8000) {
+	if (finish_time && now_time - finish_time > 8000) { //½áÊøÅÐ¶Ï
 		finish_time = 0;
 		level.stop();
 		freeze = true;
 		load_screen.start("course_clear");
 		restart();
 	}
-	if (death_time && now_time - death_time > 3000) {
+	if (death_time && now_time - death_time > 3000) {  //ËÀÍöÅÐ¶Ï
 		death_time = 0;
 		level.stop();
 		if (LIVES) {
@@ -265,7 +265,7 @@ bool Level::update()
 		LIVES = 1;
 		death();
 	}
-	if (!freeze && !finish_time) {
+	if (!freeze && !finish_time) { //±³¾°ÒôÀÖ¿ØÖÆ
 		if (level.mario->invincible_state_time) {
 			if (!invincible) {
 				musicplayer.stop(now_music);
@@ -304,7 +304,7 @@ bool Level::update()
 		
 		
 	}
-	int r = min(max(0.0, floor(camera.nowx)) + 22, level.map_range);
+	int r = min(max(0.0, floor(camera.nowx)) + 22, level.map_range); //¶¯Ì¬¼ÓÔØ½ÇÉ«
 	for (int i = update_pos; i <= r; i++) {
 		for (auto p : unrun_actors[i]) {
 			actors[p->show_layer].push_back(p);

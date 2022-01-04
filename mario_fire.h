@@ -1,3 +1,4 @@
+//ÂíÀï°Â»ğÑæÇò
 #pragma once
 #include "collider.h"
 
@@ -7,7 +8,7 @@ class Mario_fire :
 private:
 	double sx = 0, sy = 0;
 	int death_time = 0;
-	void fire_death();
+	void fire_death();  //»ğÇòãıÃğ
 	Costume ct;
 protected:
 	bool report_collision(int direction, Collider* target, int target_collider_layer);

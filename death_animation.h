@@ -1,3 +1,4 @@
+//»÷É±ËÀÍö¶¯»­
 #pragma once
 #include "collider.h"
 class Death_animation :
@@ -5,7 +6,7 @@ class Death_animation :
 {
 private:
 	double sx = 0, sy = 0;
-	double rad = 0;
+	double rad = 0; //Ğı×ª½Ç¶È
 	int appear_time;
 	Costume ct;
 public:

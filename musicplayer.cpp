@@ -2,7 +2,7 @@
 #include "dirent.h"
 #include <sys/types.h>
 
-Musicplayer::Musicplayer()
+Musicplayer::Musicplayer() //¶ÁÈ¡ÒôÀÖÎÄ¼ş
 {
 	DIR* dir;
 	struct dirent* ptr;

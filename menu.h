@@ -1,3 +1,4 @@
+//主页菜单
 #pragma once
 #include "graphics.h"
 #include <vector>
@@ -29,10 +30,10 @@ private:
 	bool isrun = true;
 	int level_id = -1;
 	PIMAGE icon;
-	std::vector<std::string>levels;
+	std::vector<std::string>levels; //所有关卡名字
 public:
 	bool update();
 	Option_cursor();
-	std::map<std::string, int>levels_top_score;
+	std::map<std::string, int>levels_top_score; //关卡最高分
 };
 extern Option_cursor option_cursor;

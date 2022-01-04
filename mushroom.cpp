@@ -37,11 +37,11 @@ bool Mushroom::report_collision(int direction, Collider* target, int target_coll
 {
 	if (!isrun) return false;
 	switch (target_collider_layer) {
-	case 0:
+	case 0: //如果碰到马里奥
 		level.remove(this);
 		musicplayer.play("sound-powerup");
 		break;
-	case 1:
+	case 1: //如果碰到墙
 		if ((direction == LEFT && fx < 0) || (direction == RIGHT && fx > 0)) 
 			fx = -fx, vx = -vx, this->direction = -this->direction;
 			

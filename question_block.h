@@ -1,3 +1,4 @@
+//问号砖
 #pragma once
 #include "collider.h"
 class Question_block :
@@ -6,7 +7,7 @@ class Question_block :
 private:
 	double sx = 0, sy = 0;
 	Costume ct;
-	Collider* target;
+	Collider* target; //顶出出现对象的地址
 	int used_time = 0;
 	bool change_run = false, change_freeze = false;
 protected:

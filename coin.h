@@ -1,3 +1,4 @@
+//½ð±Ò
 #pragma once
 #include "collider.h"
 

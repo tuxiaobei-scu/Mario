@@ -1,3 +1,4 @@
+//全局变量和函数
 #pragma once
 #include "graphics.h"
 #include <iostream>

@@ -1,3 +1,4 @@
+//Í·²¿ÏÔÊ¾×´Ì¬
 #pragma once
 #include "graphics.h"
 class Score
