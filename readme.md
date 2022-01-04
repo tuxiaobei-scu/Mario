@@ -212,6 +212,10 @@ end
 
 ## 参考资料
 
-1. 素材来源：[justinmeister/Mario-Level-1: The first level of Super Mario Bros made with Python and Pygame. (github.com)](https://github.com/justinmeister/Mario-Level-1)
-2. EGE 图形库：[Easy Graphics Engine – EGE图形库主站 (xege.org)](https://xege.org/)
+1. 素材来源：<https://github.com/justinmeister/Mario-Level-1>
+2. EGE 图形库：<https://xege.org/>
+3. EGE 图形库文档：<https://blog.csdn.net/qq_39151563/category_9311717.html>
 
+## 注意事项
+
+本项目可能在 AMD 平台的机器上出现兼容性问题，如果出现游玩问题请提交 issue
